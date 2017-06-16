@@ -1,0 +1,19 @@
+//Config file for the whole program.
+{
+	//App settings
+	"ENABLE_CONSOLE" : true,
+	"USE_VSYNC" : true,
+	"WEBCAM_DEMO_MODE" : true,
+	"START_DISTORTED" : false,
+
+	//Window settings
+	"WINDOW_START_WIDTH" : 1920,
+	"WINDOW_START_HEIGHT" : 1080,
+	"WINDOW_START_X" : 0, // Starts from the top left corner of the rendering surface, not the whole window
+	"WINDOW_START_Y" : 40, // Starts from the top left corner of the rendering surface, not the whole window
+	"WINDOW_START_FULLSCREEN" : false,
+	"GUI_SCALE" : 1.5, // 1.0 is default scale. Note that this will make text a bit fuzzy
+
+	//OpenCV settings
+	"USE_OPENCL" : false
+}
