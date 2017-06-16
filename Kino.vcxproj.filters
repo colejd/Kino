@@ -234,6 +234,15 @@
     <Filter Include="frameworks">
       <UniqueIdentifier>{5b1d926b-c98b-4d2b-a954-bd62bd96183d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="frameworks\libusb">
+      <UniqueIdentifier>{163f6dab-8b51-46ca-b338-e0ce916025ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frameworks\opencv">
+      <UniqueIdentifier>{528636a6-5c1b-4c66-86fd-a2d2485331ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frameworks\libusb\include">
+      <UniqueIdentifier>{fe700214-ac34-45ff-b64e-7e40e38b0b82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.h">
@@ -539,14 +548,14 @@
     <ClInclude Include="src\camera\fake\FakeCapture.hpp">
       <Filter>src\camera\fake</Filter>
     </ClInclude>
-    <ClInclude Include="frameworks\libusb\include\libusb.h">
-      <Filter>frameworks</Filter>
-    </ClInclude>
     <ClInclude Include="src\KinoCore.hpp">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\KinoGlobals.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="frameworks\libusb\include\libusb.h">
+      <Filter>frameworks\libusb\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -560,15 +569,31 @@
     <None Include=".gitignore" />
     <None Include="readme.md" />
     <None Include="license.md" />
-    <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb" />
-    <None Include="frameworks\libusb\dll\libusb-1.0.dll" />
-    <None Include="frameworks\opencv\dll\opencv_ffmpeg320_64.dll" />
-    <None Include="frameworks\opencv\dll\opencv_world320.dll" />
-    <None Include="frameworks\opencv\dll\opencv_world320d.dll" />
+    <None Include="frameworks\libusb\dll\libusb-1.0.dll">
+      <Filter>frameworks\libusb</Filter>
+    </None>
+    <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb">
+      <Filter>frameworks\libusb</Filter>
+    </None>
+    <None Include="frameworks\opencv\dll\opencv_ffmpeg320_64.dll">
+      <Filter>frameworks\opencv</Filter>
+    </None>
+    <None Include="frameworks\opencv\dll\opencv_world320.dll">
+      <Filter>frameworks\opencv</Filter>
+    </None>
+    <None Include="frameworks\opencv\dll\opencv_world320d.dll">
+      <Filter>frameworks\opencv</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="frameworks\opencv\lib\opencv_world320.lib" />
-    <Library Include="frameworks\opencv\lib\opencv_world320d.lib" />
-    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib" />
+    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib">
+      <Filter>frameworks\libusb</Filter>
+    </Library>
+    <Library Include="frameworks\opencv\lib\opencv_world320.lib">
+      <Filter>frameworks\opencv</Filter>
+    </Library>
+    <Library Include="frameworks\opencv\lib\opencv_world320d.lib">
+      <Filter>frameworks\opencv</Filter>
+    </Library>
   </ItemGroup>
 </Project>
