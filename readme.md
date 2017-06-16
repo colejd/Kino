@@ -37,6 +37,11 @@ case the first registered webcam on your computer will be used.
 ## Installation
 See the releases page for builds.
 
+For the PS3 Eye cameras to be properly used, you'll need to use Zadig and set their drivers 
+to "libusb-win32". Other drivers will cause the camera to lock up after a few seconds of use. 
+You may have to do this again after restarting your computer. If it isn't working, try rebooting. 
+Zadig will likely list the cameras as using "libusb0" after changing the drivers -- this is fine.
+
 ## How to Build
 Requirements:
 - Visual Studio 2015
