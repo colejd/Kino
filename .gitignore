@@ -215,3 +215,6 @@ ModelManifest.xml
 /[Bb]in/*
 !/[Bb]in/data
 /[Bb]in/data/data/darknet/*.weights
+
+*.VC.db
+*.opendb
