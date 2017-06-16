@@ -136,28 +136,32 @@ void ImageCompositor::DrawMatToFbo(const cv::InputArray input, ofFbo fbo, int co
 		//ofClear(0, 180, 0, 1.0f);
 		ofClear(0, 0, 0, 1.0f);
 		//Draw image from mat
-		//TODO: Optimize here by preallocating image objects
-		ofImage output;
-		//ofTexture output;
-		TS_START_NIF("Allocate");
-		//TODO: Optimization here. Preallocate output and only reallocate if the mat is a different size
-		output.allocate(mat.cols, mat.rows, OF_IMAGE_COLOR);
-		//output.allocate(mat.cols, mat.rows, GL_RGB);
-		TS_STOP_NIF("Allocate");
+		Size matSize{ mat.cols, mat.rows };
+		if (matSize.x != lastSize.x || matSize.y != lastSize.y) {
+			TS_START_NIF("Allocate");
+			//TODO: Optimization here. Preallocate output and only reallocate if the mat is a different size
+			output.allocate(mat.cols, mat.rows, OF_IMAGE_COLOR);
+			//output.allocate(mat.cols, mat.rows, GL_RGB);
+			TS_STOP_NIF("Allocate");
+			lastSize = matSize;
+		}
 
-		TS_START_NIF("BGR to RGB Convert");
-		cv::Mat converted;
-		cvtColor(mat, converted, COLOR_BGR2RGB);
-		output.setFromPixels(converted.data, converted.cols, converted.rows, OF_IMAGE_COLOR);
-		//output.loadData(mat.data, mat.cols, mat.rows, GL_BGR_EXT);
-		TS_STOP_NIF("BGR to RGB Convert");
+		TS_START_NIF("ofImage Convert");
+		output.getTexture().loadData(mat.data, mat.cols, mat.rows, GL_BGR_EXT);
+		TS_STOP_NIF("ofImage Convert");
+
+		//TS_START_NIF("BGR to RGB Convert");
+		//cv::Mat converted;
+		//cvtColor(mat, converted, COLOR_BGR2RGB);
+		//output.setFromPixels(converted.data, converted.cols, converted.rows, OF_IMAGE_COLOR);
+		//TS_STOP_NIF("BGR to RGB Convert");
 
 		if (mirror) {
 			TS_START_NIF("Mirror Output");
-			cv::Mat flipped;
+			/*cv::Mat flipped;
 			cv::flip(converted, flipped, 1);
-			output.setFromPixels(flipped.data, flipped.cols, flipped.rows, OF_IMAGE_COLOR);
-			//output.mirror(false, true); //Twice as slow
+			output.setFromPixels(flipped.data, flipped.cols, flipped.rows, OF_IMAGE_COLOR);*/
+			output.mirror(false, true); //Twice as slow
 			TS_STOP_NIF("Mirror Output");
 		}
 		

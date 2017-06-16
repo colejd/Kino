@@ -74,6 +74,13 @@ public:
 	//void render(vr::Hmd_Eye nEye);
 	void Update();
 
+	struct Size {
+		int x; 
+		int y;
+	};
+	Size lastSize{ 0, 0 };
+	ofImage output;
+
 	DistortionManager distortion;
 	bool doDistortion = false;
 
