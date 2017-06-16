@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.cpp">
+      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknetGo.cpp">
+      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxFontStash-master\src\ofxFontStash.cpp">
+      <Filter>addons\ofxFontStash-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\fontstash.c">
+      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\stb_truetype.c">
+      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\BaseEngine.cpp">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\BaseTheme.cpp">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\EngineGLFW.cpp">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\EngineOpenGLES.cpp">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\Gui.cpp">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\Helpers.cpp">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui.cpp">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_demo.cpp">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_draw.cpp">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurements.cpp">
+      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\CameraCapture.cpp">
+      <Filter>src\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\ps3eye\driver\ps3eye.cpp">
+      <Filter>src\camera\ps3eye\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\ps3eye\PS3EyeCapture.cpp">
+      <Filter>src\camera\ps3eye</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\system\SystemCameraCapture.cpp">
+      <Filter>src\camera\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\compositor\DistortionManager.cpp">
+      <Filter>src\compositor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\compositor\ImageCompositor.cpp">
+      <Filter>src\compositor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\ConfigHandler.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+    <ClCompile Include="src\config\jsoncpp.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\performance\FpsGraph.cpp">
+      <Filter>src\gui\performance</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GUIHandler.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\camera_calibrator\CameraCalibratorModule.cpp">
+      <Filter>src\modules\camera_calibrator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\edge_detector\EdgeDetectorModule.cpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\edge_detector\ParallelContourDetector.cpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\face_detector\FaceDetectorModule.cpp">
+      <Filter>src\modules\face_detector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\image_classifier\ClassifierLens.cpp">
+      <Filter>src\modules\image_classifier</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\fake\FakeCapture.cpp">
+      <Filter>src\camera\fake</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KinoCore.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KinoGlobals.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows">
+      <UniqueIdentifier>{45E2FFE4-4ABC-0171-9621-66DA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\src">
+      <UniqueIdentifier>{DC4A80BA-AEC2-89A7-6046-B8B2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\libs">
+      <UniqueIdentifier>{0C370341-8360-2683-B468-02E4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\3rdparty">
+      <UniqueIdentifier>{7B110697-7F0A-59CE-67B5-FB83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\3rdparty\include">
+      <UniqueIdentifier>{0D8D4C31-5942-5C25-3ED0-F0C2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\cuda">
+      <UniqueIdentifier>{8BD564C0-6B03-A7D2-1D09-A9F3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\cuda\include">
+      <UniqueIdentifier>{B13F4421-70D4-BF08-FA93-C9EE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\darknet">
+      <UniqueIdentifier>{9C1284C2-3892-170B-08AB-9667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\darknet\include">
+      <UniqueIdentifier>{66BFD694-C09E-3682-5E4F-E8C4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash-master">
+      <UniqueIdentifier>{4A49F279-9CA2-D809-B517-1909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash-master\src">
+      <UniqueIdentifier>{CEAD7081-3564-80BF-2C48-6D95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash-master\libs">
+      <UniqueIdentifier>{FDA6D17F-55CB-533B-0584-184A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash-master\libs\fontstash">
+      <UniqueIdentifier>{6BFA5D8C-E2E5-F9C6-FDAF-4FB0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxFontStash-master\libs\fontstash\src">
+      <UniqueIdentifier>{F0383575-3180-E444-89DE-6423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui-master">
+      <UniqueIdentifier>{2B8F04E4-F73A-7D4E-036C-3BC0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui-master\src">
+      <UniqueIdentifier>{3E49D808-09FB-B55D-1E1B-A8FA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui-master\libs">
+      <UniqueIdentifier>{42D22160-9A4B-FE8D-ED6A-C16C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui-master\libs\imgui">
+      <UniqueIdentifier>{932D7D6A-E133-8C0C-8AE5-1823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxImGui-master\libs\imgui\src">
+      <UniqueIdentifier>{A1479D75-2495-EE49-73A3-A516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxTimeMeasurements-master">
+      <UniqueIdentifier>{E4EDAA88-8627-130D-CB32-9E43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxTimeMeasurements-master\src">
+      <UniqueIdentifier>{1764F387-9C94-7032-E0F2-6DEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\camera">
+      <UniqueIdentifier>{79dedda4-c844-472b-9357-a7b077632f6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\camera\ps3eye">
+      <UniqueIdentifier>{25ffe68e-5d94-427b-a4cb-28fbe38139c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\camera\system">
+      <UniqueIdentifier>{f40f4899-7186-45ab-a69c-01b0ca3674a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\camera\ps3eye\driver">
+      <UniqueIdentifier>{3620b67e-e5f6-4809-b916-267f45a8d17f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\compositor">
+      <UniqueIdentifier>{05fc5df5-46eb-4279-9c1f-0e92f271399c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\config">
+      <UniqueIdentifier>{e9eeeac9-e8cc-4f6e-95d3-235560935ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\config\json">
+      <UniqueIdentifier>{7bb29549-a8b4-460a-8dd6-8f505b7f6d39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gui">
+      <UniqueIdentifier>{4ebe0e25-839d-4353-9be2-61cd8dfd18e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gui\performance">
+      <UniqueIdentifier>{3c436b78-d240-42f8-91e6-3fb6f866a508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\helpers">
+      <UniqueIdentifier>{67ee952b-0381-4676-92d1-d72702f93d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\modules">
+      <UniqueIdentifier>{fa246c19-2c38-4b0e-b55b-43dcabf9d379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\modules\camera_calibrator">
+      <UniqueIdentifier>{a8a22707-2bb4-4141-9546-38d1b6c5c617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\modules\edge_detector">
+      <UniqueIdentifier>{97d70bb9-a028-4f91-808a-c01839fc6785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\modules\face_detector">
+      <UniqueIdentifier>{a57d372b-6c3d-43bb-91ff-be95a4d3a930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util">
+      <UniqueIdentifier>{368f9d74-d4b1-433b-a84a-5922caf4e3d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\modules\image_classifier">
+      <UniqueIdentifier>{95f527ba-fe45-4d47-bb62-7b57a1412bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gui\thirdparty">
+      <UniqueIdentifier>{716a9414-764c-48df-b59d-51ad68fdbe10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\camera\fake">
+      <UniqueIdentifier>{c0e076c1-f785-49bd-9bb9-e875dbeb5883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frameworks">
+      <UniqueIdentifier>{5b1d926b-c98b-4d2b-a954-bd62bd96183d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknetGo.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\pthread.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\3rdparty\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\sched.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\3rdparty\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\semaphore.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\3rdparty\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\cuda\include\cudnn.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\cuda\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\activations.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\activation_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\avgpool_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\batchnorm_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\blas.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\box.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\classifier.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\col2im.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\connected_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\convolutional_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\cost_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\crnn_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\crop_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\cuda.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\data.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\deconvolutional_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\demo.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\detection_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\dropout_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gemm.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\getopt.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gettimeofday.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gru_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\im2col.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\image.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\list.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\local_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\matrix.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\maxpool_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\network.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\nightmare.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\normalization_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\option_list.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\parser.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\region_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\reorg_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn_vid.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\route_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\shortcut_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\softmax_layer.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\stb_image.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\stb_image_write.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\tree.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\unistd.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\utils.h">
+      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxFontStash-master\src\ofxFontStash.h">
+      <Filter>addons\ofxFontStash-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\fontstash.h">
+      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\stb_truetype.h">
+      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\BaseEngine.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\BaseTheme.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\EngineGLFW.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\EngineOpenGLES.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\Gui.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\Helpers.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\imconfig.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\ofxImGui.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\ThemeTest.h">
+      <Filter>addons\ofxImGui-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui.h">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_internal.h">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_rect_pack.h">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_textedit.h">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_truetype.h">
+      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\GL_Measurement.h">
+      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurements.h">
+      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurementsMacros.h">
+      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurementsScoped.h">
+      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\CameraCapture.hpp">
+      <Filter>src\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\CaptureBase.hpp">
+      <Filter>src\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\ps3eye\driver\ps3eye.h">
+      <Filter>src\camera\ps3eye\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\ps3eye\PS3EyeCapture.hpp">
+      <Filter>src\camera\ps3eye</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\system\SystemCameraCapture.hpp">
+      <Filter>src\camera\system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\compositor\DistortionManager.hpp">
+      <Filter>src\compositor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\compositor\ImageCompositor.hpp">
+      <Filter>src\compositor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\json\json.h">
+      <Filter>src\config\json</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\json\json-forwards.h">
+      <Filter>src\config\json</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config\ConfigHandler.hpp">
+      <Filter>src\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\performance\FpsGraph.hpp">
+      <Filter>src\gui\performance</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GUIHandler.hpp">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\UsesGUI.hpp">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helpers\Vectors.h">
+      <Filter>src\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\ModuleCommon.hpp">
+      <Filter>src\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\camera_calibrator\CameraCalibratorModule.hpp">
+      <Filter>src\modules\camera_calibrator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\edge_detector\EdgeDetectorModule.hpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\edge_detector\ParallelContourDetector.hpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\face_detector\FaceDetectorModule.hpp">
+      <Filter>src\modules\face_detector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\AppLog.hpp">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\ColorConversion.hpp">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\image_classifier\ClassifierLens.hpp">
+      <Filter>src\modules\image_classifier</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\thirdparty\ImGuiColorPicker.hpp">
+      <Filter>src\gui\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helpers\Paths.hpp">
+      <Filter>src\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\fake\FakeCapture.hpp">
+      <Filter>src\camera\fake</Filter>
+    </ClInclude>
+    <ClInclude Include="frameworks\libusb\include\libusb.h">
+      <Filter>frameworks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KinoCore.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KinoGlobals.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="postbuild.bat" />
+    <None Include="setup.bat" />
+    <None Include=".gitignore" />
+    <None Include="readme.md" />
+    <None Include="license.md" />
+  </ItemGroup>
+</Project>
