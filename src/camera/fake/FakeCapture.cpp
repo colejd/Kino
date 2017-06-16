@@ -17,7 +17,7 @@ FakeCapture::~FakeCapture()
 bool FakeCapture::Init(const int deviceIndex)
 {
 	this->deviceIndex = deviceIndex;
-	bool success = cap->open(ofToDataPath(dataPath));
+	bool success = cap->open(dataPath);
 	if (success) {
 		//THESE LINES ARE NEEDED FOR SOME REASON OR THE ISIGHT CAMERA WON'T WORK
 		//cap->set(CV_CAP_PROP_FRAME_WIDTH, 480); //KEEP ME (500)
