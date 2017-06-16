@@ -192,7 +192,7 @@ void ofApp::DrawGUI() {
 		ImGui::TextColored(ImVec4(0.92f, 0.18f, 0.29f, 1.00f), "Kino 0.1.0");
 		ImGui::Text("Jonathan Cole");
 		ImGui::Text("Virtual Environment and Multimodal Interaction Laboratory");
-		//ImGui::Text("github.com/seieibob/OpenChaperone");
+		//ImGui::Text("github.com/seieibob/kino");
 		//ImGui::SameLine();
 		if (ImGui::Button("github.com/seieibob/kino")) {
 			ShellExecute(0, 0, L"https://www.github.com/seieibob/kino", 0, 0, SW_SHOW);
