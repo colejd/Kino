@@ -17,7 +17,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+#*.dll
 
 # Fortran module files
 *.mod
@@ -27,7 +27,7 @@
 *.lai
 *.la
 *.a
-*.lib
+#*.lib
 
 # Executables
 *.exe
@@ -111,7 +111,7 @@ artifacts/
 *_i.h
 *.ilk
 *.meta
-*.pdb
+#*.pdb
 *.pgc
 *.pgd
 *.rsp
@@ -349,7 +349,7 @@ __pycache__/
 /Kino_debug
 
 # Keep only the data folder in /bin
-/bin/*
-/bin/data/data/darknet/*.weights
-!/bin/data
-!/frameworks/*
+# /bin/*
+# /bin/data/data/darknet/*.weights
+# !/bin/data
+# !/frameworks/*
