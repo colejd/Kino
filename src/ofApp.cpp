@@ -319,6 +319,12 @@ void ofApp::keyPressed(int key) {
 	else if (key == 'l' || key == 'L') {
 		showLog = !showLog;
 	}
+	else if (key == 'p' || key == 'P') {
+		// Take and save a screenshot
+		ofImage img;
+		img.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+		img.save("Screenshot.png"); // Saved in the data folder
+	}
 }
 
 void ofApp::keyReleased(int key) {
