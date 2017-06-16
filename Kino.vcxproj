@@ -356,10 +356,20 @@ if errorlevel 1 exit 0 else exit %errorlevel%
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="frameworks\libusb\dll\libusb-1.0.dll" />
+    <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb" />
+    <None Include="frameworks\opencv\dll\opencv_ffmpeg320_64.dll" />
+    <None Include="frameworks\opencv\dll\opencv_world320.dll" />
+    <None Include="frameworks\opencv\dll\opencv_world320d.dll" />
     <None Include="license.md" />
     <None Include="postbuild.bat" />
     <None Include="readme.md" />
     <None Include="setup.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib" />
+    <Library Include="frameworks\opencv\lib\opencv_world320.lib" />
+    <Library Include="frameworks\opencv\lib\opencv_world320d.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

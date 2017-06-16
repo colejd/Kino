@@ -560,5 +560,15 @@
     <None Include=".gitignore" />
     <None Include="readme.md" />
     <None Include="license.md" />
+    <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb" />
+    <None Include="frameworks\libusb\dll\libusb-1.0.dll" />
+    <None Include="frameworks\opencv\dll\opencv_ffmpeg320_64.dll" />
+    <None Include="frameworks\opencv\dll\opencv_world320.dll" />
+    <None Include="frameworks\opencv\dll\opencv_world320d.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="frameworks\opencv\lib\opencv_world320.lib" />
+    <Library Include="frameworks\opencv\lib\opencv_world320d.lib" />
+    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib" />
   </ItemGroup>
 </Project>
