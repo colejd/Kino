@@ -35,6 +35,10 @@ case the first registered webcam on your computer will be used.
 
 
 ## Installation
+Requirements:
+- Nvidia GPU
+- Windows 10 (8 will probably work, but is untested)
+
 See the releases page for builds.
 
 For the PS3 Eye cameras to be properly used, you'll need to use Zadig and set their drivers 
@@ -45,8 +49,8 @@ Zadig will likely list the cameras as using "libusb0" after changing the drivers
 ## How to Build
 Requirements:
 - Visual Studio 2015
-- [CUDA 8.0 64-bit](https://developer.nvidia.com/cuda-downloads)
-- OpenFrameworks 0.9.8
+- [CUDA 8.0 64-bit](https://developer.nvidia.com/cuda-downloads) (This means you need an Nvidia GPU!)
+- [OpenFrameworks 0.9.8](http://openframeworks.cc/versions/v0.9.8/of_v0.9.8_vs_release.zip)
 
 First, download OpenFrameworks, and clone this project into the `apps/myApps/` directory.
 Then run [setup.bat](/setup.bat). This downloads a few large files as well as some 
