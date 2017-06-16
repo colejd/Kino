@@ -33,7 +33,7 @@ struct AppLog
         //Print to stdout
         va_list args;
         va_start(args, fmt);
-        printf("[Log] ");
+        //printf("[Log] ");
         std::vprintf(fmt, args);
         va_end(args);
         

@@ -272,6 +272,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="bin\data\config\config.json" />
     <None Include="frameworks\libusb\dll\libusb-1.0.dll" />
     <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb" />
     <None Include="frameworks\opencv\dll\opencv_ffmpeg320_64.dll" />

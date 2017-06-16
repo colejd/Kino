@@ -25,7 +25,7 @@ int main() {
 
 	ofGLWindowSettings settings;
 	{
-		settings.setGLVersion(4, 1);
+		//settings.setGLVersion(4, 1); // Causes ofxTimeMeasurements to throw error about ofxFontStash and programmable renderer
 		settings.width = ConfigHandler::GetValue("WINDOW_START_WIDTH", 640).asInt();
 		settings.height = ConfigHandler::GetValue("WINDOW_START_HEIGHT", 480).asInt();
 		int winX = ConfigHandler::GetValue("WINDOW_START_X", 0).asInt();

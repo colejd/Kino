@@ -138,7 +138,7 @@ void ofApp::DrawGUI() {
 	if (ImGui::BeginMenu("View")) {
 		ImGui::MenuItem("General Settings", nullptr, &showGeneralSettingsWindow);
 		ImGui::MenuItem("Compositor Settings", nullptr, &(compositor->showGUI));
-		ImGui::MenuItem("Log", nullptr, &showLog);
+		ImGui::MenuItem("Log", "L", &showLog);
 		ImGui::MenuItem("FPS Graph", nullptr, &showPerformanceGraph);
 		if (ImGui::MenuItem("Performance", nullptr)) {
 			ToggleTimingWindow();
@@ -315,6 +315,9 @@ void ofApp::keyPressed(int key) {
 	}
 	else if (key == 'c' || key == 'C') {
 		core->classifierLens.ToggleGUIEnabled();
+	}
+	else if (key == 'l' || key == 'L') {
+		showLog = !showLog;
 	}
 }
 

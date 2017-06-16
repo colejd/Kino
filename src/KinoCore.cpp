@@ -30,7 +30,6 @@ void KinoCore::Setup()
 		// Demo mode: show only input from the webcam and make full screen
 		//capture1->StartCapturing(0, CameraCapture::DEVICE_TYPE::GENERIC, true);
 		capture1->StartFakeCapture(ofToDataPath("video/kitty.MOV"), false);
-		//capture2->StartCapturing(1, CameraCapture::DEVICE_TYPE::PS3EYE, true);
 
 	}
 	else {
@@ -112,9 +111,10 @@ Prints OpenCV debug information.
 */
 void KinoCore::PrintCVDebugInfo()
 {
-	Kino::app_log.AddLog("--- BEGIN DEBUG INFO ---\n");
+	Kino::app_log.AddLog("\n");
+	Kino::app_log.AddLog("--- INFO ---\n");
 
-	std::cout << "Using OpenCV " << CV_VERSION << "\n" << std::endl;
+	std::cout << "Using OpenCV " << CV_VERSION << std::endl;
 
 	//std::cout << getBuildInformation();
 
@@ -158,11 +158,8 @@ void KinoCore::PrintCVDebugInfo()
 	Kino::app_log.AddLog("Threads used by OpenCV: %i\n", getNumThreads());
 	Kino::app_log.AddLog("CPUs available: %2.i\n", cv::getNumberOfCPUs());
 
-	Kino::app_log.AddLog("--- END DEBUG INFO ---\n");
+	Kino::app_log.AddLog("--- INFO ---\n\n");
 
-	Kino::app_log.AddLog("--- BEGIN CAMERA INFO ---\n");
-	
-	Kino::app_log.AddLog("--- END CAMERA INFO ---\n");
 }
 
 /**

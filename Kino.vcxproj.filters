@@ -584,6 +584,7 @@
     <None Include="frameworks\opencv\dll\opencv_world320d.dll">
       <Filter>frameworks\opencv</Filter>
     </None>
+    <None Include="bin\data\config\config.json" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib">
