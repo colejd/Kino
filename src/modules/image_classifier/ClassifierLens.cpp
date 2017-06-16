@@ -9,7 +9,7 @@ ClassifierLens::ClassifierLens() {
 
 	//darknet.init("data/cfg/vgg-conv.cfg", "data/vgg-conv.weights");
 
-	InitWithConfig(tinyYolo, "data/darknet/");
+	InitWithConfig(tinyYolo);
 
 }
 
@@ -17,8 +17,9 @@ ClassifierLens::~ClassifierLens() {
 
 }
 
-void ClassifierLens::InitWithConfig(YoloConfig config, string basePath) {
+void ClassifierLens::InitWithConfig(YoloConfig config) {
 	this->config = config;
+	string basePath = "data/darknet/";
 	darknet.init(ofToDataPath(basePath + config.cfgFile),
 				 ofToDataPath(basePath + config.weightFile),
 				 config.namesList == "" ? "" : ofToDataPath(basePath + config.namesList));

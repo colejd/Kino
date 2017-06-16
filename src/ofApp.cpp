@@ -189,13 +189,13 @@ void ofApp::DrawGUI() {
 	if (showHelp) ImGui::OpenPopup("Help");
 	//ui::ScopedWindow window( "Help", ImGuiWindowFlags_AlwaysAutoResize );
 	if (ImGui::BeginPopupModal("Help", &showHelp)) {
-		ImGui::TextColored(ImVec4(0.92f, 0.18f, 0.29f, 1.00f), "OpenChaperone 0.1.0");
-		ImGui::Text("Jonathan Cole | Sam Gates");
+		ImGui::TextColored(ImVec4(0.92f, 0.18f, 0.29f, 1.00f), "Kino 0.1.0");
+		ImGui::Text("Jonathan Cole");
 		ImGui::Text("Virtual Environment and Multimodal Interaction Laboratory");
 		//ImGui::Text("github.com/seieibob/OpenChaperone");
 		//ImGui::SameLine();
-		if (ImGui::Button("github.com/seieibob/OpenChaperone")) {
-			ShellExecute(0, 0, L"https://www.github.com/seieibob/OpenChaperone", 0, 0, SW_SHOW);
+		if (ImGui::Button("github.com/seieibob/kino")) {
+			ShellExecute(0, 0, L"https://www.github.com/seieibob/kino", 0, 0, SW_SHOW);
 		}
 		ImGui::Separator();
 		//ImGui::Spacing();

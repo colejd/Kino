@@ -27,7 +27,7 @@ public:
 		string namesList;
 	};
 
-	void InitWithConfig(YoloConfig config, string basePath);
+	void InitWithConfig(YoloConfig config);
 
 	bool doDownsampling = false;
 	float downSampleRatio = 0.5f;
