@@ -33,12 +33,12 @@ bool CameraCapture::StartFakeCapture(string videoPath, bool threaded) {
 	return true;
 }
 
-bool CameraCapture::StartCapturing(int index, DEVICE_TYPE type, bool threaded)
+bool CameraCapture::StartCapturing(int index, CAPTURE_TYPE type, bool threaded)
 {
-	if (type == DEVICE_TYPE::GENERIC) {
+	if (type == CAPTURE_TYPE::GENERIC) {
 		captureMethod = new SystemCameraCapture();
 	}
-	else if (type == DEVICE_TYPE::PS3EYE) {
+	else if (type == CAPTURE_TYPE::PS3EYE) {
 		captureMethod = new PS3EyeCapture();
 	}
 	else {

@@ -25,7 +25,7 @@ public:
 	/**
 	The type of camera device looked for by this object.
 	*/ 
-	enum class DEVICE_TYPE {
+	enum class CAPTURE_TYPE {
 		/** OS-recognized camera */
 		GENERIC,
 		/** Uses PS3EyeDriver */
@@ -35,7 +35,7 @@ public:
 	/** 
 	Begins the capture process.
 	*/
-	bool StartCapturing(int index, DEVICE_TYPE type, bool threaded);
+	bool StartCapturing(int index, CAPTURE_TYPE type, bool threaded);
 
 	/** 
 	Starts a fake capture process. videoPath is relative to the data folder. 
@@ -57,7 +57,7 @@ public:
 	const bool IsInitialized();
 
 	int lastAttemptedDeviceIndex;
-	DEVICE_TYPE lastAttemptedDeviceType;
+	CAPTURE_TYPE lastAttemptedDeviceType;
 	bool lastAttemptedThreaded;
 
 private:

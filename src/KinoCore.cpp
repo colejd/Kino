@@ -29,12 +29,13 @@ void KinoCore::Setup()
 	if (demoMode) {
 		// Demo mode: show only input from the webcam and make full screen
 		//capture1->StartCapturing(0, CameraCapture::DEVICE_TYPE::GENERIC, true);
-		capture1->StartFakeCapture(ofToDataPath("video/kitty.MOV"), false);
+		//capture1->StartFakeCapture(ofToDataPath("video/kitty.MOV"), false);
+		capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
 
 	}
 	else {
-		capture1->StartCapturing(0, CameraCapture::DEVICE_TYPE::PS3EYE, true);
-		capture2->StartCapturing(1, CameraCapture::DEVICE_TYPE::PS3EYE, true);
+		capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
+		capture2->StartCapturing(1, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
 	}
 
 }
