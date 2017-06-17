@@ -20,9 +20,13 @@ private:
 	cv::VideoCapture *cap;
 	cv::Mat frame;
 
-	bool waitIfEmpty = false;
+	bool waitIfEmpty = true;
 	std::atomic<bool> frameIsReady = false;
 
 
 	int frameCount = 0;
+
+	bool playAsFastAsPossible = false;
+	float timeSinceLastVideoFrame = 0.0;
+	float lastVideoFrameTime = 0.0;
 };

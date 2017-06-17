@@ -31,32 +31,28 @@ void FakeCapture::Update()
 {
 	frameIsReady = false;
 	if (cap->isOpened()) {
-		if (waitIfEmpty && frame.empty() && false) { //&&false does some stuff here 
-													 //std::cout << "It's empty\n";
-													 //Wait until the frame gets filled by actual camera data.
-			int maxWaitIterations = 500;
-			int waitIterations = 0;
-			while (waitIterations < maxWaitIterations) {
-				cap->read(frame);
-				waitIterations += 1;
-				//std::cout << "Waiting\n";
-				if (frame.empty() == false) break;
+		
+		if (!playAsFastAsPossible) {
+			// Wait until enough time has elapsed to constitute a frame in the video.
+			double fps = cap->get(CAP_PROP_FPS);
+			float time = ofGetElapsedTimef();
+			timeSinceLastVideoFrame += time - lastVideoFrameTime;
+			lastVideoFrameTime = time;
+			if (timeSinceLastVideoFrame < (1.0 / fps)) {
+				return;
 			}
-			//std::cout << "Now it's not\n";
+			timeSinceLastVideoFrame = 0.0;
 		}
-		//Otherwise just read from cap into the frame.
-		else {
-			cap->read(frame);
-			cv::resize(frame, frame, cv::Size(), 0.5, 0.5, INTER_NEAREST);
-			//cv::imshow("wow", frame);
-			frameIsReady = true;
 
-			frameCount += 1;
-			// If we've reached the last frame, reset.
-			if (frameCount == cap->get(CV_CAP_PROP_FRAME_COUNT)) {
-				cap->set(CV_CAP_PROP_POS_FRAMES, 0);
-				frameCount = 0;
-			}
+		cap->read(frame);
+		cv::resize(frame, frame, cv::Size(), 0.5, 0.5, INTER_NEAREST);
+		frameIsReady = true;
+
+		frameCount += 1;
+		// If we've reached the last frame, reset.
+		if (frameCount == cap->get(CV_CAP_PROP_FRAME_COUNT)) {
+			cap->set(CV_CAP_PROP_POS_FRAMES, 0);
+			frameCount = 0;
 		}
 	}
 
