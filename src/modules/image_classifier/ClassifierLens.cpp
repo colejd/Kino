@@ -171,6 +171,7 @@ void ClassifierLens::DrawGUI() {
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 5));
 			 
+			bool drawLine = true;
 			// Fill scroll box with items if enabled
 			if (enabled) {
 
@@ -180,10 +181,12 @@ void ClassifierLens::DrawGUI() {
 					detected_object d = detections[i];
 					ImGui::Text("%*s ", -maxCharsInLabel, d.label.c_str()); // Left pad the line with maxCharsInLine length
 
-					ImGui::SameLine();
-					ImVec2 screen_pos = ImGui::GetCursorScreenPos();
-					ImGui::GetWindowDrawList()->AddLine(ImVec2(screen_pos.x - glyph_width, screen_pos.y - 9999), ImVec2(screen_pos.x - glyph_width, screen_pos.y + 9999), ImColor(ImGui::GetStyle().Colors[ImGuiCol_Border]));
-
+					if (drawLine) { // Draw the line only once
+						ImGui::SameLine();
+						ImVec2 screen_pos = ImGui::GetCursorScreenPos();
+						ImGui::GetWindowDrawList()->AddLine(ImVec2(screen_pos.x - glyph_width, screen_pos.y - 9999), ImVec2(screen_pos.x - glyph_width, screen_pos.y + 9999), ImColor(ImGui::GetStyle().Colors[ImGuiCol_Border]));
+						drawLine = false;
+					}
 
 					ImGui::SameLine();
 					ImGui::Text(" %.2f%", d.probability * 100);
