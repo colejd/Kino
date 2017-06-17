@@ -215,6 +215,7 @@ ModelManifest.xml
 /[Bb]in/*
 !/[Bb]in/data
 /[Bb]in/data/data/darknet/*.weights
+/[Bb]in/data/configs/ # ofxTimeMeasurements
 
 *.VC.db
 *.opendb
