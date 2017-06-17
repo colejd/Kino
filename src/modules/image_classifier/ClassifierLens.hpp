@@ -49,7 +49,19 @@ private:
 	const YoloConfig tinyYoloVoc = { "cfg/tiny-yolo-voc.cfg", "tiny-yolo-voc.weights", "cfg/voc.names" };
 	const YoloConfig yolo9k = { "cfg/yolo9000.cfg", "yolo9000.weights", "cfg/9k.names" };
 
-	ofImage nightmare;
+
+	//int max_layer = 13;
+	//int range = 3;
+	//int norm = 1;
+	//int iters = 5;
+	//int octaves = 8;
+	//float rate = 0.01;
+	//float thresh = 0.85;
+	//float blendAmt = 0.5;
+	//const YoloConfig nightmare = { "data/cfg/vgg-conv.cfg", "data/vgg-conv.weights", "" };
+
+	////ofImage nightmare;
+	//cv::Mat lastNightmare;
 
 	YoloConfig config;
 

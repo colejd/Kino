@@ -9,7 +9,9 @@ ClassifierLens::ClassifierLens() {
 
 	//darknet.init("data/cfg/vgg-conv.cfg", "data/vgg-conv.weights");
 
-	InitWithConfig(tinyYolo);
+	//InitWithConfig(tinyYolo);
+
+	InitWithConfig(nightmare);
 
 }
 
@@ -82,14 +84,13 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 		TS_STOP_NIF("Draw Rects");
 
 
-		//int max_layer = 13;
-		//int range = 3;
-		//int norm = 1;
-		//int iters = 5;
-		//int octaves = 8;
-		//float rate = 0.01;
-		//float thresh = 0.85;
-		//float blendAmt = 0.5;
+		/*double alpha = blendAmt;
+		if (!lastNightmare.empty) {
+			drawingMat.copyTo(lastNightmare);
+		}
+
+		double beta = (1.0 - alpha);
+		addWeighted(drawingMat, alpha, lastNightmare, beta, 0.0, drawingMat);*/
 
 		////// blend last dream with cam
 		//ofPixels p1 = nightmare.getPixels();
