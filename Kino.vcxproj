@@ -61,7 +61,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>USE_OFX_FONTSTASH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_OFX_FONTSTASH;OPENCV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\frameworks;$(ProjectDir)\frameworks\opencv\include;$(ProjectDir)\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs;..\..\..\addons\ofxDarknet-mrzl-windows\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include;..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include;..\..\..\addons\ofxFontStash-master\libs;..\..\..\addons\ofxFontStash-master\libs\fontstash;..\..\..\addons\ofxFontStash-master\libs\fontstash\src;..\..\..\addons\ofxFontStash-master\src;..\..\..\addons\ofxImGui-master\libs;..\..\..\addons\ofxImGui-master\libs\imgui;..\..\..\addons\ofxImGui-master\libs\imgui\src;..\..\..\addons\ofxImGui-master\src;..\..\..\addons\ofxTimeMeasurements-master\src</AdditionalIncludeDirectories>
@@ -86,7 +86,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>USE_OFX_FONTSTASH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_OFX_FONTSTASH;OPENCV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\frameworks;$(ProjectDir)\frameworks\opencv\include;$(ProjectDir)\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs;..\..\..\addons\ofxDarknet-mrzl-windows\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include;..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include;..\..\..\addons\ofxFontStash-master\libs;..\..\..\addons\ofxFontStash-master\libs\fontstash;..\..\..\addons\ofxFontStash-master\libs\fontstash\src;..\..\..\addons\ofxFontStash-master\src;..\..\..\addons\ofxImGui-master\libs;..\..\..\addons\ofxImGui-master\libs\imgui;..\..\..\addons\ofxImGui-master\libs\imgui\src;..\..\..\addons\ofxImGui-master\src;..\..\..\addons\ofxTimeMeasurements-master\src</AdditionalIncludeDirectories>

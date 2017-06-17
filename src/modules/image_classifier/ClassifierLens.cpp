@@ -3,7 +3,7 @@
 using namespace std;
 using namespace cv;
 
-#include <Windows.h>
+//#include <Windows.h>
 
 ClassifierLens::ClassifierLens() {
 
@@ -44,19 +44,10 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 		// Store the size of the downsampled image for debug later
 		lastImageSize = Size { analysisMat.cols, analysisMat.rows };
 
-
-		// Convert the mat to an ofImage for processing
-		TS_START_NIF("Preparation");
-		ofImage img;
-		img.allocate(analysisMat.cols, analysisMat.rows, OF_IMAGE_COLOR);
-		
-		cv::Mat converted;
-		cvtColor(analysisMat, converted, COLOR_BGR2RGB);
-		img.setFromPixels(converted.data, converted.cols, converted.rows, OF_IMAGE_COLOR);
-		TS_STOP_NIF("Preparation");
+		cv::cvtColor(analysisMat, analysisMat, CV_BGR2RGB);
 
 		TS_START_NIF("YOLO");
-		detections = darknet.yolo(img.getPixelsRef(), threshold);
+		detections = darknet.yolo(analysisMat, threshold);
 		TS_STOP_NIF("YOLO");
 
 		TS_START_NIF("Draw Rects");
