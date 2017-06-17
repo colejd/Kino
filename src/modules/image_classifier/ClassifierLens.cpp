@@ -162,9 +162,9 @@ void ClassifierLens::DrawGUI() {
 			float glyph_width = ImGui::CalcTextSize("F").x;
 
 			// Draw header
-			ImGui::TextColored(ImColor(255, 255, 0), " %*s ", -maxCharsInLabel, "Label");
+			ImGui::TextColored(ImColor(255, 255, 0), " %*s ", -maxCharsInLabel, "Label"); // spacing is deliberate
 			ImGui::SameLine();
-			ImGui::Text(" Confidence");
+			ImGui::Text(" %s", "Confidence");
 
 			// Draw scroll box
 			ImGui::BeginChild("##scrolling", ImVec2(0, ImGui::GetTextLineHeightWithSpacing() * maxLines), true, 0);
