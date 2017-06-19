@@ -9,9 +9,9 @@ ClassifierLens::ClassifierLens() {
 
 	//darknet.init("data/cfg/vgg-conv.cfg", "data/vgg-conv.weights");
 
-	//InitWithConfig(tinyYolo);
+	InitWithConfig(tinyYolo);
 
-	InitWithConfig(nightmare);
+	//InitWithConfig(nightmare);
 
 }
 
