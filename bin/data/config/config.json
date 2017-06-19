@@ -15,5 +15,5 @@
 	"GUI_SCALE" : 1.5, // 1.0 is default scale. Note that this will make text a bit fuzzy
 
 	//OpenCV settings
-	"USE_OPENCL" : false
+	"USE_OPENCL" : true
 }

@@ -85,16 +85,18 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
         if(useContours){
 			TS_START_NIF("Contour Detection");
             cv::Mat contourOutput;
-            latestStep.copyTo(contourOutput);
-            //ParallelContourDetector::DetectContoursParallel(latestStep, contourOutput, contourSubdivisions, lineThickness);
-            contourOutput.copyTo(latestStep);
+            gray.copyTo(contourOutput);
+            ParallelContourDetector::DetectContoursParallel(gray, contourOutput, contourSubdivisions, lineThickness);
+            contourOutput.copyTo(gray);
             //ParallelContourDetector::DetectContours(latestStep, latestStep, lineThickness);
 			TS_STOP_NIF("Contour Detection");
         }
 
 		//Restore original image size
 		if (doDownsampling) {
+			TS_START_NIF("Upscale");
 			cv::resize(gray, gray, cv::Size(originalWidth, originalHeight), INTER_NEAREST);
+			TS_STOP_NIF("Upscale");
 		}
         
         //Output step-------------------------------------
