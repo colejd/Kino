@@ -13,9 +13,9 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
     if(!in.empty() && IsEnabled()){
         
 		TS_START_NIF("Copy In");
-        cv::Mat latestStep;
-        cv::Mat finalFrame;
-		cv::Mat gray;
+        cv::UMat latestStep;
+        cv::UMat finalFrame;
+		cv::UMat gray;
 		
         in.copyTo(latestStep);
 		TS_STOP_NIF("Copy In");
@@ -84,11 +84,16 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
         //Contour step------------------------------------
         if(useContours){
 			TS_START_NIF("Contour Detection");
-            cv::Mat contourOutput;
+            cv::UMat contourOutput;
             gray.copyTo(contourOutput);
-            ParallelContourDetector::DetectContoursParallel(gray, contourOutput, contourSubdivisions, lineThickness);
-            contourOutput.copyTo(gray);
-            //ParallelContourDetector::DetectContours(latestStep, latestStep, lineThickness);
+			{
+				cv::Mat grayMat = gray.getMat(cv::ACCESS_RW);
+				cv::Mat contourOutputMat = contourOutput.getMat(cv::ACCESS_RW);
+				ParallelContourDetector::DetectContoursParallel(grayMat, contourOutputMat, contourSubdivisions, lineThickness);
+				// all getMat copies need to be deallocated before we continue, hence scoping
+			}
+            //ParallelContourDetector::DetectContours(gray, contourOutput, lineThickness);
+			contourOutput.copyTo(gray);
 			TS_STOP_NIF("Contour Detection");
         }
 

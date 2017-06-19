@@ -29,7 +29,7 @@ public:
     
     static void DetectContoursParallel(cv::Mat in, cv::Mat& out, const int subsections, const int lineThickness);
     
-    static void DetectContours(cv::Mat& in, cv::Mat& out, const int lineThickness);
+    static void DetectContours(cv::InputArray in, cv::OutputArray out, const int lineThickness);
 
 	void RepairImage(cv::Mat & mat);
     

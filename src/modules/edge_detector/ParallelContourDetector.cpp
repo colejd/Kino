@@ -72,17 +72,23 @@ void ParallelContourDetector::operator ()(const cv::Range &range) const{
     
 }
 
-void ParallelContourDetector::DetectContours(cv::Mat& in, cv::Mat& out, const int lineThickness){
+void ParallelContourDetector::DetectContours(cv::InputArray in, cv::OutputArray out, const int lineThickness){
+	cv::UMat src = in.getUMat();
+	
+	out.create(src.size(), src.type());
+	cv::UMat dst = out.getUMat();
+
+
     vector< vector<cv::Point> > contourData;
     vector<Vec4i> contourHierarchy;
-    findContours( in, contourData, contourHierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, cv::Point(0, 0) );
-    out = Scalar::all(0);
+    findContours( in.getUMat(), contourData, contourHierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, cv::Point(0, 0) );
+    dst = Scalar::all(0);
     Scalar color = Scalar(255, 255, 255, 255);
     //srand (time(NULL));
     for (vector<cv::Point> contour : contourData) {
         //if(true) color = Scalar(rand()&255, rand()&255, rand()&255);
 		//if(cv::contourArea(contour) > 1.0f)
-        polylines(out, contour, true, color, lineThickness, 8);
+        polylines(dst, contour, true, color, lineThickness, 8);
     }
 }
 
