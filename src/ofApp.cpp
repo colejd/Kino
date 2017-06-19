@@ -59,7 +59,7 @@ void ofApp::update(){
 }
 
 void ofApp::draw() {
-
+	TSGL_START("Draw");
 	if (demoMode) {
 		// Draw leftmat fullscreen
 		compositor->DrawMatFullscreen(core->leftMat);
@@ -72,6 +72,7 @@ void ofApp::draw() {
 
 	//Draw gui last
 	DrawAllGUI();
+	TSGL_STOP("Draw");
 }
 
 /*
