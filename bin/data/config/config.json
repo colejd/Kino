@@ -7,17 +7,23 @@
   "START_DISTORTED": false,
 
   // Window settings
-  "WINDOW_START_WIDTH": 1920,
-  "WINDOW_START_HEIGHT": 1080,
-  "WINDOW_START_X": 0, // Starts from the top left corner of the rendering surface, not the whole window
-  "WINDOW_START_Y": 40, // Starts from the top left corner of the rendering surface, not the whole window
-  "WINDOW_START_FULLSCREEN": false,
-  "GUI_SCALE": 1.5, // 1.0 is default scale. Note that this will make text a bit fuzzy
+  "WINDOW": {
+	"START_WIDTH": 1920, // Initial window width
+	"START_HEIGHT": 1080, // Initial window height
+	"START_X": 0, // Starts from the top left corner of the rendering surface, not the whole window
+	"START_Y": 40, // Starts from the top left corner of the rendering surface, not the whole window
+	"START_FULLSCREEN": false,
+	"GUI_SCALE": 1.5 // 1.0 is default scale. Note that this will make text a bit fuzzy
+  },
 
   // Camera settings
-  "PREFERRED_CAMERA_RES_X": 1280,
-  "PREFERRED_CAMERA_RES_Y":  800,
+  "CAMERA": {
+	"GENERIC": {
+		"PREFERRED_RES_X": 1280,
+		"PREFERRED_RES_Y": 800
+	}
+  },
 
   //OpenCV settings
-  "USE_OPENCL": false
+  "USE_OPENCL": true
 }

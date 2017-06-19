@@ -26,12 +26,12 @@ int main() {
 	ofGLWindowSettings settings;
 	{
 		//settings.setGLVersion(4, 1); // Causes ofxTimeMeasurements to throw error about ofxFontStash and programmable renderer
-		settings.width = ConfigHandler::GetValue("WINDOW_START_WIDTH", 640).asInt();
-		settings.height = ConfigHandler::GetValue("WINDOW_START_HEIGHT", 480).asInt();
-		int winX = ConfigHandler::GetValue("WINDOW_START_X", 0).asInt();
-		int winY = ConfigHandler::GetValue("WINDOW_START_Y", 0).asInt();
+		settings.width = ConfigHandler::GetValue("WINDOW.START_WIDTH", 640).asInt();
+		settings.height = ConfigHandler::GetValue("WINDOW.START_HEIGHT", 480).asInt();
+		int winX = ConfigHandler::GetValue("WINDOW.START_X", 0).asInt();
+		int winY = ConfigHandler::GetValue("WINDOW.START_Y", 0).asInt();
 		settings.setPosition(ofVec2f(winX, winY));
-		bool startFullscreen = ConfigHandler::GetValue("WINDOW_START_FULLSCREEN", false).asBool();
+		bool startFullscreen = ConfigHandler::GetValue("WINDOW.START_FULLSCREEN", false).asBool();
 		settings.windowMode = startFullscreen ? OF_FULLSCREEN : OF_WINDOW;
 		settings.title = "Kino";
 	}

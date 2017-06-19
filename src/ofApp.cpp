@@ -45,6 +45,8 @@ void ofApp::setup() {
 	compositor = new ImageCompositor(ofGetWindowWidth(), ofGetWindowHeight()); //Set to whatever you need for your cameras to fit side by side //1280, 480
 
 	ToggleTimingWindow(); //Turn off the timing window for now
+
+	demoMode = ConfigHandler::GetValue("WEBCAM_DEMO_MODE", false).asBool();
 }
 
 void ofApp::update(){
@@ -58,7 +60,6 @@ void ofApp::update(){
 
 void ofApp::draw() {
 
-	bool demoMode = ConfigHandler::GetValue("WEBCAM_DEMO_MODE", false).asBool();
 	if (demoMode) {
 		// Draw leftmat fullscreen
 		compositor->DrawMatFullscreen(core->leftMat);

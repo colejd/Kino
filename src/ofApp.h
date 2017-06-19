@@ -57,4 +57,6 @@ class ofApp : public ofBaseApp, public UsesGUI {
 
 		ofxImGui::Gui gui;
 
+		bool demoMode = false;
+
 };
