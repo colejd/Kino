@@ -5,6 +5,7 @@
 
 #include "KinoGlobals.hpp"
 #include "ofxTimeMeasurements.h"
+#include "config/ConfigHandler.hpp"
 
 #include "camera/CaptureBase.hpp"
 
