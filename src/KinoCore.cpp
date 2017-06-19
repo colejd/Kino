@@ -15,7 +15,11 @@ KinoCore::~KinoCore()
 
 void KinoCore::Setup()
 {
-	cv::ocl::setUseOpenCL(ConfigHandler::GetValue("USE_OPENCL", false).asBool());
+	cv::ocl::setUseOpenCL(ConfigHandler::GetValue("OPENCV.USE_OPENCL", false).asBool());
+	bool demoMode = ConfigHandler::GetValue("WEBCAM_DEMO_MODE", false).asBool();
+
+	if(demoMode)
+		Kino::app_log.AddLog("Demo mode active.");
 
 	PrintCVDebugInfo();
 
@@ -25,7 +29,6 @@ void KinoCore::Setup()
 	capture1 = new CameraCapture();
 	capture2 = new CameraCapture();
 
-	bool demoMode = ConfigHandler::GetValue("WEBCAM_DEMO_MODE", false).asBool();
 	if (demoMode) {
 		// Demo mode: show only input from the webcam and make full screen
 		//capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::GENERIC, true);

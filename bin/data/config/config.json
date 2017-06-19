@@ -2,7 +2,7 @@
 {
   // App settings
   "ENABLE_CONSOLE": true,
-  "USE_VSYNC": true,
+  "USE_VSYNC": false,
   "WEBCAM_DEMO_MODE": true,
   "START_DISTORTED": false,
 
@@ -25,5 +25,8 @@
   },
 
   //OpenCV settings
-  "USE_OPENCL": true
+  "OPENCV": {
+	"USE_OPENCL": false
+  }
+
 }
