@@ -21,7 +21,7 @@ bool SystemCameraCapture::Init(const int deviceIndex)
 	if (success) {
 		//THESE LINES ARE NEEDED FOR SOME REASON OR THE ISIGHT CAMERA WON'T WORK
 		cap->set(CV_CAP_PROP_FRAME_WIDTH, ConfigHandler::GetValue("PREFERRED_CAMERA_RES_X", 640).asInt()); // 480
-		cap->set(CV_CAP_PROP_FRAME_HEIGHT, ConfigHandler::GetValue("PREFERRED_CAMERA_RES_X", 480).asInt()); // 640
+		cap->set(CV_CAP_PROP_FRAME_HEIGHT, ConfigHandler::GetValue("PREFERRED_CAMERA_RES_Y", 480).asInt()); // 640
 		return true;
 	}
 	return false;
