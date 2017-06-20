@@ -130,7 +130,7 @@ void ofApp::DrawGUI() {
 		ImGui::EndMenu();
 	}
 
-	if (ImGui::BeginMenu("HMD")) {
+	if (!demoMode && ImGui::BeginMenu("HMD")) {
 		ImGui::MenuItem("Swap Eyes", "S", &(compositor->swapStereoSides));
 		ImGui::MenuItem("Distortion", "D", &(compositor->doDistortion));
 
@@ -139,7 +139,7 @@ void ofApp::DrawGUI() {
 
 	if (ImGui::BeginMenu("View")) {
 		ImGui::MenuItem("General Settings", nullptr, &showGeneralSettingsWindow);
-		ImGui::MenuItem("Compositor Settings", nullptr, &(compositor->showGUI));
+		if (!demoMode) ImGui::MenuItem("Compositor Settings", nullptr, &(compositor->showGUI));
 		ImGui::MenuItem("Log", "L", &showLog);
 		ImGui::MenuItem("FPS Graph", nullptr, &showPerformanceGraph);
 		if (ImGui::MenuItem("Performance", nullptr)) {

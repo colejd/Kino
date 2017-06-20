@@ -16,8 +16,6 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
         cv::UMat latestStep;
         cv::UMat finalFrame;
 		cv::UMat gray;
-		
-        in.copyTo(latestStep);
 		TS_STOP_NIF("Copy In");
 
 		int originalWidth = latestStep.cols;
@@ -25,7 +23,12 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 
 		//Downsample
 		if (doDownsampling) {
-			cv::resize(latestStep, latestStep, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+			TS_START_NIF("Downsample");
+			cv::resize(in, latestStep, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+			TS_STOP_NIF("Downsample");
+		}
+		else {
+			in.copyTo(latestStep);
 		}
         
         //Condense the source image into a single channel for use with the Canny algorithm
