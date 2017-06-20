@@ -11,6 +11,9 @@ EdgeDetectorModule::~EdgeDetectorModule(){
 void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 
     if(!in.empty() && IsEnabled()){
+
+		cv::UMat src;
+		in.copyTo(src);
         
 		TS_START_NIF("Copy In");
         cv::UMat latestStep;
@@ -18,17 +21,17 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 		cv::UMat gray;
 		TS_STOP_NIF("Copy In");
 
-		int originalWidth = latestStep.cols;
-		int originalHeight = latestStep.rows;
+		int originalWidth = src.cols;
+		int originalHeight = src.rows;
 
 		//Downsample
 		if (doDownsampling) {
 			TS_START_NIF("Downsample");
-			cv::resize(in, latestStep, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+			cv::resize(src, latestStep, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
 			TS_STOP_NIF("Downsample");
 		}
 		else {
-			in.copyTo(latestStep);
+			src.copyTo(latestStep);
 		}
         
         //Condense the source image into a single channel for use with the Canny algorithm
@@ -103,7 +106,8 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 		//Restore original image size
 		if (doDownsampling) {
 			TS_START_NIF("Upscale");
-			cv::resize(gray, gray, cv::Size(originalWidth, originalHeight), INTER_NEAREST);
+			cv::UMat grayCopy = gray; // Make shallow copy since resize is not "in-place"
+			cv::resize(grayCopy, gray, cv::Size(originalWidth, originalHeight), INTER_NEAREST);
 			TS_STOP_NIF("Upscale");
 		}
         

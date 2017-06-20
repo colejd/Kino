@@ -37,11 +37,13 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 
 		// Used for analysis.
 		Mat analysisMat;
-		in.copyTo(analysisMat);
 
 		// Downsample analysisMat if requested
 		if (doDownsampling) {
-			cv::resize(analysisMat, analysisMat, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+			cv::resize(in, analysisMat, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+		}
+		else {
+			in.copyTo(analysisMat);
 		}
 		// Store the size of the downsampled image for debug later
 		lastImageSize = Size { analysisMat.cols, analysisMat.rows };
