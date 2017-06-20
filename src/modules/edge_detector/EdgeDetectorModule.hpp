@@ -77,6 +77,7 @@ private:
     int contourSubdivisions = 4;
     
     int lineThickness = 2;
+	float minContourSize = 0.0;
     
     bool showEdgesOnly = false;
     

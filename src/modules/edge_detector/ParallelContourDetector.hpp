@@ -10,6 +10,7 @@
 #define ParallelContourDetector_hpp
 
 #include "opencv2/opencv.hpp"
+#include "ofxTimeMeasurements.h"
 
 /**
  * Takes an image, divides it up, and processes it in separate threads using TBB.
@@ -20,14 +21,15 @@ private:
     cv::Mat output;
     int subsections;
     int lineThickness;
+	float minContourSize;
     
 public:
     
-    ParallelContourDetector(cv::Mat& in, cv::Mat& out, int _subsections, int _lineThickness);
+    ParallelContourDetector(cv::Mat& in, cv::Mat& out, int _subsections, int _lineThickness, float _minContourSize);
     
     virtual void operator ()(const cv::Range &range) const;
     
-    static void DetectContoursParallel(cv::Mat in, cv::Mat& out, const int subsections, const int lineThickness);
+    static void DetectContoursParallel(cv::Mat in, cv::Mat& out, const int subsections, const int lineThickness, const float _minContourSize);
     
     static void DetectContours(cv::InputArray in, cv::OutputArray out, const int lineThickness);
 

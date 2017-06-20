@@ -93,9 +93,9 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
             cv::UMat contourOutput;
             gray.copyTo(contourOutput);
 			{
-				cv::Mat grayMat = gray.getMat(cv::ACCESS_RW);
+				cv::Mat grayMat = gray.getMat(cv::ACCESS_READ);
 				cv::Mat contourOutputMat = contourOutput.getMat(cv::ACCESS_RW);
-				ParallelContourDetector::DetectContoursParallel(grayMat, contourOutputMat, contourSubdivisions, lineThickness);
+				ParallelContourDetector::DetectContoursParallel(grayMat, contourOutputMat, contourSubdivisions, lineThickness, minContourSize);
 				// all getMat copies need to be deallocated before we continue, hence scoping
 			}
             //ParallelContourDetector::DetectContours(gray, contourOutput, lineThickness);
@@ -248,7 +248,7 @@ void EdgeDetectorModule::ProcessFrameOld(cv::InputArray in, cv::OutputArray out)
 			TS_START_NIF("Contour Detection");
 			cv::Mat contourOutput;
 			latestStep.copyTo(contourOutput);
-			ParallelContourDetector::DetectContoursParallel(latestStep, contourOutput, contourSubdivisions, lineThickness);
+			ParallelContourDetector::DetectContoursParallel(latestStep, contourOutput, contourSubdivisions, lineThickness, minContourSize);
 			contourOutput.copyTo(latestStep);
 			//ParallelContourDetector::DetectContours(latestStep, latestStep, lineThickness);
 			TS_STOP_NIF("Contour Detection");
@@ -407,6 +407,8 @@ void EdgeDetectorModule::DrawGUI() {
 		ImGui::SliderInt("Subdivisions", &contourSubdivisions, 1, 16);
 		ShowHelpMarker("Number of chunks the image is divided into for parallel processing.");
 		ImGui::SliderInt("Thickness", &lineThickness, -1, 8);
+		ImGui::InputFloat("Minimum Length", &minContourSize);
+		ShowHelpMarker("Any contours smaller than this length will be ignored.");
 		if (!useContours) ImGui::PopStyleVar(); //Pop disabled style
 
 		ImGui::Spacing();
