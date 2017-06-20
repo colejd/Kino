@@ -19,7 +19,7 @@ void KinoCore::Setup()
 	bool demoMode = ConfigHandler::GetValue("WEBCAM_DEMO_MODE", false).asBool();
 
 	if(demoMode)
-		Kino::app_log.AddLog("Demo mode active.");
+		Kino::app_log.AddLog("Demo mode active.\n");
 
 	PrintCVDebugInfo();
 
@@ -71,9 +71,14 @@ void KinoCore::ProcessCapture(CameraCapture *cap, cv::OutputArray output, string
 	if (cap->FrameIsReady()) {
 		//cv::Mat rawFrame(cap->GetWidth(), cap->GetHeight(), CV_8UC3, cap->GetLatestFrame().data);
 
-		TS_START_NIF("Frame Grab");
-		cv::Mat rawFrame = cap->RetrieveCapture().clone();
-		TS_STOP_NIF("Frame Grab");
+		if (!pauseCaptureUpdates) {
+			TS_START_NIF("Frame Grab");
+			rawFrame = cap->RetrieveCapture().clone();
+			TS_STOP_NIF("Frame Grab");
+		}
+
+		cv::UMat intermediate;
+		rawFrame.copyTo(intermediate);
 
 		//cv::UMat rawFrameGPU;
 		//rawFrame.copyTo(rawFrameGPU);
@@ -81,30 +86,30 @@ void KinoCore::ProcessCapture(CameraCapture *cap, cv::OutputArray output, string
 		// Process through each lens
 		if (edgeDetector.enabled) {
 			TS_START_NIF("Edge Detector");
-			edgeDetector.ProcessFrame(rawFrame, rawFrame);
+			edgeDetector.ProcessFrame(intermediate, intermediate);
 			TS_STOP_NIF("Edge Detector");
 		}
 		if (faceDetector.enabled) {
 			TS_START_NIF("Face Detector");
-			faceDetector.ProcessFrame(rawFrame, rawFrame);
+			faceDetector.ProcessFrame(intermediate, intermediate);
 			TS_STOP_NIF("Face Detector");
 		}
 		if (classifierLens.enabled) {
 			TS_START_NIF("Classifier Lens");
-			classifierLens.ProcessFrame(rawFrame, rawFrame);
+			classifierLens.ProcessFrame(intermediate, intermediate);
 			TS_STOP_NIF("Classifier Lens");
 		}
 
 		TS_START_NIF("Frame Copy");
 		//output = rawFrame.clone();
-		rawFrame.copyTo(output);
+		intermediate.copyTo(output);
 		TS_STOP_NIF("Frame Copy");
 
 		//leftMat = rawFrameGPU.getMat(0).clone();
 
 		//More or less a mutex unlock for capture->GetLatestFrame()
 		//capture1->MarkFrameUsed();
-		rawFrame.release();
+		//rawFrame.release();
 		//rawFrameGPU.release();
 	}
 	TS_STOP_NIF(capTimerID);

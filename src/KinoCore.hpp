@@ -46,6 +46,8 @@ public:
 
 	void ProcessCapture(CameraCapture *cap, cv::OutputArray output, string id);
 
-private:
+	bool pauseCaptureUpdates = false;
 
+private:
+	cv::Mat rawFrame;
 };

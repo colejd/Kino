@@ -178,6 +178,7 @@ void ofApp::DrawGUI() {
 			//useVerticalSync = !useVerticalSync;
 			ofSetVerticalSync(useVerticalSync);
 		}
+		ImGui::Checkbox("Pause", &core->pauseCaptureUpdates);
 		//ImGui::SliderInt("Stereo Convergence", &convergence, 0, 100);
 
 		ImGui::End();
