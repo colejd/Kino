@@ -152,6 +152,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\KinoCore.cpp" />
     <ClCompile Include="src\KinoGlobals.cpp" />
+    <ClCompile Include="src\util\performance\GPUMonitor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.h" />
@@ -258,6 +259,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClInclude Include="src\KinoGlobals.hpp" />
     <ClInclude Include="src\util\AppLog.hpp" />
     <ClInclude Include="src\util\ColorConversion.hpp" />
+    <ClInclude Include="src\util\performance\GPUMonitor.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

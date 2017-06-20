@@ -153,8 +153,16 @@ void ofApp::DrawGUI() {
 	//if (coreFps > frameTarget) textColor = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); //Set red if over max frame time
 	//else if (coreFps > frameTarget / 2.0f) textColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f); //Set yellow if halfway to max frame time
 	//ImGui::SameLine(ImGui::GetWindowWidth() - 160); ImGui::TextColored(textColor, "core: %.1f ms", coreFps);
+	
+	// Draw GPU usage percentage
+	ImGui::SameLine(ImGui::GetWindowWidth() - 160);
+	float gpuUsage = GPUMonitor::GetInstance().GetMemoryUsagePercent();
+	ImVec4 gpuTextColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	if (gpuUsage > 0.5) gpuTextColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
+	else if (gpuUsage > 0.8) gpuTextColor = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+	ImGui::TextColored(gpuTextColor, "GPU: %3.1f%%", gpuUsage * 100.0);
 
-	//Draw application fps
+	// Draw application fps
 	ImGui::SameLine(ImGui::GetWindowWidth() - 70);
 	//char buff[32];
 	//snprintf(buff, sizeof(buff), " %3.0f FPS ", ImGui::GetIO().Framerate);

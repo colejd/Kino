@@ -9,6 +9,7 @@
 #include "config/ConfigHandler.hpp"
 #include "gui/UsesGUI.hpp"
 #include "gui/performance/FpsGraph.hpp"
+#include <util/performance/GPUMonitor.hpp>
 
 #include <opencv2/opencv.hpp>
 
