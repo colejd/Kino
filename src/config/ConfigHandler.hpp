@@ -19,14 +19,14 @@ using namespace std;
  */
 class ConfigHandler {
 protected:
-    //==== SINGLETON STUFF ==============================================//
-    static ConfigHandler& GetInstance()
-    {
-        static ConfigHandler instance; // Guaranteed to be destroyed.
-        // Instantiated on first use.
-        return instance;
-    }
-    //==== END SINGLETON STUFF ==============================================//
+	//==== SINGLETON STUFF ==============================================//
+	static ConfigHandler& GetInstance()
+	{
+		static ConfigHandler instance; // Guaranteed to be destroyed.
+		// Instantiated on first use.
+		return instance;
+	}
+	//==== END SINGLETON STUFF ==============================================//
 
 	template<typename Out>
 	static void split(const std::string &s, char delim, Out result) {
@@ -46,17 +46,17 @@ protected:
 	}
 
 	Json::Value root;
-    
+
 public:
-    
-    /**
-     Convenience function for finding a value in the config. If you want to access a
+
+	/**
+	 Convenience function for finding a value in the config. If you want to access a
 	 nested value in the config file, use a period as a delimiter in the key. For example:
 
 	 "a" : { "b": 0 }
 
 	 To get "b", you'd use the key "a.b".
-     */
+	 */
 	static Json::Value GetValue(const std::string &key, const Json::Value &defaultValue) {
 
 		std::vector<std::string> tokens = split(key, '.');
@@ -74,17 +74,17 @@ public:
 		return currentRoot.get(tokens[tokens.size() - 1], defaultValue);
 
 	}
-    
+
 private:
-    //==== SINGLETON STUFF ==============================================//
-    ConfigHandler();
-    // C++11:
-    // Stop the compiler from generating copy methods for the object
-    ConfigHandler(ConfigHandler const&) = delete;
-    void operator=(ConfigHandler const&) = delete;
-    //==== END SINGLETON STUFF ==============================================//
-    
-    const std::string CONFIG_FILE_PATH = "data/config/config.json";
+	//==== SINGLETON STUFF ==============================================//
+	ConfigHandler();
+	// C++11:
+	// Stop the compiler from generating copy methods for the object
+	ConfigHandler(ConfigHandler const&) = delete;
+	void operator=(ConfigHandler const&) = delete;
+	//==== END SINGLETON STUFF ==============================================//
+
+	const std::string CONFIG_FILE_PATH = "data/config/config.json";
 
 
 };

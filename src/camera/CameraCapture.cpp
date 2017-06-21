@@ -81,7 +81,7 @@ void CameraCapture::UpdateCapture()
 //Return the latest frame.
 cv::Mat CameraCapture::RetrieveCapture()
 {
-	if(threaded) std::lock_guard<std::mutex> lock(frameMutex); //Mutex lock
+	if (threaded) std::lock_guard<std::mutex> lock(frameMutex); //Mutex lock
 	return latestFrame;
 }
 

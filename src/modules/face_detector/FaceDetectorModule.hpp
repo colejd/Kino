@@ -13,17 +13,17 @@ using namespace std;
 
 class FaceDetectorModule : public ModuleCommon, public UsesGUI {
 public:
-    FaceDetectorModule();
-    ~FaceDetectorModule();
-    
-    void ProcessFrame(cv::InputArray in, cv::OutputArray out);
-    
-    void DrawGUI() override;
-    
+	FaceDetectorModule();
+	~FaceDetectorModule();
+
+	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
+
+	void DrawGUI() override;
+
 private:
-    cv::CascadeClassifier face_cascade;
-    cv::CascadeClassifier eyes_cascade;
-    
-    float imageScale = 0.125;
-    
+	cv::CascadeClassifier face_cascade;
+	cv::CascadeClassifier eyes_cascade;
+
+	float imageScale = 0.125;
+
 };

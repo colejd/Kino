@@ -7,7 +7,7 @@ using namespace cv;
 ImageCompositor::ImageCompositor(const int width, const int height) {
 
 	messageFont.loadFont("fonts/ProggyClean.ttf", 26);
-	
+
 	ofDisableArbTex();
 
 	//ofSetLogLevel(OF_LOG_SILENT);
@@ -52,7 +52,7 @@ void ImageCompositor::SetupWindowFBO(int width, int height) {
 
 	leftFbo.destroy();
 	leftFbo.allocate(imageFboSettings);
-	
+
 	rightFbo.destroy();
 	rightFbo.allocate(imageFboSettings);
 }
@@ -77,10 +77,10 @@ void ImageCompositor::DrawWindowFbo() {
 	TS_START_NIF("Draw Window FBO");
 	ofClear(0, 0, 0);
 	windowFbo.begin();
-		ofClear(0, 20, 20);
-		//Draw the FBOs in here
-		leftFbo.draw(0, 0, windowFbo.getWidth() / 2, leftFbo.getHeight());
-		rightFbo.draw(windowFbo.getWidth() / 2, 0, windowFbo.getWidth() / 2, rightFbo.getHeight());
+	ofClear(0, 20, 20);
+	//Draw the FBOs in here
+	leftFbo.draw(0, 0, windowFbo.getWidth() / 2, leftFbo.getHeight());
+	rightFbo.draw(windowFbo.getWidth() / 2, 0, windowFbo.getWidth() / 2, rightFbo.getHeight());
 	windowFbo.end();
 	//windowFbo.draw(0, 0, windowFbo.getWidth(), windowFbo.getHeight());
 	//Fit windowFbo to ofWindow aspect
@@ -116,13 +116,13 @@ void ImageCompositor::DrawMatToFbo(const cv::InputArray input, ofFbo fbo, int co
 	//Draw warning message if the mat is empty
 	if (mat.empty()) {
 		fbo.begin();
-			ofClear(180, 0, 0, 1.0f);
-			ofSetColor(255);
-			string warning = "Camera is not initialized";
-			messageFont.drawString(warning, 
-							(fbo.getWidth() / 2) - (messageFont.stringWidth(warning) / 2), 
-							(fbo.getHeight() / 2) - (messageFont.stringHeight(warning) / 2)
-			);
+		ofClear(180, 0, 0, 1.0f);
+		ofSetColor(255);
+		string warning = "Camera is not initialized";
+		messageFont.drawString(warning,
+			(fbo.getWidth() / 2) - (messageFont.stringWidth(warning) / 2),
+			(fbo.getHeight() / 2) - (messageFont.stringHeight(warning) / 2)
+		);
 		fbo.end();
 		//fbo.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 		return;
@@ -135,60 +135,60 @@ void ImageCompositor::DrawMatToFbo(const cv::InputArray input, ofFbo fbo, int co
 	//Draw the one image into the window fbo
 	TS_START_NIF("Draw Mat");
 	fbo.begin();
-		//ofClear(0, 180, 0, 1.0f);
-		ofClear(0, 0, 0, 1.0f);
-		//Draw image from mat
-		Size matSize{ mat.cols, mat.rows };
-		if (matSize.x != lastSize.x || matSize.y != lastSize.y) {
-			TS_START_NIF("Allocate");
-			//TODO: Optimization here. Preallocate output and only reallocate if the mat is a different size
-			output.allocate(mat.cols, mat.rows, OF_IMAGE_COLOR);
-			if (ConfigHandler::GetValue("WINDOW.NEAREST_NEIGHBOR_SCALING", false).asBool()) {
-				output.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-			}
-			//output.allocate(mat.cols, mat.rows, GL_RGB);
-			TS_STOP_NIF("Allocate");
-			lastSize = matSize;
+	//ofClear(0, 180, 0, 1.0f);
+	ofClear(0, 0, 0, 1.0f);
+	//Draw image from mat
+	Size matSize{ mat.cols, mat.rows };
+	if (matSize.x != lastSize.x || matSize.y != lastSize.y) {
+		TS_START_NIF("Allocate");
+		//TODO: Optimization here. Preallocate output and only reallocate if the mat is a different size
+		output.allocate(mat.cols, mat.rows, OF_IMAGE_COLOR);
+		if (ConfigHandler::GetValue("WINDOW.NEAREST_NEIGHBOR_SCALING", false).asBool()) {
+			output.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 		}
+		//output.allocate(mat.cols, mat.rows, GL_RGB);
+		TS_STOP_NIF("Allocate");
+		lastSize = matSize;
+	}
 
-		TS_START_NIF("ofImage Convert");
-		output.getTexture().loadData(mat.data, mat.cols, mat.rows, GL_BGR_EXT);
-		TS_STOP_NIF("ofImage Convert");
+	TS_START_NIF("ofImage Convert");
+	output.getTexture().loadData(mat.data, mat.cols, mat.rows, GL_BGR_EXT);
+	TS_STOP_NIF("ofImage Convert");
 
-		//TS_START_NIF("BGR to RGB Convert");
-		//cv::Mat converted;
-		//cvtColor(mat, converted, COLOR_BGR2RGB);
-		//output.setFromPixels(converted.data, converted.cols, converted.rows, OF_IMAGE_COLOR);
-		//TS_STOP_NIF("BGR to RGB Convert");
+	//TS_START_NIF("BGR to RGB Convert");
+	//cv::Mat converted;
+	//cvtColor(mat, converted, COLOR_BGR2RGB);
+	//output.setFromPixels(converted.data, converted.cols, converted.rows, OF_IMAGE_COLOR);
+	//TS_STOP_NIF("BGR to RGB Convert");
 
-		if (mirror) {
-			TS_START_NIF("Mirror Output");
-			/*cv::Mat flipped;
-			cv::flip(converted, flipped, 1);
-			output.setFromPixels(flipped.data, flipped.cols, flipped.rows, OF_IMAGE_COLOR);*/
-			output.mirror(false, true); //Twice as slow
-			TS_STOP_NIF("Mirror Output");
-		}
-		
-		TS_START_NIF("Output Draw");
-		//output.update();
-		//float heightRatio = output.getHeight() / fbo.getHeight();
-		//float widthRatio = output.getWidth() / fbo.getWidth();
-		//output.draw(0 + convergence, fbo.getHeight() / 4, fbo.getWidth(), output.getHeight());
+	if (mirror) {
+		TS_START_NIF("Mirror Output");
+		/*cv::Mat flipped;
+		cv::flip(converted, flipped, 1);
+		output.setFromPixels(flipped.data, flipped.cols, flipped.rows, OF_IMAGE_COLOR);*/
+		output.mirror(false, true); //Twice as slow
+		TS_STOP_NIF("Mirror Output");
+	}
 
-		/*ofRectangle windowFboRect = ofRectangle(0, 0, windowFbo.getWidth(), windowFbo.getHeight());
-		ofRectangle scaled = AspectFitRectToTarget(windowFboRect, windowRect);*/
+	TS_START_NIF("Output Draw");
+	//output.update();
+	//float heightRatio = output.getHeight() / fbo.getHeight();
+	//float widthRatio = output.getWidth() / fbo.getWidth();
+	//output.draw(0 + convergence, fbo.getHeight() / 4, fbo.getWidth(), output.getHeight());
 
-		ofRectangle fboRect = ofRectangle(0, 0, fbo.getWidth(), fbo.getHeight());
-		ofRectangle outputRect = ofRectangle(0, 0, output.getWidth(), output.getHeight());
-		ofRectangle scaled = AspectFitRectToTarget(outputRect, fboRect);
-		scaled.x += convergence;
-		output.draw(scaled);
+	/*ofRectangle windowFboRect = ofRectangle(0, 0, windowFbo.getWidth(), windowFbo.getHeight());
+	ofRectangle scaled = AspectFitRectToTarget(windowFboRect, windowRect);*/
 
-		//std::cout << fboRect.width << ", " << fboRect.height << "\n";
+	ofRectangle fboRect = ofRectangle(0, 0, fbo.getWidth(), fbo.getHeight());
+	ofRectangle outputRect = ofRectangle(0, 0, output.getWidth(), output.getHeight());
+	ofRectangle scaled = AspectFitRectToTarget(outputRect, fboRect);
+	scaled.x += convergence;
+	output.draw(scaled);
+
+	//std::cout << fboRect.width << ", " << fboRect.height << "\n";
 
 
-		TS_STOP_NIF("Output Draw");
+	TS_STOP_NIF("Output Draw");
 	fbo.end();
 	TS_STOP_NIF("Draw Mat");
 
@@ -201,7 +201,7 @@ void ImageCompositor::DrawMatToFbo(const cv::InputArray input, ofFbo fbo, int co
 * Draws a cv::Mat into an FBO, which is then drawn to fit the screen.
 */
 void ImageCompositor::DrawMatFullscreen(const cv::InputArray arr) {
-		ofClear(0, 0, 0, 1.0f);
+	ofClear(0, 0, 0, 1.0f);
 
 	DrawMatToFbo(arr, windowFbo);
 
@@ -235,7 +235,7 @@ void ImageCompositor::DrawMatDirect(const cv::Mat& mat, ofImageType type, int x,
 	output.setFromPixels(mat.data, mat.cols, mat.rows, type);
 
 	windowFbo.begin();
-		output.draw(x, y, w, h);
+	output.draw(x, y, w, h);
 	windowFbo.end();
 
 	//Draw the caption if available

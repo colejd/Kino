@@ -26,33 +26,33 @@ using namespace std;
  THIS IS NOT THREAD SAFE IN C++03 -- USE C++11!
  */
 class GUIHandler {
-    
+
 public:
-    //==== SINGLETON STUFF ==============================================//
-    static GUIHandler& GetInstance()
-    {
-        static GUIHandler instance; // Guaranteed to be destroyed.
-        // Instantiated on first use.
-        return instance;
-    }
-    //==== END SINGLETON STUFF ==============================================//
+	//==== SINGLETON STUFF ==============================================//
+	static GUIHandler& GetInstance()
+	{
+		static GUIHandler instance; // Guaranteed to be destroyed.
+		// Instantiated on first use.
+		return instance;
+	}
+	//==== END SINGLETON STUFF ==============================================//
 
 	//ofxImGui gui;
-    
-    
+
+
 private:
-    //==== SINGLETON STUFF ==============================================//
-    GUIHandler();
-    // C++11:
-    // Stop the compiler from generating copy methods for the object
-    GUIHandler(GUIHandler const&) = delete;
-    void operator=(GUIHandler const&) = delete;
-    //==== END SINGLETON STUFF ==============================================//
-    
-    //params::InterfaceGlRef globalParams;
-    
-    //unordered_map<string, params::InterfaceGlRef> windows;
-    
+	//==== SINGLETON STUFF ==============================================//
+	GUIHandler();
+	// C++11:
+	// Stop the compiler from generating copy methods for the object
+	GUIHandler(GUIHandler const&) = delete;
+	void operator=(GUIHandler const&) = delete;
+	//==== END SINGLETON STUFF ==============================================//
+
+	//params::InterfaceGlRef globalParams;
+
+	//unordered_map<string, params::InterfaceGlRef> windows;
+
 };
 
 #endif /* GUIHandler_hpp */

@@ -15,27 +15,27 @@
 
 class UsesGUI {
 public:
-    //GUIHandler& GetGUI(){
-    //    return GUIHandler::GetInstance(); 
-    //}
-    
-    virtual void DrawGUI() = 0;
-    
-    bool showGUI = false;
+	//GUIHandler& GetGUI(){
+	//    return GUIHandler::GetInstance(); 
+	//}
+
+	virtual void DrawGUI() = 0;
+
+	bool showGUI = false;
 
 	void ToggleGUIEnabled() {
 		showGUI = !showGUI;
 	}
-    
-    static void ShowHelpMarker(const char* desc)
-    {
-        ImGui::SameLine();
-        ImGui::TextDisabled("(?)");
-        if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("%s", desc);
-    }
-    
-    
+
+	static void ShowHelpMarker(const char* desc)
+	{
+		ImGui::SameLine();
+		ImGui::TextDisabled("(?)");
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("%s", desc);
+	}
+
+
 };
 
 

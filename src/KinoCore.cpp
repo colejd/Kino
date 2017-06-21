@@ -9,7 +9,7 @@ KinoCore::KinoCore()
 
 KinoCore::~KinoCore()
 {
-} 
+}
 
 void KinoCore::Setup()
 {
@@ -69,7 +69,7 @@ void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::Out
 	if (!cap->IsInitialized()) {
 		return;
 	}
-	 
+
 	string capTimerID = "Capture " + id + " Update";
 	TS_START_NIF(capTimerID);
 
@@ -149,19 +149,19 @@ void KinoCore::PrintCVDebugInfo()
 	bool openCLSupport = ocl::useOpenCL();
 	Kino::app_log.AddLog("OpenCL acceleration is %s\n", cv::ocl::haveOpenCL() ? "available" : "not available");
 	Kino::app_log.AddLog("OpenCL used: %s\n", openCLSupport ? "true" : "false");
-	#ifdef _DEBUG
-		if (openCLSupport) {
-			std::vector<cv::ocl::PlatformInfo> platforms;
-			cv::ocl::getPlatfomsInfo(platforms);
-			for (int i = 0; i<platforms.size(); i++) {
-				Kino::app_log.AddLog("  Platform %i of %lu\n", i + 1, platforms.size());
-				Kino::app_log.AddLog("    Name:     %s\n", platforms[i].name().c_str());
-				Kino::app_log.AddLog("    Vendor:   %s\n", platforms[i].vendor().c_str());
-				Kino::app_log.AddLog("    Device:   %i\n", platforms[i].deviceNumber());
-				Kino::app_log.AddLog("    Version:  %s\n", platforms[i].version().c_str());
-			}
+#ifdef _DEBUG
+	if (openCLSupport) {
+		std::vector<cv::ocl::PlatformInfo> platforms;
+		cv::ocl::getPlatfomsInfo(platforms);
+		for (int i = 0; i < platforms.size(); i++) {
+			Kino::app_log.AddLog("  Platform %i of %lu\n", i + 1, platforms.size());
+			Kino::app_log.AddLog("    Name:     %s\n", platforms[i].name().c_str());
+			Kino::app_log.AddLog("    Vendor:   %s\n", platforms[i].vendor().c_str());
+			Kino::app_log.AddLog("    Device:   %i\n", platforms[i].deviceNumber());
+			Kino::app_log.AddLog("    Version:  %s\n", platforms[i].version().c_str());
 		}
-	#endif
+	}
+#endif
 	Kino::app_log.AddLog("Optimized code support: %s\n", useOptimized() ? "true" : "false");
 	Kino::app_log.AddLog("IPP support: %s\n", cv::ipp::useIPP() ? "true" : "false");
 	Kino::app_log.AddLog("Threads used by OpenCV: %i\n", getNumThreads());

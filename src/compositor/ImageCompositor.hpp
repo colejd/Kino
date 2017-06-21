@@ -12,8 +12,8 @@
 
 //#include "ofxOpenVR.h"
 
-/* 
-Responsible for drawing images from the core to the screen in a nice way. 
+/*
+Responsible for drawing images from the core to the screen in a nice way.
 */
 class ImageCompositor : public UsesGUI {
 public:
@@ -56,7 +56,7 @@ public:
 
 	//FBO which is scaled to the entire window
 	ofFbo windowFbo;
-	
+
 	ofFbo leftFbo;
 	ofFbo rightFbo;
 
@@ -75,7 +75,7 @@ public:
 	void Update();
 
 	struct Size {
-		int x; 
+		int x;
 		int y;
 	};
 	Size lastSize{ 0, 0 };

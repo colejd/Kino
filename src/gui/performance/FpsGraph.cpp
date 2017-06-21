@@ -54,7 +54,7 @@ void FpsGraph::Draw(float x, float y, float w, float h, std::string label) {
 	//Draw graph
 	ofSetHexColor(0x43A047);
 	ofPolyline graphLine;
-	for (int i = queueSize - 1; i>= 0; i--) {
+	for (int i = queueSize - 1; i >= 0; i--) {
 		float fps = fpsqueue.at(i);
 		float innerX = inverseLerp(0, queueSize - 1, i) * w;
 		float innerY = inverseLerp(lowerFpsLine, upperFpsLine, fps) * h;

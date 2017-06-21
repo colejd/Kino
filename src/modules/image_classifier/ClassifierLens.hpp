@@ -38,7 +38,7 @@ private:
 
 	float threshold = 0.25;
 
-	Size lastImageSize { 0, 0 };
+	Size lastImageSize{ 0, 0 };
 
 	bool initialized = false;
 

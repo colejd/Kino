@@ -10,13 +10,13 @@ using namespace std;
 
 class CameraCalibratorModule : public ModuleCommon, public UsesGUI {
 public:
-    CameraCalibratorModule();
-    ~CameraCalibratorModule();
-    
-    void ProcessFrame(cv::InputArray in, cv::OutputArray out);
-    
-    void DrawGUI() override;
-    
+	CameraCalibratorModule();
+	~CameraCalibratorModule();
+
+	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
+
+	void DrawGUI() override;
+
 private:
-    
+
 };

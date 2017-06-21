@@ -1,6 +1,6 @@
 #include "ConfigHandler.hpp"
 
-ConfigHandler::ConfigHandler(){
+ConfigHandler::ConfigHandler() {
 	std::ifstream config_doc(CONFIG_FILE_PATH, std::ifstream::binary);
 	//config_doc >> root;
 	Json::CharReaderBuilder rbuilder;

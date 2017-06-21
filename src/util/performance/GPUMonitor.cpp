@@ -2,7 +2,7 @@
 
 
 GPUMonitor::GPUMonitor() {
-	
+
 	cudaGetDeviceCount(&numGpus);
 	std::cout << "GPUs attached: " << numGpus << std::endl;
 

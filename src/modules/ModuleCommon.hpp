@@ -13,25 +13,25 @@ class ModuleCommon {
 public:
 	virtual ~ModuleCommon() {}
 
-    void Enable(){
-        enabled = true;
-    }
-    void Disable(){
-        enabled = false;
-    }
-    const bool IsEnabled(){
-        return enabled;
-    }
-    void ToggleEnabled(){
-        enabled = !enabled;
-    }
-    bool enabled = false;
-    
+	void Enable() {
+		enabled = true;
+	}
+	void Disable() {
+		enabled = false;
+	}
+	const bool IsEnabled() {
+		return enabled;
+	}
+	void ToggleEnabled() {
+		enabled = !enabled;
+	}
+	bool enabled = false;
+
 protected:
-    
+
 private:
-    
-    
+
+
 };
 
 

@@ -49,7 +49,7 @@ void DeepDreamLens::ProcessFrame(InputArray in, OutputArray out) {
 		ofPixels p2 = img.getPixels();
 		ofPixels pix;
 		pix.allocate(p1.getWidth(), p2.getHeight(), 3);
-		for (int i = 0; i<pix.size(); i++) {
+		for (int i = 0; i < pix.size(); i++) {
 			pix[i] = blendAmt * p1[i] + (1.0 - blendAmt) * p2[i];
 		}
 		TS_STOP_NIF("Blend");
@@ -63,7 +63,7 @@ void DeepDreamLens::ProcessFrame(InputArray in, OutputArray out) {
 		cv::Mat newMat = cv::Mat(nightmare.getHeight(), nightmare.getWidth(), CV_MAKETYPE(CV_8U, 3), nightmare.getPixelsRef().getData(), 0);
 		cvtColor(newMat, out, COLOR_RGB2BGR);
 		TS_STOP_NIF("Output");
-		
+
 
 		TS_STOP_NIF("DeepDream Lens");
 	}

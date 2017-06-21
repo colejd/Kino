@@ -3,7 +3,7 @@
 #include "util/AppLog.hpp"
 
 namespace KinoGlobals {
-    extern AppLog app_log;
+	extern AppLog app_log;
 }
 
 namespace Kino = KinoGlobals;

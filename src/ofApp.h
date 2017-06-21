@@ -14,56 +14,56 @@
 #include <opencv2/opencv.hpp>
 
 class ofApp : public ofBaseApp, public UsesGUI {
-	public:
-		ofApp();
-		~ofApp();
+public:
+	ofApp();
+	~ofApp();
 
-		void setup();
-		void update();
-		void draw();
+	void setup();
+	void update();
+	void draw();
 
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+	void keyPressed(int key);
+	void keyReleased(int key);
+	void mouseMoved(int x, int y);
+	void mouseDragged(int x, int y, int button);
+	void mousePressed(int x, int y, int button);
+	void mouseReleased(int x, int y, int button);
+	void mouseEntered(int x, int y);
+	void mouseExited(int x, int y);
+	void windowResized(int w, int h);
+	void dragEvent(ofDragInfo dragInfo);
+	void gotMessage(ofMessage msg);
 
-		void DrawGUI();
-		void DrawAllGUI();
-		
-		KinoCore *core;
-		ImageCompositor *compositor;
+	void DrawGUI();
+	void DrawAllGUI();
 
-		bool showGeneralSettingsWindow = false;
-		bool showLog = false;					//Show log window
-		bool showHelp = false;					//Show help window
+	KinoCore *core;
+	ImageCompositor *compositor;
 
-		void ToggleTimingWindow();
+	bool showGeneralSettingsWindow = false;
+	bool showLog = false;					//Show log window
+	bool showHelp = false;					//Show help window
 
-		void SetGUITheme();
+	void ToggleTimingWindow();
 
-		FpsGraph fpsGraph = FpsGraph();
-		bool showPerformanceGraph = false;		//FpsGraph visibility on screen
+	void SetGUITheme();
 
-		float coreFps;
-		float msFrameTarget = 1000.0f / 60.0f;
+	FpsGraph fpsGraph = FpsGraph();
+	bool showPerformanceGraph = false;		//FpsGraph visibility on screen
 
-		bool useVerticalSync = false;
+	float coreFps;
+	float msFrameTarget = 1000.0f / 60.0f;
 
-		ofxImGui::Gui gui;
+	bool useVerticalSync = false;
 
-		bool demoMode = false;
+	ofxImGui::Gui gui;
 
-	private:
-		bool ctrlPressed = false;
+	bool demoMode = false;
 
-		void TakeScreenshot();
+private:
+	bool ctrlPressed = false;
+
+	void TakeScreenshot();
 
 
 };

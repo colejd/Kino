@@ -24,7 +24,7 @@ public:
 
 	/**
 	The type of camera device looked for by this object.
-	*/ 
+	*/
 	enum class CAPTURE_TYPE {
 		/** OS-recognized camera */
 		GENERIC,
@@ -32,17 +32,17 @@ public:
 		PS3EYE
 	};
 
-	/** 
+	/**
 	Begins the capture process.
 	*/
 	bool StartCapturing(int index, CAPTURE_TYPE type, bool threaded);
 
-	/** 
-	Starts a fake capture process. videoPath is relative to the data folder. 
+	/**
+	Starts a fake capture process. videoPath is relative to the data folder.
 	*/
 	bool StartFakeCapture(string videoPath, bool threaded);
 
-	/** 
+	/**
 	Stops the capture process.
 	*/
 	bool StopCapturing();

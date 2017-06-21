@@ -49,7 +49,7 @@ void ofApp::setup() {
 	demoMode = ConfigHandler::GetValue("DEMO_SETTINGS.ACTIVE", false).asBool();
 }
 
-void ofApp::update(){
+void ofApp::update() {
 	//Update opencv stuff
 	TS_START_NIF("core");
 	core->Update();
@@ -94,12 +94,14 @@ void ofApp::DrawAllGUI() {
 	//Draw the ImGui toolbar and windows
 	TS_START_NIF("ImGui Draw");
 	gui.begin();
+	{
 		//Draw the GUI for this class
 		DrawGUI();
 		//Draw the core GUI and its modules' GUIs
 		core->DrawAllGUIs();
 		//Draw the compositor's GUI
 		compositor->DrawGUI();
+	}
 	gui.end();
 	TS_STOP_NIF("ImGui Draw");
 }
@@ -159,11 +161,11 @@ void ofApp::DrawGUI() {
 	//ImGui::SameLine(ImGui::GetWindowWidth() - 160); ImGui::TextColored(textColor, "core: %.1f ms", coreFps);
 
 
-	#ifdef _DEBUG
+#ifdef _DEBUG
 	ImGui::SameLine(ImGui::GetWindowWidth() - 250);
 	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Debug Build");
-	#endif
-	
+#endif
+
 	// Draw GPU usage percentage
 	ImGui::SameLine(ImGui::GetWindowWidth() - 160);
 	float gpuUsage = GPUMonitor::GetInstance().GetMemoryUsagePercent();

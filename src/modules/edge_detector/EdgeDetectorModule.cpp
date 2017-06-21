@@ -1,23 +1,23 @@
 #include "EdgeDetectorModule.hpp"
 
-EdgeDetectorModule::EdgeDetectorModule(){
+EdgeDetectorModule::EdgeDetectorModule() {
 
 }
 
-EdgeDetectorModule::~EdgeDetectorModule(){
-    
+EdgeDetectorModule::~EdgeDetectorModule() {
+
 }
 
-void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
+void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
 
-    if(!in.empty() && IsEnabled()){
+	if (!in.empty() && IsEnabled()) {
 		TS_START_NIF("Edge Detector");
 		cv::UMat src;
 		in.copyTo(src);
-        
+
 		TS_START_NIF("Copy In");
-        cv::UMat latestStep;
-        cv::UMat finalFrame;
+		cv::UMat latestStep;
+		cv::UMat finalFrame;
 		cv::UMat gray;
 		TS_STOP_NIF("Copy In");
 
@@ -33,75 +33,75 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 		else {
 			src.copyTo(latestStep);
 		}
-        
-        //Condense the source image into a single channel for use with the Canny algorithm
+
+		//Condense the source image into a single channel for use with the Canny algorithm
 		TS_START_NIF("Condense Channels");
-        CondenseImage(latestStep, gray, currentChannelType);
+		CondenseImage(latestStep, gray, currentChannelType);
 		TS_STOP_NIF("Condense Channels");
-        
-        //threshold(edges, edges, 0, 255, THRESH_BINARY | THRESH_OTSU);
-        
-        //Blur the source image to reduce noise and texture details
+
+		//threshold(edges, edges, 0, 255, THRESH_BINARY | THRESH_OTSU);
+
+		//Blur the source image to reduce noise and texture details
 		TS_START_NIF("Blur");
 		//cv::Mat temp;
 		//latestStep.copyTo(temp);
 		////temp = latestStep.clone();
-        BlurImage(gray, gray, currentBlurType);
+		BlurImage(gray, gray, currentBlurType);
 		//temp.copyTo(latestStep);
 		TS_STOP_NIF("Blur");
-        
+
 		//Super, super slow
-        //fastNlMeansDenoising(latestStep, latestStep, 3, 7, 21);
-        
-        //Perform erosion and dilution if requested
-        if(doErosionDilution){
+		//fastNlMeansDenoising(latestStep, latestStep, 3, 7, 21);
+
+		//Perform erosion and dilution if requested
+		if (doErosionDilution) {
 			TS_START_NIF("Erode / Dilute");
-            erode(gray, gray, UMat(), cv::Point(-1,-1), erosionIterations, BORDER_CONSTANT, morphologyDefaultBorderValue());
-            dilate(gray, gray, UMat(), cv::Point(-1,-1), dilutionIterations, BORDER_CONSTANT, morphologyDefaultBorderValue());
+			erode(gray, gray, UMat(), cv::Point(-1, -1), erosionIterations, BORDER_CONSTANT, morphologyDefaultBorderValue());
+			dilate(gray, gray, UMat(), cv::Point(-1, -1), dilutionIterations, BORDER_CONSTANT, morphologyDefaultBorderValue());
 			TS_STOP_NIF("Erode / Dilute");
 		}
-        
-        //Perform edge detection
-        
-        //Canny step--------------------------------------
-        //If the image has more than one color channel, then it wasn't condensed.
-        //Divide it up and run Canny on each channel.
-        //TODO: This should probably be run without any blurring beforehand.
+
+		//Perform edge detection
+
+		//Canny step--------------------------------------
+		//If the image has more than one color channel, then it wasn't condensed.
+		//Divide it up and run Canny on each channel.
+		//TODO: This should probably be run without any blurring beforehand.
 		TS_START_NIF("Canny");
-        if(gray.channels() > 1){
-            std::vector<cv::Mat> channels;
-            cv::split(gray, channels);
-                
-            //Separate the three color channels and perform Canny on each
-            Canny(channels[0], channels[0], cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3);
-            Canny(channels[1], channels[1], cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3);
-            Canny(channels[2], channels[2], cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3);
-                
-            //Merge the three color channels into one image
-            //merge(channels, canny_output);
-            bitwise_or(channels[0], channels[1], channels[1]); //Merge 0 and 1 into 1
-            bitwise_or(channels[1], channels[2], gray); //Merge 1 and 2 into result
-        }
-        else{
-            Canny(gray, gray, cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3); //0, 30, 3
+		if (gray.channels() > 1) {
+			std::vector<cv::Mat> channels;
+			cv::split(gray, channels);
+
+			//Separate the three color channels and perform Canny on each
+			Canny(channels[0], channels[0], cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3);
+			Canny(channels[1], channels[1], cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3);
+			Canny(channels[2], channels[2], cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3);
+
+			//Merge the three color channels into one image
+			//merge(channels, canny_output);
+			bitwise_or(channels[0], channels[1], channels[1]); //Merge 0 and 1 into 1
+			bitwise_or(channels[1], channels[2], gray); //Merge 1 and 2 into result
+		}
+		else {
+			Canny(gray, gray, cannyThresholdLow, cannyThresholdLow * cannyThresholdRatio, 3); //0, 30, 3
 		}
 		TS_STOP_NIF("Canny");
-            
-        //Contour step------------------------------------
-        if(useContours){
+
+		//Contour step------------------------------------
+		if (useContours) {
 			TS_START_NIF("Contour Detection");
-            cv::UMat contourOutput;
-            gray.copyTo(contourOutput);
+			cv::UMat contourOutput;
+			gray.copyTo(contourOutput);
 			{
 				cv::Mat grayMat = gray.getMat(cv::ACCESS_READ);
 				cv::Mat contourOutputMat = contourOutput.getMat(cv::ACCESS_RW);
 				ParallelContourDetector::DetectContoursParallel(grayMat, contourOutputMat, contourSubdivisions, lineThickness, minContourSize);
 				// all getMat copies need to be deallocated before we continue, hence scoping
 			}
-            //ParallelContourDetector::DetectContours(gray, contourOutput, lineThickness);
+			//ParallelContourDetector::DetectContours(gray, contourOutput, lineThickness);
 			contourOutput.copyTo(gray);
 			TS_STOP_NIF("Contour Detection");
-        }
+		}
 
 		//Restore original image size
 		if (doDownsampling) {
@@ -110,15 +110,15 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 			cv::resize(grayCopy, gray, cv::Size(originalWidth, originalHeight), INTER_NEAREST);
 			TS_STOP_NIF("Upscale");
 		}
-        
-        //Output step-------------------------------------
+
+		//Output step-------------------------------------
 		TS_START_NIF("Copy Output");
-        if(showEdgesOnly){
-            cvtColor(gray, finalFrame, COLOR_GRAY2BGR);
-        }
-        else{
-            in.copyTo(finalFrame);
-        }
+		if (showEdgesOnly) {
+			cvtColor(gray, finalFrame, COLOR_GRAY2BGR);
+		}
+		else {
+			in.copyTo(finalFrame);
+		}
 		cv::Scalar finalColor = ColorToScalar(lineColor);
 		if (useSmartLineColors) {
 			//finalColor = cv::Scalar::all(255) - cv::mean(in);
@@ -148,16 +148,16 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 		}
 		finalFrame.setTo(finalColor, gray);
 
-        //Copy the result of all operations to the output frame.
-        finalFrame.copyTo(out);
+		//Copy the result of all operations to the output frame.
+		finalFrame.copyTo(out);
 		TS_STOP_NIF("Copy Output");
-        
+
 		gray.release();
-        latestStep.release();
-        finalFrame.release();
+		latestStep.release();
+		finalFrame.release();
 		TS_STOP_NIF("Edge Detector");
-    }
-    //Directly draw the data from the frame
+	}
+	//Directly draw the data from the frame
   //  else {
 		//TS_START_NIF("Copy Output");
   //      //if(in.empty()) printf("[EdgeDetectorModule] Frame is empty\n");
@@ -320,17 +320,17 @@ void EdgeDetectorModule::ProcessFrameOld(cv::InputArray in, cv::OutputArray out)
 /**
  Condenses the input image into one channel based on the ChannelType specified.
  */
-void EdgeDetectorModule::CondenseImage(cv::InputArray in, cv::OutputArray out, int channelType = 0){
-    if(channelType == ChannelType::GRAYSCALE){
-        cvtColor(in, out, COLOR_BGR2GRAY);
-    }
-    else if(channelType == ChannelType::HUE){
+void EdgeDetectorModule::CondenseImage(cv::InputArray in, cv::OutputArray out, int channelType = 0) {
+	if (channelType == ChannelType::GRAYSCALE) {
+		cvtColor(in, out, COLOR_BGR2GRAY);
+	}
+	else if (channelType == ChannelType::HUE) {
 		//http://stackoverflow.com/questions/29156091/opencv-edge-border-detection-based-on-color
-        std::vector<cv::Mat> channels;
-        cv::Mat hsv;
-        cv::cvtColor( in, hsv, CV_BGR2HSV );
-        cv::split(hsv, channels);
-        channels[0].copyTo(out);
+		std::vector<cv::Mat> channels;
+		cv::Mat hsv;
+		cv::cvtColor(in, hsv, CV_BGR2HSV);
+		cv::split(hsv, channels);
+		channels[0].copyTo(out);
 		//cv::Mat shiftedH;
 		//out.copyTo(shiftedH);
 		//int shift = 25; // in openCV hue values go from 0 to 180 (so have to be doubled to get to 0 .. 360) because of byte range from 0 to 255
@@ -341,31 +341,31 @@ void EdgeDetectorModule::CondenseImage(cv::InputArray in, cv::OutputArray out, i
 		//	}
 		//shiftedH.copyTo(out);
 		cv::imshow("wow", out);
-        hsv.release();
-    }
-    else if(channelType == ChannelType::COLOR){
-        in.copyTo(out);
-        //Do nothing
-    }
+		hsv.release();
+	}
+	else if (channelType == ChannelType::COLOR) {
+		in.copyTo(out);
+		//Do nothing
+	}
 }
 
 /**
  Applies a blurring operation to the image based on blurType. Defaults to, uh,
  BlurType::DEFAULT, which is the regular OpenCV kernel blur function.
  */
-void EdgeDetectorModule::BlurImage(cv::InputArray in, cv::OutputArray out, int blurType = 0){
-    switch(blurType){
-        default:
-        case(BlurType::DEFAULT): //Homogeneous
-            blur(in, out, cv::Size(7, 7));
-            break;
-        case(BlurType::GAUSSIAN):
-            GaussianBlur(in, out, cv::Size(7,7), 1.5, 1.5);
-            break;
-        case(BlurType::NONE):
-            break;
-            
-    }
+void EdgeDetectorModule::BlurImage(cv::InputArray in, cv::OutputArray out, int blurType = 0) {
+	switch (blurType) {
+	default:
+	case(BlurType::DEFAULT): //Homogeneous
+		blur(in, out, cv::Size(7, 7));
+		break;
+	case(BlurType::GAUSSIAN):
+		GaussianBlur(in, out, cv::Size(7, 7), 1.5, 1.5);
+		break;
+	case(BlurType::NONE):
+		break;
+
+	}
 }
 
 void EdgeDetectorModule::DrawGUI() {
@@ -389,7 +389,7 @@ void EdgeDetectorModule::DrawGUI() {
 			ShowHelpMarker("Click the color to show the editor.\nDouble click a field to type your own value.");
 		}
 		else {
-			ImGui::ValueColor("Average", averageColor); 
+			ImGui::ValueColor("Average", averageColor);
 			//ImGui::SameLine();
 			ImGui::ValueColor("Complementary", complementaryColor);
 		}

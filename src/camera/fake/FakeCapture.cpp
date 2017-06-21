@@ -31,7 +31,7 @@ void FakeCapture::Update()
 {
 	frameIsReady = false;
 	if (cap->isOpened()) {
-		
+
 		if (!playAsFastAsPossible) {
 			// Wait until enough time has elapsed to constitute a frame in the video.
 			double fps = cap->get(CAP_PROP_FPS);

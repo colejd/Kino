@@ -16,12 +16,12 @@
 
 #include "ofxTimeMeasurements.h"
 
-/* 
-Holds the code for grabbing images from a camera and performing 
+/*
+Holds the code for grabbing images from a camera and performing
 OpenCV operations on them. Should not have any engine-specific code
 (i.e. OpenFrameworks or Cinder code).
 */
-class KinoCore: public UsesGUI {
+class KinoCore : public UsesGUI {
 public:
 
 	KinoCore();

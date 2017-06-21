@@ -34,8 +34,8 @@ void ClassifierLens::InitFromConfig() {
 
 	string basePath = ConfigHandler::GetValue("YOLO.BASE_PATH", "").asString();
 	darknet.init(ofToDataPath(basePath + cfg_file),
-				 ofToDataPath(basePath + weights_file),
-				 names_list == "" ? "" : ofToDataPath(basePath + names_list));
+		ofToDataPath(basePath + weights_file),
+		names_list == "" ? "" : ofToDataPath(basePath + names_list));
 }
 
 
@@ -64,7 +64,7 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 			in.copyTo(analysisMat);
 		}
 		// Store the size of the downsampled image for debug later
-		lastImageSize = Size { analysisMat.cols, analysisMat.rows };
+		lastImageSize = Size{ analysisMat.cols, analysisMat.rows };
 
 		cv::cvtColor(analysisMat, analysisMat, CV_BGR2RGB);
 
@@ -101,7 +101,7 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 			// Interior label
 			cv::Point origin = cv::Point(rect.x + (lineThickness / 2.0), rect.y + text.height + (lineThickness / 2.0));
 			cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
-			
+
 			// Exterior label
 			//cv::Point origin = cv::Point(rect.x - (lineThickness / 2.0), rect.y - text.height - (lineThickness / 2.0) + baseline); // Exterior label
 			//cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
@@ -178,7 +178,7 @@ void ClassifierLens::DrawGUI() {
 			ImGui::BeginChild("##scrolling", ImVec2(0, ImGui::GetTextLineHeightWithSpacing() * maxLines), true, 0);
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 5));
-			 
+
 			bool drawLine = true;
 			// Fill scroll box with items if enabled
 			if (enabled) {

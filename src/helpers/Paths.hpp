@@ -14,7 +14,7 @@ namespace Paths {
 			return path.substr(pos + 1);
 		}
 		return path;
-	
+
 	}
 
 
