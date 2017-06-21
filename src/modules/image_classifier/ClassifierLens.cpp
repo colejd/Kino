@@ -111,31 +111,6 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 		}
 		TS_STOP_NIF("Draw Rects");
 
-
-		/*double alpha = blendAmt;
-		if (!lastNightmare.empty) {
-			drawingMat.copyTo(lastNightmare);
-		}
-
-		double beta = (1.0 - alpha);
-		addWeighted(drawingMat, alpha, lastNightmare, beta, 0.0, drawingMat);*/
-
-		////// blend last dream with cam
-		//ofPixels p1 = nightmare.getPixels();
-		//ofPixels p2 = img.getPixels();
-		//ofPixels pix;
-		//pix.allocate(p1.getWidth(), p2.getHeight(), 3);
-		//for (int i = 0; i<pix.size(); i++) {
-		//	pix[i] = blendAmt * p1[i] + (1.0 - blendAmt) * p2[i];
-		//}
-
-		//// dream
-		//nightmare = darknet.nightmare(img.getPixelsRef(), max_layer, range, norm, 1, iters, octaves, rate, thresh);
-		//
-		//cv::Mat newMat = cv::Mat(nightmare.getHeight(), nightmare.getWidth(), CV_MAKETYPE(CV_8U, 3), nightmare.getPixelsRef().getData(), 0);
-		//cvtColor(newMat, out, COLOR_BGR2RGB);
-
-
 		drawingMat.copyTo(out);
 
 		TS_STOP_NIF("Classifier Lens");

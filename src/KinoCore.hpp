@@ -7,9 +7,10 @@
 
 #include "gui/UsesGUI.hpp"
 
-#include "modules/edge_detector/EdgeDetectorModule.hpp"
-#include "modules/face_detector/FaceDetectorModule.hpp"
-#include "modules/image_classifier/ClassifierLens.hpp"
+#include <modules/edge_detector/EdgeDetectorModule.hpp>
+#include <modules/face_detector/FaceDetectorModule.hpp>
+#include <modules/image_classifier/ClassifierLens.hpp>
+#include <modules/deepdream/DeepDreamLens.hpp>
 
 #include "camera/CameraCapture.hpp"
 
@@ -37,6 +38,7 @@ public:
 	EdgeDetectorModule edgeDetector;
 	FaceDetectorModule faceDetector;
 	ClassifierLens classifierLens;
+	DeepDreamLens deepdreamLens;
 
 	cv::UMat leftMat = cv::UMat();
 	cv::UMat rightMat = cv::UMat();

@@ -31,9 +31,9 @@ void KinoCore::Setup()
 
 	if (demoMode) {
 		// Demo mode: show only input from the webcam and make full screen
-		//capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::GENERIC, true);
+		capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::GENERIC, true);
 		//capture1->StartFakeCapture(ofToDataPath("video/private/luna_skittles.MOV"), true);
-		capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
+		//capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
 
 	}
 	else {
@@ -87,6 +87,7 @@ void KinoCore::ProcessCapture(CameraCapture *cap, cv::OutputArray output, string
 		edgeDetector.ProcessFrame(intermediate, intermediate);
 		faceDetector.ProcessFrame(intermediate, intermediate);
 		classifierLens.ProcessFrame(intermediate, intermediate);
+		deepdreamLens.ProcessFrame(intermediate, intermediate);
 
 		TS_START_NIF("Frame Copy");
 		//output = rawFrame.clone();
@@ -169,6 +170,7 @@ void KinoCore::DrawAllGUIs() {
 	faceDetector.DrawGUI();
 	edgeDetector.DrawGUI();
 	classifierLens.DrawGUI();
+	deepdreamLens.DrawGUI();
 }
 
 void KinoCore::DrawGUI() {

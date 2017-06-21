@@ -145,6 +145,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClCompile Include="src\gui\performance\FpsGraph.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\modules\camera_calibrator\CameraCalibratorModule.cpp" />
+    <ClCompile Include="src\modules\deepdream\DeepDreamLens.cpp" />
     <ClCompile Include="src\modules\edge_detector\EdgeDetectorModule.cpp" />
     <ClCompile Include="src\modules\edge_detector\ParallelContourDetector.cpp" />
     <ClCompile Include="src\modules\face_detector\FaceDetectorModule.cpp" />
@@ -249,6 +250,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClInclude Include="src\helpers\Paths.hpp" />
     <ClInclude Include="src\helpers\Vectors.h" />
     <ClInclude Include="src\modules\camera_calibrator\CameraCalibratorModule.hpp" />
+    <ClInclude Include="src\modules\deepdream\DeepDreamLens.hpp" />
     <ClInclude Include="src\modules\edge_detector\EdgeDetectorModule.hpp" />
     <ClInclude Include="src\modules\edge_detector\ParallelContourDetector.hpp" />
     <ClInclude Include="src\modules\face_detector\FaceDetectorModule.hpp" />

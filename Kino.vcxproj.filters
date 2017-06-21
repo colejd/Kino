@@ -109,6 +109,9 @@
     <ClCompile Include="src\util\performance\GPUMonitor.cpp">
       <Filter>src\util\performance</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\deepdream\DeepDreamLens.cpp">
+      <Filter>src\modules\deepdream</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -248,6 +251,9 @@
     </Filter>
     <Filter Include="src\util\performance">
       <UniqueIdentifier>{e27dd490-f68f-4d93-b9b9-557a383e1515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\modules\deepdream">
+      <UniqueIdentifier>{a9925da5-119c-48d4-8c43-bba6ba6ff83e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -565,6 +571,9 @@
     </ClInclude>
     <ClInclude Include="src\util\performance\GPUMonitor.hpp">
       <Filter>src\util\performance</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\deepdream\DeepDreamLens.hpp">
+      <Filter>src\modules\deepdream</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
