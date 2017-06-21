@@ -1,8 +1,20 @@
-:: Responsible for downloading files that are too large to distribute with the git repo.
+:: Responsible for downloading files that are too large to distribute with the git repo,
+:: as well as fetching the submodules required by this repo.
 @echo off
 
 setlocal
 
+:: Pull the submodules that we need to compile
+echo Downloading submodules...
+echo.
+
+git submodule update --init --recursive
+echo.
+
+echo Submodules downloaded.
+echo.
+
+:: Pull the really large files used by ofxDarknet
 echo This script will download a few assets to the addons folder, as well
 echo as several data files needed for the program to run. These files are
 echo fairly large! You'll need about 1.5 GB of free space.

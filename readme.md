@@ -54,8 +54,8 @@ Requirements:
 - [OpenFrameworks 0.9.8](http://openframeworks.cc/versions/v0.9.8/of_v0.9.8_vs_release.zip)
 
 First, download OpenFrameworks, and clone this project into the `apps/myApps/` directory.
-Then run [setup.bat](/setup.bat). This downloads a few large files as well as some 
-addons that will need to be downloaded for compilation.
+Then run [setup.bat](/setup.bat). This downloads a few large files as well as pulling the
+submodules in the [addons](/addons) directory that the program needs to compile.
 
 You should then be able to open the project in Visual Studio and build.
 
