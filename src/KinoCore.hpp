@@ -43,10 +43,10 @@ public:
 	cv::UMat leftMat = cv::UMat();
 	cv::UMat rightMat = cv::UMat();
 
-	CameraCapture* capture1;
-	CameraCapture* capture2;
+	std::unique_ptr<CameraCapture> capture1;
+	std::unique_ptr<CameraCapture> capture2;
 
-	void ProcessCapture(CameraCapture *cap, cv::OutputArray output, string id);
+	void ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id);
 
 	bool pauseCaptureUpdates = false;
 

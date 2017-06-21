@@ -9,8 +9,6 @@ KinoCore::KinoCore()
 
 KinoCore::~KinoCore()
 {
-	delete capture1;
-	delete capture2;
 } 
 
 void KinoCore::Setup()
@@ -26,14 +24,14 @@ void KinoCore::Setup()
 	edgeDetector = EdgeDetectorModule();
 	faceDetector = FaceDetectorModule();
 
-	capture1 = new CameraCapture();
-	capture2 = new CameraCapture();
+	capture1 = make_unique<CameraCapture>();
+	capture2 = make_unique<CameraCapture>();
 
 	if (demoMode) {
 		// Demo mode: show only input from the webcam and make full screen
-		capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::GENERIC, true);
+		//capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::GENERIC, true);
 		//capture1->StartFakeCapture(ofToDataPath("video/private/luna_skittles.MOV"), true);
-		//capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
+		capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
 
 	}
 	else {
@@ -53,7 +51,7 @@ void KinoCore::Update()
 Runs the latest frame from the capture through each module when there is
 a new frame and returns the result as a cv::Mat.
 */
-void KinoCore::ProcessCapture(CameraCapture *cap, cv::OutputArray output, string id)
+void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id)
 {
 	if (!cap->IsInitialized()) {
 		return;
