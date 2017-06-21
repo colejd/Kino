@@ -1,16 +1,16 @@
-#include "CameraCalibratorModule.hpp"
+#include "CameraCalibratorLens.hpp"
 
 using namespace cv;
 
-CameraCalibratorModule::CameraCalibratorModule(){
+CameraCalibratorLens::CameraCalibratorLens(){
     
 }
 
-CameraCalibratorModule::~CameraCalibratorModule(){
+CameraCalibratorLens::~CameraCalibratorLens(){
     
 }
 
-void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
+void CameraCalibratorLens::ProcessFrame(cv::InputArray in, cv::OutputArray out){
     if(IsEnabled()){
         cv::Mat latestStep;
         in.copyTo(latestStep);
@@ -27,7 +27,7 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out
     }
 }
 
-void CameraCalibratorModule::DrawGUI(){
+void CameraCalibratorLens::DrawGUI(){
     if(showGUI){
         ImGui::Begin("Face Detector", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
         

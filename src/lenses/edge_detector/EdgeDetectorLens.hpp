@@ -6,7 +6,7 @@
 #include "opencv2/opencv.hpp"
 #include <opencv2/core/ocl.hpp>
 
-#include "modules/ModuleCommon.hpp"
+#include "lenses/LensCommon.hpp"
 
 #include "gui/UsesGUI.hpp"
 #include "gui/thirdparty/ImGuiColorPicker.hpp"
@@ -22,10 +22,10 @@
 using namespace std;
 using namespace cv;
 
-class EdgeDetectorModule : public ModuleCommon, public UsesGUI {
+class EdgeDetectorLens : public LensCommon, public UsesGUI {
 public:
-    EdgeDetectorModule();
-    ~EdgeDetectorModule();
+    EdgeDetectorLens();
+    ~EdgeDetectorLens();
     
     void DrawGUI() override;
     

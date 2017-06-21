@@ -18,7 +18,7 @@ well as processing them through each individual Lens.
 
 ### Lenses
 Lenses are the in-program term for self-contained image processing routines. They inherit from
-`ModuleCommon`. Broadly, they have a `ProcessFrame` function that takes an input image, and
+`LensCommon`. Broadly, they have a `ProcessFrame` function that takes an input image, and
 writes its results to an output image. They are enabled and disabled individually so that
 you can mix and match what processing you want to do. Each one manages its own GUI (though
 the code that draws it is in the Core).
