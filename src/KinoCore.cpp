@@ -48,8 +48,8 @@ void KinoCore::Update()
 }
 
 /**
-Runs the latest frame from the capture through each module when there is
-a new frame and returns the result as a cv::Mat.
+If the capture has a new frame ready, run the frame through each module. The
+results are written to `output`.
 */
 void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id)
 {
@@ -164,7 +164,6 @@ Draw the imgui windows and controls for this class and all the modules it manage
 void KinoCore::DrawAllGUIs() {
 	DrawGUI();
 
-	// TODO: Store each module is a vector and call DrawGUI on all of them.
 	faceDetector.DrawGUI();
 	edgeDetector.DrawGUI();
 	classifierLens.DrawGUI();
