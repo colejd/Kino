@@ -22,8 +22,9 @@ they can see.
 A work in progress. This is an attempt at visually augmenting important indooor
 scene features that are in the user's field of vision. Right now, these are
 light switches, doorknobs, and exit signs. These are detected through Darknet's YOLO,
-a CNN-based image classifier. I will be making various changes to speed it up
-further, as a baseline of 60 FPS is very important for wearable AR.
+a CNN-based image classifier. I will be making various efforts to increase both
+the speed and integrity of the object detection, as these are important for comfort
+on a wearable AR device.
 
 Please note that this code is in a very early state.
 

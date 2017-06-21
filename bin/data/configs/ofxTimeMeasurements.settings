@@ -1,1 +1,12 @@
+Frame Copy=1|1
+Capture Left Update=1|1
 update()=1|1
+core=1|1
+draw()=1|1
+Frame Grab=1|1
+Draw Mat=1|1
+GL_Draw=1|1
+ofImage Convert=1|1
+Output Draw=1|1
+ImGui Draw=1|1
+keyPressed()=1|1
