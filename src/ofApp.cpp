@@ -153,6 +153,12 @@ void ofApp::DrawGUI() {
 	//if (coreFps > frameTarget) textColor = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); //Set red if over max frame time
 	//else if (coreFps > frameTarget / 2.0f) textColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f); //Set yellow if halfway to max frame time
 	//ImGui::SameLine(ImGui::GetWindowWidth() - 160); ImGui::TextColored(textColor, "core: %.1f ms", coreFps);
+
+
+	#ifdef _DEBUG
+	ImGui::SameLine(ImGui::GetWindowWidth() - 250);
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Debug Build");
+	#endif
 	
 	// Draw GPU usage percentage
 	ImGui::SameLine(ImGui::GetWindowWidth() - 160);
@@ -331,6 +337,9 @@ void ofApp::keyPressed(int key) {
 		showLog = !showLog;
 	}
 	else if (key == 'p' || key == 'P') {
+		core->pauseCaptureUpdates = !core->pauseCaptureUpdates;
+	}
+	else if (key == OF_KEY_F11) {
 		// Take and save a screenshot
 		ofImage img;
 		img.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
