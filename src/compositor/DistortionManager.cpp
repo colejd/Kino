@@ -32,7 +32,7 @@ void DistortionManager::Init() {
 		//return false;
 	}
 
-	Kino::app_log.AddLog("DistortionManager initialized.\n");
+	//Kino::app_log.AddLog("DistortionManager initialized.\n");
 
 	//return true;
 }
