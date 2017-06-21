@@ -60,4 +60,10 @@ class ofApp : public ofBaseApp, public UsesGUI {
 
 		bool demoMode = false;
 
+	private:
+		bool ctrlPressed = false;
+
+		void TakeScreenshot();
+
+
 };

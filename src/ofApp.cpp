@@ -115,6 +115,9 @@ void ofApp::DrawGUI() {
 		if (ImGui::MenuItem("Fullscreen", "F")) {
 			ofToggleFullscreen();
 		}
+		if (ImGui::MenuItem("Take Screenshot", "F11")) {
+			TakeScreenshot();
+		}
 		ImGui::MenuItem("Help", nullptr, &showHelp);
 		if (ImGui::MenuItem("Quit", "ESC")) {
 			ofExit(EXIT_SUCCESS);
@@ -341,9 +344,7 @@ void ofApp::keyPressed(int key) {
 	}
 	else if (key == OF_KEY_F11) {
 		// Take and save a screenshot
-		ofImage img;
-		img.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
-		img.save("Screenshot.png"); // Saved in the data folder
+		TakeScreenshot();
 	}
 }
 
@@ -385,4 +386,11 @@ void ofApp::gotMessage(ofMessage msg) {
 
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
+}
+
+void ofApp::TakeScreenshot() {
+	// Take and save a screenshot
+	ofImage img;
+	img.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+	img.save("Screenshot.png"); // Saved in the data folder
 }
