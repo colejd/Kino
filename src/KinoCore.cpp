@@ -25,11 +25,13 @@ void KinoCore::Setup()
 	capture2 = make_unique<CameraCapture>();
 
 	if (demoMode) {
-		Kino::app_log.AddLog("Demo mode active.\n");
 
 		// Demo mode: show only input from one capture source in fullscreen
 		string cameraType = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_MODE", "").asString();
 		int cameraIndex = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_INDEX", 0).asInt();
+
+		Kino::app_log.AddLog("Demo Mode active (mode: %s)\n", cameraType);
+
 		if (cameraType == "SYSTEM") {
 			capture1->StartCapturing(cameraIndex, CameraCapture::CAPTURE_TYPE::GENERIC, true);
 		}
