@@ -17,12 +17,18 @@ ClassifierLens::~ClassifierLens() {
 
 }
 
-void ClassifierLens::InitWithConfig(YoloConfig config) {
-	this->config = config;
-	string basePath = "data/darknet/";
-	darknet.init(ofToDataPath(basePath + config.cfgFile),
-				 ofToDataPath(basePath + config.weightFile),
-				 config.namesList == "" ? "" : ofToDataPath(basePath + config.namesList));
+void ClassifierLens::InitFromConfig() {
+	// Construct the key to the desired config from YOLO.USED_CONFIG
+	string config_key = "YOLO.CONFIGS." + ConfigHandler::GetValue("YOLO.USED_CONFIG", "").asString();
+	// Find paths specified in the config given by the key
+	cfg_file = ConfigHandler::GetValue(config_key + ".CFG_FILE", "").asString();
+	weights_file = ConfigHandler::GetValue(config_key + ".WEIGHTS_FILE", "").asString();
+	names_list = ConfigHandler::GetValue(config_key + ".NAMES_LIST", "").asString();
+
+	string basePath = ConfigHandler::GetValue("YOLO.BASE_PATH", "").asString();
+	darknet.init(ofToDataPath(basePath + cfg_file),
+				 ofToDataPath(basePath + weights_file),
+				 names_list == "" ? "" : ofToDataPath(basePath + names_list));
 }
 
 
@@ -31,7 +37,7 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 		TS_START_NIF("Classifier Lens");
 
 		if (!initialized) {
-			InitWithConfig(tinyYoloVoc);
+			InitFromConfig();
 			initialized = true;
 		}
 
@@ -160,10 +166,11 @@ void ClassifierLens::DrawGUI() {
 			// Info
 
 			if (ImGui::TreeNode("Darknet Info")) {
-				ImGui::Text("%-10s %s", "Config:", Paths::GetFileNameFromPath(config.cfgFile).c_str());
-				ImGui::Text("%-10s %s", "Weights:", Paths::GetFileNameFromPath(config.weightFile).c_str());
+				ImGui::Text("%-10s %s", "Preset: ", ConfigHandler::GetValue("YOLO.USED_CONFIG", "").asString().c_str());
+				ImGui::Text("%-10s %s", "Config:", Paths::GetFileNameFromPath(cfg_file).c_str());
+				ImGui::Text("%-10s %s", "Weights:", Paths::GetFileNameFromPath(weights_file).c_str());
 
-				string namesList = Paths::GetFileNameFromPath(config.namesList);
+				string namesList = Paths::GetFileNameFromPath(names_list);
 				ImGui::Text("%-10s %s", "Names:", namesList == "" ? "None" : namesList.c_str());
 
 				ImGui::TreePop();

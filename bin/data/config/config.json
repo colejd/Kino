@@ -25,9 +25,47 @@
 	  }
   },
 
-  //OpenCV settings
+  // OpenCV settings
   "OPENCV": {
-	  "USE_OPENCL": false
+    "USE_OPENCL": false
+  },
+
+  // Configuration for the YOLO object detector (ofxDarknet)
+  "YOLO": {
+    // Relative to bin/data/
+    "BASE_PATH": "data/darknet/",
+    // Pick one of  the configs below
+    "USED_CONFIG": "TINY_YOLO_VOC",
+
+    // Paths are relative to data/data/darknet/
+    "CONFIGS": {
+      "YOLO": {
+        "CFG_FILE": "cfg/yolo.cfg",
+        "WEIGHTS_FILE": "yolo.weights",
+        "NAMES_LIST": "cfg/coco.names"
+      },
+      "TINY_YOLO": {
+        "CFG_FILE": "cfg/tiny-yolo.cfg",
+        "WEIGHTS_FILE": "tiny-yolo.weights",
+        "NAMES_LIST": "cfg/coco.names"
+      },
+      "YOLO_VOC": {
+        "CFG_FILE": "cfg/yolo-voc.cfg",
+        "WEIGHTS_FILE": "yolo-voc.weights",
+        "NAMES_LIST": "cfg/voc.names"
+      },
+      "TINY_YOLO_VOC": {
+        "CFG_FILE": "cfg/tiny-yolo-voc.cfg",
+        "WEIGHTS_FILE": "tiny-yolo-voc.weights",
+        "NAMES_LIST": "cfg/voc.names"
+      },
+      "YOLO_9K": {
+        "CFG_FILE": "cfg/yolo9000.cfg",
+        "WEIGHTS_FILE": "yolo9000.weights",
+        "NAMES_LIST": "cfg/9k.names"
+      }
+    }
+
   }
 
 }
