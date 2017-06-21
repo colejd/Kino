@@ -64,3 +64,13 @@ This program uses ofxImGui, which itself uses Dear Imgui internally. I outright 
 ofxImGui's interface since I only use it for its ready-to-go integration with OpenFrameworks,
 and I instead use Imgui directly. If you're modifying this code, I recommend that you do the 
 same.
+
+## Files
+### `/frameworks/` 
+Holds any libraries that we need for compilation that don't come as OpenFrameworks
+plugins (LibUSB), or that require precompilation (like OpenCV).
+
+### `/addons/` 
+Contains the OpenFrameworks addons this project needs as git submodules. They're
+locked to specific versions that are known to work. If you want to update any of these, you'll
+need to do it manually.

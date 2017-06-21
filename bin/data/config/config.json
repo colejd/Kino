@@ -31,7 +31,7 @@
 
   "DEMO_SETTINGS": {
 	"ACTIVE": true, // If true, system will use the following info to create and display a capture in fullscreen
-	"CAMERA_MODE": "SYSTEM", // SYSTEM, PS3EYE, FAKE
+	"CAMERA_MODE": "PS3EYE", // SYSTEM, PS3EYE, FAKE
 	"CAMERA_INDEX": 0,
 	"FAKE_VIDEO_PATH": "video/luna1.MOV" // Only needed in FAKE mode
   },
