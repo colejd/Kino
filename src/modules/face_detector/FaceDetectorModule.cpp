@@ -11,8 +11,8 @@
 using namespace cv;
 
 FaceDetectorModule::FaceDetectorModule(){
-    face_cascade.load(ofToDataPath("data/haarcascades/haarcascade_frontalface_alt.xml")) ;
-    eyes_cascade.load(ofToDataPath("data/haarcascades/haarcascade_eye.xml"));
+    face_cascade.load(ofToDataPath("data/haarcascade_frontalface_alt.xml")) ;
+    eyes_cascade.load(ofToDataPath("data/haarcascade_eye.xml"));
     
     //SetupGUIVariables();
 }
