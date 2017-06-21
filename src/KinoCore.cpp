@@ -2,17 +2,14 @@
 
 using namespace cv;
 
-KinoCore::KinoCore()
-{
+KinoCore::KinoCore() {
 	Setup();
 }
 
-KinoCore::~KinoCore()
-{
+KinoCore::~KinoCore() {
 }
 
-void KinoCore::Setup()
-{
+void KinoCore::Setup() {
 	cv::ocl::setUseOpenCL(ConfigHandler::GetValue("OPENCV.USE_OPENCL", false).asBool());
 	bool demoMode = ConfigHandler::GetValue("DEMO_SETTINGS.ACTIVE", false).asBool();
 
@@ -57,8 +54,7 @@ void KinoCore::Setup()
 
 }
 
-void KinoCore::Update()
-{
+void KinoCore::Update() {
 	ProcessCapture(capture1, leftMat, "Left");
 	ProcessCapture(capture2, rightMat, "Right");
 }
@@ -67,8 +63,7 @@ void KinoCore::Update()
 If the capture has a new frame ready, run the frame through each module. The
 results are written to `output`.
 */
-void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id)
-{
+void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id) {
 	if (!cap->IsInitialized()) {
 		return;
 	}
@@ -121,8 +116,7 @@ void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::Out
 /**
 Prints OpenCV debug information.
 */
-void KinoCore::PrintCVDebugInfo()
-{
+void KinoCore::PrintCVDebugInfo() {
 	Kino::app_log.AddLog("\n");
 	Kino::app_log.AddLog("--- INFO ---\n");
 
