@@ -26,6 +26,7 @@ public:
 
 	void GetMemoryStats(long long int &bytesUsed, long long int &bytesTotal);
 	float GetMemoryUsagePercent();
+	int GetNumDevices() { return numGpus; };
 
 private:
 	//==== SINGLETON STUFF ==============================================//
