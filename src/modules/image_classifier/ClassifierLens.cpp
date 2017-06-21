@@ -31,7 +31,7 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 		TS_START_NIF("Classifier Lens");
 
 		if (!initialized) {
-			InitWithConfig(tinyYolo);
+			InitWithConfig(tinyYoloVoc);
 			initialized = true;
 		}
 
