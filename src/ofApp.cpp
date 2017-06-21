@@ -118,7 +118,7 @@ void ofApp::DrawGUI() {
 		if (ImGui::MenuItem("Take Screenshot", "F11")) {
 			TakeScreenshot();
 		}
-		ImGui::MenuItem("Help", nullptr, &showHelp);
+		ImGui::MenuItem("Help", "F1", &showHelp);
 		if (ImGui::MenuItem("Quit", "ESC")) {
 			ofExit(EXIT_SUCCESS);
 		}
@@ -307,7 +307,14 @@ void ofApp::SetGUITheme() {
 
 }
 
-//OpenFrameworks Methods----------------------------------------
+void ofApp::TakeScreenshot() {
+	// Take and save a screenshot
+	ofImage img;
+	img.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+	img.save("Screenshot.png"); // Saved in the data folder
+}
+
+// OpenFrameworks Hooks ----------------------------------------
 void ofApp::keyPressed(int key) {
 	if (key == OF_KEY_ESC) {
 		ofExit(EXIT_SUCCESS);
@@ -341,6 +348,9 @@ void ofApp::keyPressed(int key) {
 	}
 	else if (key == 'p' || key == 'P') {
 		core->pauseCaptureUpdates = !core->pauseCaptureUpdates;
+	}
+	else if (key == OF_KEY_F1) {
+		showHelp = !showHelp;
 	}
 	else if (key == OF_KEY_F11) {
 		// Take and save a screenshot
@@ -386,11 +396,4 @@ void ofApp::gotMessage(ofMessage msg) {
 
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
-}
-
-void ofApp::TakeScreenshot() {
-	// Take and save a screenshot
-	ofImage img;
-	img.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
-	img.save("Screenshot.png"); // Saved in the data folder
 }
