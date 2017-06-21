@@ -64,7 +64,7 @@
       <PreprocessorDefinitions>USE_OFX_FONTSTASH;OPENCV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\frameworks;$(ProjectDir)\frameworks\opencv\include;$(ProjectDir)\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs;..\..\..\addons\ofxDarknet-mrzl-windows\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include;..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include;..\..\..\addons\ofxFontStash-master\libs;..\..\..\addons\ofxFontStash-master\libs\fontstash;..\..\..\addons\ofxFontStash-master\libs\fontstash\src;..\..\..\addons\ofxFontStash-master\src;..\..\..\addons\ofxImGui-master\libs;..\..\..\addons\ofxImGui-master\libs\imgui;..\..\..\addons\ofxImGui-master\libs\imgui\src;..\..\..\addons\ofxImGui-master\src;..\..\..\addons\ofxTimeMeasurements-master\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\frameworks;$(ProjectDir)\frameworks\opencv\include;$(ProjectDir)\src;addons\ofxDarknet\libs;addons\ofxDarknet\src;addons\ofxDarknet\libs\darknet\include;addons\ofxDarknet\libs\3rdparty\include;addons\ofxFontStash\libs;addons\ofxFontStash\libs\fontstash;addons\ofxFontStash\libs\fontstash\src;addons\ofxFontStash\src;addons\ofxImGui\libs;addons\ofxImGui\libs\imgui;addons\ofxImGui\libs\imgui\src;addons\ofxImGui\src;addons\ofxTimeMeasurements\src</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -73,7 +73,7 @@
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalDependencies>%(AdditionalDependencies);libusb-1.0.lib;opencv_world320d.lib;pthreadVC2.lib;cublas.lib;cudart.lib;cudnn.lib;curand.lib;darknet_debug.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)\frameworks\opencv\lib;$(ProjectDir)\frameworks\libusb\lib\x64;..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\lib\vs\x64;..\..\..\addons\ofxDarknet-mrzl-windows\libs\cuda\lib\vs\x64;..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\lib\vs\x64\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)\frameworks\opencv\lib;$(ProjectDir)\frameworks\libusb\lib\x64;addons\ofxDarknet\libs\3rdparty\lib\vs\x64;addons\ofxDarknet\libs\cuda\lib\vs\x64;addons\ofxDarknet\libs\darknet\lib\vs\x64\Debug</AdditionalLibraryDirectories>
       <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
     <PostBuildEvent />
@@ -89,7 +89,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <PreprocessorDefinitions>USE_OFX_FONTSTASH;OPENCV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\frameworks;$(ProjectDir)\frameworks\opencv\include;$(ProjectDir)\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs;..\..\..\addons\ofxDarknet-mrzl-windows\src;..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include;..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include;..\..\..\addons\ofxFontStash-master\libs;..\..\..\addons\ofxFontStash-master\libs\fontstash;..\..\..\addons\ofxFontStash-master\libs\fontstash\src;..\..\..\addons\ofxFontStash-master\src;..\..\..\addons\ofxImGui-master\libs;..\..\..\addons\ofxImGui-master\libs\imgui;..\..\..\addons\ofxImGui-master\libs\imgui\src;..\..\..\addons\ofxImGui-master\src;..\..\..\addons\ofxTimeMeasurements-master\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\frameworks;$(ProjectDir)\frameworks\opencv\include;$(ProjectDir)\src;addons\ofxDarknet\libs;addons\ofxDarknet\src;addons\ofxDarknet\libs\darknet\include;addons\ofxDarknet\libs\3rdparty\include;addons\ofxFontStash\libs;addons\ofxFontStash\libs\fontstash;addons\ofxFontStash\libs\fontstash\src;addons\ofxFontStash\src;addons\ofxImGui\libs;addons\ofxImGui\libs\imgui;addons\ofxImGui\libs\imgui\src;addons\ofxImGui\src;addons\ofxTimeMeasurements\src</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
@@ -100,7 +100,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalDependencies>%(AdditionalDependencies);libusb-1.0.lib;opencv_world320.lib;pthreadVC2.lib;cublas.lib;cudart.lib;cudnn.lib;curand.lib;darknet_release.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)\frameworks\opencv\lib;$(ProjectDir)\frameworks\libusb\lib\x64;..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\lib\vs\x64;..\..\..\addons\ofxDarknet-mrzl-windows\libs\cuda\lib\vs\x64;..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\lib\vs\x64\Release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)\frameworks\opencv\lib;$(ProjectDir)\frameworks\libusb\lib\x64;addons\ofxDarknet\libs\3rdparty\lib\vs\x64;addons\ofxDarknet\libs\cuda\lib\vs\x64;addons\ofxDarknet\libs\darknet\lib\vs\x64\Release</AdditionalLibraryDirectories>
       <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
     <PostBuildEvent />
@@ -117,21 +117,21 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknetGo.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxFontStash-master\src\ofxFontStash.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\fontstash.c" />
-    <ClCompile Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\stb_truetype.c" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\BaseEngine.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\BaseTheme.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\EngineGLFW.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\EngineOpenGLES.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\Gui.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\Helpers.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_demo.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_draw.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurements.cpp" />
+    <ClCompile Include="addons\ofxDarknet\src\ofxDarknet.cpp" />
+    <ClCompile Include="addons\ofxDarknet\src\ofxDarknetGo.cpp" />
+    <ClCompile Include="addons\ofxFontStash\src\ofxFontStash.cpp" />
+    <ClCompile Include="addons\ofxFontStash\libs\fontstash\src\fontstash.c" />
+    <ClCompile Include="addons\ofxFontStash\libs\fontstash\src\stb_truetype.c" />
+    <ClCompile Include="addons\ofxImGui\src\BaseEngine.cpp" />
+    <ClCompile Include="addons\ofxImGui\src\BaseTheme.cpp" />
+    <ClCompile Include="addons\ofxImGui\src\EngineGLFW.cpp" />
+    <ClCompile Include="addons\ofxImGui\src\EngineOpenGLES.cpp" />
+    <ClCompile Include="addons\ofxImGui\src\Gui.cpp" />
+    <ClCompile Include="addons\ofxImGui\src\Helpers.cpp" />
+    <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui.cpp" />
+    <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
+    <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
+    <ClCompile Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurements.cpp" />
     <ClCompile Include="src\camera\CameraCapture.cpp" />
     <ClCompile Include="src\camera\fake\FakeCapture.cpp" />
     <ClCompile Include="src\camera\ps3eye\driver\ps3eye.cpp" />
@@ -155,81 +155,81 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClCompile Include="src\util\performance\GPUMonitor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknetGo.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\pthread.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\sched.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\semaphore.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\cuda\include\cudnn.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\activations.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\activation_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\avgpool_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\batchnorm_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\blas.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\box.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\classifier.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\col2im.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\connected_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\convolutional_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\cost_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\crnn_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\crop_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\cuda.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\data.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\deconvolutional_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\demo.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\detection_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\dropout_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gemm.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\getopt.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gettimeofday.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gru_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\im2col.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\image.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\list.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\local_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\matrix.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\maxpool_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\network.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\nightmare.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\normalization_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\option_list.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\parser.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\region_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\reorg_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn_vid.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\route_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\shortcut_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\softmax_layer.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\stb_image.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\stb_image_write.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\tree.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\unistd.h" />
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\utils.h" />
-    <ClInclude Include="..\..\..\addons\ofxFontStash-master\src\ofxFontStash.h" />
-    <ClInclude Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\fontstash.h" />
-    <ClInclude Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\stb_truetype.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\BaseEngine.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\BaseTheme.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\EngineGLFW.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\EngineOpenGLES.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\Gui.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\Helpers.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\imconfig.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\ofxImGui.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\ThemeTest.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_internal.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_rect_pack.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_textedit.h" />
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_truetype.h" />
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\GL_Measurement.h" />
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurements.h" />
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurementsMacros.h" />
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurementsScoped.h" />
+    <ClInclude Include="addons\ofxDarknet\src\ofxDarknet.h" />
+    <ClInclude Include="addons\ofxDarknet\src\ofxDarknetGo.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\3rdparty\include\pthread.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\3rdparty\include\sched.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\3rdparty\include\semaphore.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\cuda\include\cudnn.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\activations.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\activation_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\avgpool_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\batchnorm_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\blas.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\box.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\classifier.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\col2im.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\connected_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\convolutional_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\cost_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\crnn_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\crop_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\cuda.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\data.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\deconvolutional_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\demo.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\detection_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\dropout_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\gemm.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\getopt.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\gettimeofday.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\gru_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\im2col.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\image.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\list.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\local_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\matrix.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\maxpool_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\network.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\nightmare.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\normalization_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\option_list.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\parser.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\region_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\reorg_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\rnn.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\rnn_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\rnn_vid.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\route_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\shortcut_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\softmax_layer.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\stb_image.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\stb_image_write.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\tree.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\unistd.h" />
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\utils.h" />
+    <ClInclude Include="addons\ofxFontStash\src\ofxFontStash.h" />
+    <ClInclude Include="addons\ofxFontStash\libs\fontstash\src\fontstash.h" />
+    <ClInclude Include="addons\ofxFontStash\libs\fontstash\src\stb_truetype.h" />
+    <ClInclude Include="addons\ofxImGui\src\BaseEngine.h" />
+    <ClInclude Include="addons\ofxImGui\src\BaseTheme.h" />
+    <ClInclude Include="addons\ofxImGui\src\EngineGLFW.h" />
+    <ClInclude Include="addons\ofxImGui\src\EngineOpenGLES.h" />
+    <ClInclude Include="addons\ofxImGui\src\Gui.h" />
+    <ClInclude Include="addons\ofxImGui\src\Helpers.h" />
+    <ClInclude Include="addons\ofxImGui\src\imconfig.h" />
+    <ClInclude Include="addons\ofxImGui\src\ofxImGui.h" />
+    <ClInclude Include="addons\ofxImGui\src\ThemeTest.h" />
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\imgui.h" />
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\imgui_internal.h" />
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\stb_rect_pack.h" />
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\stb_textedit.h" />
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\stb_truetype.h" />
+    <ClInclude Include="addons\ofxTimeMeasurements\src\GL_Measurement.h" />
+    <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurements.h" />
+    <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurementsMacros.h" />
+    <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurementsScoped.h" />
     <ClInclude Include="frameworks\libusb\include\libusb.h" />
     <ClInclude Include="src\camera\CameraCapture.hpp" />
     <ClInclude Include="src\camera\CaptureBase.hpp" />

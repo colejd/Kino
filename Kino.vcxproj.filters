@@ -1,50 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.cpp">
-      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    <ClCompile Include="addons\ofxDarknet\src\ofxDarknet.cpp">
+      <Filter>addons\ofxDarknet\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknetGo.cpp">
-      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    <ClCompile Include="addons\ofxDarknet\src\ofxDarknetGo.cpp">
+      <Filter>addons\ofxDarknet\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxFontStash-master\src\ofxFontStash.cpp">
-      <Filter>addons\ofxFontStash-master\src</Filter>
+    <ClCompile Include="addons\ofxFontStash\src\ofxFontStash.cpp">
+      <Filter>addons\ofxFontStash\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\fontstash.c">
-      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    <ClCompile Include="addons\ofxFontStash\libs\fontstash\src\fontstash.c">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\stb_truetype.c">
-      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    <ClCompile Include="addons\ofxFontStash\libs\fontstash\src\stb_truetype.c">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\BaseEngine.cpp">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClCompile Include="addons\ofxImGui\src\BaseEngine.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\BaseTheme.cpp">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClCompile Include="addons\ofxImGui\src\BaseTheme.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\EngineGLFW.cpp">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClCompile Include="addons\ofxImGui\src\EngineGLFW.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\EngineOpenGLES.cpp">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClCompile Include="addons\ofxImGui\src\EngineOpenGLES.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\Gui.cpp">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClCompile Include="addons\ofxImGui\src\Gui.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\src\Helpers.cpp">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClCompile Include="addons\ofxImGui\src\Helpers.cpp">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui.cpp">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_demo.cpp">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui_demo.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_draw.cpp">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui_draw.cpp">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurements.cpp">
-      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    <ClCompile Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurements.cpp">
+      <Filter>addons\ofxTimeMeasurements\src</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
@@ -117,67 +117,67 @@
     <Filter Include="addons">
       <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows">
+    <Filter Include="addons\ofxDarknet">
       <UniqueIdentifier>{45E2FFE4-4ABC-0171-9621-66DA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\src">
+    <Filter Include="addons\ofxDarknet\src">
       <UniqueIdentifier>{DC4A80BA-AEC2-89A7-6046-B8B2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\libs">
+    <Filter Include="addons\ofxDarknet\libs">
       <UniqueIdentifier>{0C370341-8360-2683-B468-02E4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\3rdparty">
+    <Filter Include="addons\ofxDarknet\libs\3rdparty">
       <UniqueIdentifier>{7B110697-7F0A-59CE-67B5-FB83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\3rdparty\include">
+    <Filter Include="addons\ofxDarknet\libs\3rdparty\include">
       <UniqueIdentifier>{0D8D4C31-5942-5C25-3ED0-F0C2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\cuda">
+    <Filter Include="addons\ofxDarknet\libs\cuda">
       <UniqueIdentifier>{8BD564C0-6B03-A7D2-1D09-A9F3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\cuda\include">
+    <Filter Include="addons\ofxDarknet\libs\cuda\include">
       <UniqueIdentifier>{B13F4421-70D4-BF08-FA93-C9EE}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\darknet">
+    <Filter Include="addons\ofxDarknet\libs\darknet">
       <UniqueIdentifier>{9C1284C2-3892-170B-08AB-9667}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxDarknet-mrzl-windows\libs\darknet\include">
+    <Filter Include="addons\ofxDarknet\libs\darknet\include">
       <UniqueIdentifier>{66BFD694-C09E-3682-5E4F-E8C4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxFontStash-master">
+    <Filter Include="addons\ofxFontStash">
       <UniqueIdentifier>{4A49F279-9CA2-D809-B517-1909}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxFontStash-master\src">
+    <Filter Include="addons\ofxFontStash\src">
       <UniqueIdentifier>{CEAD7081-3564-80BF-2C48-6D95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxFontStash-master\libs">
+    <Filter Include="addons\ofxFontStash\libs">
       <UniqueIdentifier>{FDA6D17F-55CB-533B-0584-184A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxFontStash-master\libs\fontstash">
+    <Filter Include="addons\ofxFontStash\libs\fontstash">
       <UniqueIdentifier>{6BFA5D8C-E2E5-F9C6-FDAF-4FB0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxFontStash-master\libs\fontstash\src">
+    <Filter Include="addons\ofxFontStash\libs\fontstash\src">
       <UniqueIdentifier>{F0383575-3180-E444-89DE-6423}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxImGui-master">
+    <Filter Include="addons\ofxImGui">
       <UniqueIdentifier>{2B8F04E4-F73A-7D4E-036C-3BC0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxImGui-master\src">
+    <Filter Include="addons\ofxImGui\src">
       <UniqueIdentifier>{3E49D808-09FB-B55D-1E1B-A8FA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxImGui-master\libs">
+    <Filter Include="addons\ofxImGui\libs">
       <UniqueIdentifier>{42D22160-9A4B-FE8D-ED6A-C16C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxImGui-master\libs\imgui">
+    <Filter Include="addons\ofxImGui\libs\imgui">
       <UniqueIdentifier>{932D7D6A-E133-8C0C-8AE5-1823}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxImGui-master\libs\imgui\src">
+    <Filter Include="addons\ofxImGui\libs\imgui\src">
       <UniqueIdentifier>{A1479D75-2495-EE49-73A3-A516}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxTimeMeasurements-master">
+    <Filter Include="addons\ofxTimeMeasurements">
       <UniqueIdentifier>{E4EDAA88-8627-130D-CB32-9E43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxTimeMeasurements-master\src">
+    <Filter Include="addons\ofxTimeMeasurements\src">
       <UniqueIdentifier>{1764F387-9C94-7032-E0F2-6DEF}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\camera">
@@ -251,230 +251,230 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknet.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    <ClInclude Include="addons\ofxDarknet\src\ofxDarknet.h">
+      <Filter>addons\ofxDarknet\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\src\ofxDarknetGo.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\src</Filter>
+    <ClInclude Include="addons\ofxDarknet\src\ofxDarknetGo.h">
+      <Filter>addons\ofxDarknet\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\pthread.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\3rdparty\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\3rdparty\include\pthread.h">
+      <Filter>addons\ofxDarknet\libs\3rdparty\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\sched.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\3rdparty\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\3rdparty\include\sched.h">
+      <Filter>addons\ofxDarknet\libs\3rdparty\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\3rdparty\include\semaphore.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\3rdparty\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\3rdparty\include\semaphore.h">
+      <Filter>addons\ofxDarknet\libs\3rdparty\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\cuda\include\cudnn.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\cuda\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\cuda\include\cudnn.h">
+      <Filter>addons\ofxDarknet\libs\cuda\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\activations.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\activations.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\activation_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\activation_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\avgpool_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\avgpool_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\batchnorm_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\batchnorm_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\blas.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\blas.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\box.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\box.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\classifier.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\classifier.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\col2im.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\col2im.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\connected_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\connected_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\convolutional_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\convolutional_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\cost_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\cost_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\crnn_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\crnn_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\crop_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\crop_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\cuda.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\cuda.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\data.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\data.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\deconvolutional_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\deconvolutional_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\demo.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\demo.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\detection_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\detection_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\dropout_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\dropout_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gemm.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\gemm.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\getopt.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\getopt.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gettimeofday.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\gettimeofday.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\gru_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\gru_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\im2col.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\im2col.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\image.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\image.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\list.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\list.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\local_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\local_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\matrix.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\matrix.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\maxpool_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\maxpool_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\network.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\network.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\nightmare.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\nightmare.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\normalization_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\normalization_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\option_list.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\option_list.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\parser.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\parser.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\region_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\region_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\reorg_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\reorg_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\rnn.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\rnn_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\rnn_vid.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\rnn_vid.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\route_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\route_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\shortcut_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\shortcut_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\softmax_layer.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\softmax_layer.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\stb_image.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\stb_image.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\stb_image_write.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\stb_image_write.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\tree.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\tree.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\unistd.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\unistd.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxDarknet-mrzl-windows\libs\darknet\include\utils.h">
-      <Filter>addons\ofxDarknet-mrzl-windows\libs\darknet\include</Filter>
+    <ClInclude Include="addons\ofxDarknet\libs\darknet\include\utils.h">
+      <Filter>addons\ofxDarknet\libs\darknet\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxFontStash-master\src\ofxFontStash.h">
-      <Filter>addons\ofxFontStash-master\src</Filter>
+    <ClInclude Include="addons\ofxFontStash\src\ofxFontStash.h">
+      <Filter>addons\ofxFontStash\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\fontstash.h">
-      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    <ClInclude Include="addons\ofxFontStash\libs\fontstash\src\fontstash.h">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxFontStash-master\libs\fontstash\src\stb_truetype.h">
-      <Filter>addons\ofxFontStash-master\libs\fontstash\src</Filter>
+    <ClInclude Include="addons\ofxFontStash\libs\fontstash\src\stb_truetype.h">
+      <Filter>addons\ofxFontStash\libs\fontstash\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\BaseEngine.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\BaseEngine.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\BaseTheme.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\BaseTheme.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\EngineGLFW.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\EngineGLFW.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\EngineOpenGLES.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\EngineOpenGLES.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\Gui.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\Gui.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\Helpers.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\Helpers.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\imconfig.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\imconfig.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\ofxImGui.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\ofxImGui.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\src\ThemeTest.h">
-      <Filter>addons\ofxImGui-master\src</Filter>
+    <ClInclude Include="addons\ofxImGui\src\ThemeTest.h">
+      <Filter>addons\ofxImGui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui.h">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\imgui.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\imgui_internal.h">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\imgui_internal.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_rect_pack.h">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\stb_rect_pack.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_textedit.h">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\stb_textedit.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxImGui-master\libs\imgui\src\stb_truetype.h">
-      <Filter>addons\ofxImGui-master\libs\imgui\src</Filter>
+    <ClInclude Include="addons\ofxImGui\libs\imgui\src\stb_truetype.h">
+      <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\GL_Measurement.h">
-      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    <ClInclude Include="addons\ofxTimeMeasurements\src\GL_Measurement.h">
+      <Filter>addons\ofxTimeMeasurements\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurements.h">
-      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurements.h">
+      <Filter>addons\ofxTimeMeasurements\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurementsMacros.h">
-      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurementsMacros.h">
+      <Filter>addons\ofxTimeMeasurements\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements-master\src\ofxTimeMeasurementsScoped.h">
-      <Filter>addons\ofxTimeMeasurements-master\src</Filter>
+    <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurementsScoped.h">
+      <Filter>addons\ofxTimeMeasurements\src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>

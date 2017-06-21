@@ -1,30 +1,7 @@
-:: Responsible for downloading and installing the addons needed 
-:: for the program to compile.
-
+:: Responsible for downloading files that are too large to distribute with the git repo.
 @echo off
 
 setlocal
-
-echo Checking out addons...
-set currentDir=%CD%
-cd ../../../addons/
-echo.
-
-git clone --branch mrzl/windows --single-branch https://github.com/seieibob/ofxDarknet.git --depth 1 ./ofxDarknet-mrzl-windows
-git clone https://github.com/armadillu/ofxFontStash.git --depth 1 ./ofxFontStash-master
-git clone https://github.com/jvcleave/ofxImGui.git --depth 1 ./ofxImGui-master
-git clone https://github.com/armadillu/ofxTimeMeasurements.git --depth 1 ./ofxTimeMeasurements-master
-echo.
-
-cd %currentDir%
-echo Checkout completed!
-echo.
-
-
-:: Copy all the config files for darknet.
-:: echo Copying files...
-:: echo Copying completed!
-:: echo.
 
 echo This script will download a few assets to the addons folder, as well
 echo as several data files needed for the program to run. These files are
