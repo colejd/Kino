@@ -23,8 +23,8 @@ void KinoCore::Setup()
 
 	PrintCVDebugInfo();
 
-	edgeDetector = EdgeDetectorLens();
-	faceDetector = FaceDetectorLens();
+	edgeDetector = EdgeDetectorModule();
+	faceDetector = FaceDetectorModule();
 
 	capture1 = new CameraCapture();
 	capture2 = new CameraCapture();

@@ -82,6 +82,21 @@
     <ClCompile Include="src\gui\GUIHandler.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\camera_calibrator\CameraCalibratorModule.cpp">
+      <Filter>src\modules\camera_calibrator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\edge_detector\EdgeDetectorModule.cpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\edge_detector\ParallelContourDetector.cpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\face_detector\FaceDetectorModule.cpp">
+      <Filter>src\modules\face_detector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\image_classifier\ClassifierLens.cpp">
+      <Filter>src\modules\image_classifier</Filter>
+    </ClCompile>
     <ClCompile Include="src\camera\fake\FakeCapture.cpp">
       <Filter>src\camera\fake</Filter>
     </ClCompile>
@@ -93,21 +108,6 @@
     </ClCompile>
     <ClCompile Include="src\util\performance\GPUMonitor.cpp">
       <Filter>src\util\performance</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lenses\edge_detector\ParallelContourDetector.cpp">
-      <Filter>src\modules\edge_detector</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lenses\image_classifier\ClassifierLens.cpp">
-      <Filter>src\modules\image_classifier</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lenses\camera_calibrator\CameraCalibratorLens.cpp">
-      <Filter>src\modules\camera_calibrator</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lenses\face_detector\FaceDetectorLens.cpp">
-      <Filter>src\modules\face_detector</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lenses\edge_detector\EdgeDetectorLens.cpp">
-      <Filter>src\modules\edge_detector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -521,11 +521,29 @@
     <ClInclude Include="src\helpers\Vectors.h">
       <Filter>src\helpers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\ModuleCommon.hpp">
+      <Filter>src\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\camera_calibrator\CameraCalibratorModule.hpp">
+      <Filter>src\modules\camera_calibrator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\edge_detector\EdgeDetectorModule.hpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\edge_detector\ParallelContourDetector.hpp">
+      <Filter>src\modules\edge_detector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\face_detector\FaceDetectorModule.hpp">
+      <Filter>src\modules\face_detector</Filter>
+    </ClInclude>
     <ClInclude Include="src\util\AppLog.hpp">
       <Filter>src\util</Filter>
     </ClInclude>
     <ClInclude Include="src\util\ColorConversion.hpp">
       <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\image_classifier\ClassifierLens.hpp">
+      <Filter>src\modules\image_classifier</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\thirdparty\ImGuiColorPicker.hpp">
       <Filter>src\gui\thirdparty</Filter>
@@ -547,24 +565,6 @@
     </ClInclude>
     <ClInclude Include="src\util\performance\GPUMonitor.hpp">
       <Filter>src\util\performance</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lenses\edge_detector\ParallelContourDetector.hpp">
-      <Filter>src\modules\edge_detector</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lenses\image_classifier\ClassifierLens.hpp">
-      <Filter>src\modules\image_classifier</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lenses\camera_calibrator\CameraCalibratorLens.hpp">
-      <Filter>src\modules\camera_calibrator</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lenses\LensCommon.hpp">
-      <Filter>src\modules</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lenses\face_detector\FaceDetectorLens.hpp">
-      <Filter>src\modules\face_detector</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lenses\edge_detector\EdgeDetectorLens.hpp">
-      <Filter>src\modules\edge_detector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

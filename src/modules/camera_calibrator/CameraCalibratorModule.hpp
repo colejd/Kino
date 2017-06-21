@@ -3,15 +3,15 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/objdetect.hpp"
 
-#include "lenses/LensCommon.hpp"
+#include "modules/ModuleCommon.hpp"
 #include "gui/UsesGUI.hpp"
 
 using namespace std;
 
-class CameraCalibratorLens : public LensCommon, public UsesGUI {
+class CameraCalibratorModule : public ModuleCommon, public UsesGUI {
 public:
-    CameraCalibratorLens();
-    ~CameraCalibratorLens();
+    CameraCalibratorModule();
+    ~CameraCalibratorModule();
     
     void ProcessFrame(cv::InputArray in, cv::OutputArray out);
     

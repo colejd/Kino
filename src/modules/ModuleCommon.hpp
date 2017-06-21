@@ -1,16 +1,17 @@
-#pragma once
-
 //
-//  LensCommon.hpp
+//  ModuleCommon.hpp
 //  FaceOff
 //
 //  Created by Jonathan Cole on 11/3/15.
 //
 //
 
-class LensCommon {
+#ifndef ModuleCommon_h
+#define ModuleCommon_h
+
+class ModuleCommon {
 public:
-	virtual ~LensCommon() {}
+	virtual ~ModuleCommon() {}
 
     void Enable(){
         enabled = true;
@@ -32,3 +33,6 @@ private:
     
     
 };
+
+
+#endif /* ModuleCommon_h */

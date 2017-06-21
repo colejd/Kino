@@ -3,7 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include "lenses/LensCommon.hpp"
+#include "modules/ModuleCommon.hpp"
 #include "gui/UsesGUI.hpp"
 
 #include "ofxDarknet.h"
@@ -13,7 +13,7 @@
 
 #include <helpers/Paths.hpp>
 
-class ClassifierLens : public LensCommon, public UsesGUI {
+class ClassifierLens : public ModuleCommon, public UsesGUI {
 public:
 	ClassifierLens();
 	~ClassifierLens();

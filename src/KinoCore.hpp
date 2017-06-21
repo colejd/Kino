@@ -7,9 +7,9 @@
 
 #include "gui/UsesGUI.hpp"
 
-#include <lenses/edge_detector/EdgeDetectorLens.hpp>
-#include <lenses/face_detector/FaceDetectorLens.hpp>
-#include <lenses/image_classifier/ClassifierLens.hpp>
+#include "modules/edge_detector/EdgeDetectorModule.hpp"
+#include "modules/face_detector/FaceDetectorModule.hpp"
+#include "modules/image_classifier/ClassifierLens.hpp"
 
 #include "camera/CameraCapture.hpp"
 
@@ -34,8 +34,8 @@ public:
 	void DrawGUI();
 	void DrawAllGUIs();
 
-	EdgeDetectorLens edgeDetector;
-	FaceDetectorLens faceDetector;
+	EdgeDetectorModule edgeDetector;
+	FaceDetectorModule faceDetector;
 	ClassifierLens classifierLens;
 
 	cv::UMat leftMat = cv::UMat();

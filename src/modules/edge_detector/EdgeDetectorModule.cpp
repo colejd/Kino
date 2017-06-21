@@ -1,14 +1,14 @@
-#include "EdgeDetectorLens.hpp"
+#include "EdgeDetectorModule.hpp"
 
-EdgeDetectorLens::EdgeDetectorLens(){
+EdgeDetectorModule::EdgeDetectorModule(){
 
 }
 
-EdgeDetectorLens::~EdgeDetectorLens(){
+EdgeDetectorModule::~EdgeDetectorModule(){
     
 }
 
-void EdgeDetectorLens::ProcessFrame(cv::InputArray in, cv::OutputArray out){
+void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 
     if(!in.empty() && IsEnabled()){
 		TS_START_NIF("Edge Detector");
@@ -160,7 +160,7 @@ void EdgeDetectorLens::ProcessFrame(cv::InputArray in, cv::OutputArray out){
     //Directly draw the data from the frame
   //  else {
 		//TS_START_NIF("Copy Output");
-  //      //if(in.empty()) printf("[EdgeDetectorLens] Frame is empty\n");
+  //      //if(in.empty()) printf("[EdgeDetectorModule] Frame is empty\n");
   //      //BlurImage(in, out, currentBlurType);
   //      //filterStylize(in, out);
   //      in.copyTo(out);
@@ -169,7 +169,7 @@ void EdgeDetectorLens::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 
 }
 
-void EdgeDetectorLens::ProcessFrameOld(cv::InputArray in, cv::OutputArray out) {
+void EdgeDetectorModule::ProcessFrameOld(cv::InputArray in, cv::OutputArray out) {
 
 	if (!in.empty() && IsEnabled()) {
 
@@ -307,7 +307,7 @@ void EdgeDetectorLens::ProcessFrameOld(cv::InputArray in, cv::OutputArray out) {
 	//Directly draw the data from the frame
 	else {
 		TS_START_NIF("Copy Output");
-		//if(in.empty()) printf("[EdgeDetectorLens] Frame is empty\n");
+		//if(in.empty()) printf("[EdgeDetectorModule] Frame is empty\n");
 		//BlurImage(in, out, currentBlurType);
 		//filterStylize(in, out);
 		in.copyTo(out);
@@ -320,7 +320,7 @@ void EdgeDetectorLens::ProcessFrameOld(cv::InputArray in, cv::OutputArray out) {
 /**
  Condenses the input image into one channel based on the ChannelType specified.
  */
-void EdgeDetectorLens::CondenseImage(cv::InputArray in, cv::OutputArray out, int channelType = 0){
+void EdgeDetectorModule::CondenseImage(cv::InputArray in, cv::OutputArray out, int channelType = 0){
     if(channelType == ChannelType::GRAYSCALE){
         cvtColor(in, out, COLOR_BGR2GRAY);
     }
@@ -353,7 +353,7 @@ void EdgeDetectorLens::CondenseImage(cv::InputArray in, cv::OutputArray out, int
  Applies a blurring operation to the image based on blurType. Defaults to, uh,
  BlurType::DEFAULT, which is the regular OpenCV kernel blur function.
  */
-void EdgeDetectorLens::BlurImage(cv::InputArray in, cv::OutputArray out, int blurType = 0){
+void EdgeDetectorModule::BlurImage(cv::InputArray in, cv::OutputArray out, int blurType = 0){
     switch(blurType){
         default:
         case(BlurType::DEFAULT): //Homogeneous
@@ -368,7 +368,7 @@ void EdgeDetectorLens::BlurImage(cv::InputArray in, cv::OutputArray out, int blu
     }
 }
 
-void EdgeDetectorLens::DrawGUI() {
+void EdgeDetectorModule::DrawGUI() {
 	if (showGUI) {
 		ImGui::Begin("Edge Detector", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 

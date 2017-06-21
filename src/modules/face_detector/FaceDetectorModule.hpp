@@ -5,16 +5,16 @@
 
 #include "ofMain.h"
 
-#include "lenses/LensCommon.hpp"
+#include "modules/ModuleCommon.hpp"
 #include "gui/UsesGUI.hpp"
 #include "ofxTimeMeasurements.h"
 
 using namespace std;
 
-class FaceDetectorLens : public LensCommon, public UsesGUI {
+class FaceDetectorModule : public ModuleCommon, public UsesGUI {
 public:
-    FaceDetectorLens();
-    ~FaceDetectorLens();
+    FaceDetectorModule();
+    ~FaceDetectorModule();
     
     void ProcessFrame(cv::InputArray in, cv::OutputArray out);
     

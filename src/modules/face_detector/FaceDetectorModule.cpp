@@ -1,27 +1,27 @@
 //
-//  FaceDetectorLens.cpp
+//  FaceDetectorModule.cpp
 //  FaceOff
 //
 //  Created by Jonathan Cole on 11/3/15.
 //
 //
 
-#include "FaceDetectorLens.hpp"
+#include "FaceDetectorModule.hpp"
 
 using namespace cv;
 
-FaceDetectorLens::FaceDetectorLens(){
+FaceDetectorModule::FaceDetectorModule(){
     face_cascade.load(ofToDataPath("data/haarcascade_frontalface_alt.xml")) ;
     eyes_cascade.load(ofToDataPath("data/haarcascade_eye.xml"));
     
     //SetupGUIVariables();
 }
 
-FaceDetectorLens::~FaceDetectorLens(){
+FaceDetectorModule::~FaceDetectorModule(){
     
 }
 
-void FaceDetectorLens::ProcessFrame(cv::InputArray in, cv::OutputArray out){
+void FaceDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
     if(IsEnabled()){
 		TS_START_NIF("Face Detector");
         
@@ -80,7 +80,7 @@ void FaceDetectorLens::ProcessFrame(cv::InputArray in, cv::OutputArray out){
     }
 }
 
-void FaceDetectorLens::DrawGUI(){
+void FaceDetectorModule::DrawGUI(){
     if(showGUI){
         ImGui::Begin("Face Detector", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
         
