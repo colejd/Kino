@@ -31,7 +31,7 @@ Please note that this code is in a very early state.
 ### Camera Support
 Kino is designed to use a pair of PS3 Eye cameras connected via USB.
 However, if you want to use it with your webcam, you can do this
-by setting `WEBCAM_DEMO_MODE` to `true` in the [config file](/bin/data/config/config.json), in which
+by setting `DEMO_SETTINGS.ACTIVE` to `true` in the [config file](/bin/data/config/config.json), in which
 case the first registered webcam on your computer will be used.
 
 
