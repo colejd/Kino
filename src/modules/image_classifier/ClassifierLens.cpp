@@ -60,6 +60,8 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 
 			int lineThickness = 4;
 
+			Scalar color = CV_RGB(0, 255, 0);
+
 			cv::Rect rect = cv::Rect(d.rect.x, d.rect.y, d.rect.width, d.rect.height);
 			if (doDownsampling) { // Rescale the rect to match original size if downsampling was performed
 				rect = cv::Rect(d.rect.x / downSampleRatio, d.rect.y / downSampleRatio, d.rect.width / downSampleRatio, d.rect.height / downSampleRatio);
@@ -67,7 +69,7 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 
 			// Draw the bounding box
 			// Random color: Scalar(rand() & 255, rand() & 255, rand() & 255)
-			cv::rectangle(drawingMat, rect, Scalar(0, 255, 0), lineThickness, 8);
+			cv::rectangle(drawingMat, rect, color, lineThickness, LINE_4);
 
 			// Draw the label in the bounding box
 			int fontface = cv::FONT_HERSHEY_SIMPLEX;
@@ -77,10 +79,16 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 			string label = d.label;
 
 			cv::Size text = cv::getTextSize(label, fontface, scale, textThickness, &baseline);
-			cv::Point origin = cv::Point(rect.x + lineThickness, rect.y + text.height + lineThickness);
 
-			cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), CV_RGB(0, 0, 0), CV_FILLED);
-			cv::putText(drawingMat, label, origin, fontface, scale, CV_RGB(255, 255, 255), textThickness, 8);
+			// Interior label
+			cv::Point origin = cv::Point(rect.x + (lineThickness / 2.0), rect.y + text.height + (lineThickness / 2.0));
+			cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
+			
+			// Exterior label
+			//cv::Point origin = cv::Point(rect.x - (lineThickness / 2.0), rect.y - text.height - (lineThickness / 2.0) + baseline); // Exterior label
+			//cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
+
+			cv::putText(drawingMat, label, origin, fontface, scale, CV_RGB(0, 0, 0), textThickness, 8);
 
 		}
 		TS_STOP_NIF("Draw Rects");
