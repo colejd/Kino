@@ -39,8 +39,8 @@ void ImageCompositor::SetupWindowFBO(int width, int height) {
 	windowFboSettings.internalformat = GL_RGB; //Can use GL_BGR?
 	windowFboSettings.textureTarget = GL_TEXTURE_2D;
 	windowFboSettings.numSamples = fboNumSamples;
-	//windowFboSettings.minFilter = GL_NEAREST;
-	//windowFboSettings.maxFilter = GL_NEAREST;
+	windowFboSettings.minFilter = GL_NEAREST; // Nearest-neighbor scaling
+	windowFboSettings.maxFilter = GL_NEAREST;
 
 	windowFbo.destroy();
 	windowFbo.allocate(windowFboSettings);
