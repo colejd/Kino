@@ -11,8 +11,8 @@
 using namespace cv;
 
 FaceDetectorModule::FaceDetectorModule(){
-    face_cascade.load("data/haarcascades/haarcascade_frontalface_alt.xml") ;
-    eyes_cascade.load("data/haarcascades/haarcascade_eye.xml");
+    face_cascade.load(ofToDataPath("data/haarcascades/haarcascade_frontalface_alt.xml")) ;
+    eyes_cascade.load(ofToDataPath("data/haarcascades/haarcascade_eye.xml"));
     
     //SetupGUIVariables();
 }
@@ -23,6 +23,7 @@ FaceDetectorModule::~FaceDetectorModule(){
 
 void FaceDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
     if(IsEnabled()){
+		TS_START_NIF("Face Detector");
         
         float scale = imageScale;
         float unscale = 1.0/scale;
@@ -72,7 +73,7 @@ void FaceDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
         
         outCopy.copyTo(out);
     
-        
+		TS_STOP_NIF("Face Detector");
     }
     else{
         //in.copyTo(out);

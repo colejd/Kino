@@ -9,8 +9,6 @@ ClassifierLens::ClassifierLens() {
 
 	//darknet.init("data/cfg/vgg-conv.cfg", "data/vgg-conv.weights");
 
-	InitWithConfig(tinyYolo);
-
 	//InitWithConfig(nightmare);
 
 }
@@ -30,6 +28,12 @@ void ClassifierLens::InitWithConfig(YoloConfig config) {
 
 void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 	if (IsEnabled()) {
+		TS_START_NIF("Classifier Lens");
+
+		if (!initialized) {
+			InitWithConfig(tinyYolo);
+			initialized = true;
+		}
 
 		// Will be drawn to, and eventually copied to the out mat.
 		Mat drawingMat;
@@ -72,9 +76,9 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 			cv::rectangle(drawingMat, rect, color, lineThickness, LINE_4);
 
 			// Draw the label in the bounding box
-			int fontface = cv::FONT_HERSHEY_SIMPLEX;
-			double scale = 1.0;
-			int textThickness = 4;
+			int fontface = cv::FONT_HERSHEY_DUPLEX;
+			double scale = 0.8;
+			int textThickness = 1;
 			int baseline = 0;
 			string label = d.label;
 
@@ -88,7 +92,7 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 			//cv::Point origin = cv::Point(rect.x - (lineThickness / 2.0), rect.y - text.height - (lineThickness / 2.0) + baseline); // Exterior label
 			//cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
 
-			cv::putText(drawingMat, label, origin, fontface, scale, CV_RGB(0, 0, 0), textThickness, 8);
+			cv::putText(drawingMat, label, origin, fontface, scale, CV_RGB(0, 0, 0), textThickness, LINE_AA);
 
 		}
 		TS_STOP_NIF("Draw Rects");
@@ -119,9 +123,12 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 
 
 		drawingMat.copyTo(out);
+
+		TS_STOP_NIF("Classifier Lens");
 	}
 	else {
 		detections.clear();
+		//initialized = false;
 	}
 
 

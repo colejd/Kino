@@ -84,21 +84,9 @@ void KinoCore::ProcessCapture(CameraCapture *cap, cv::OutputArray output, string
 		//rawFrame.copyTo(rawFrameGPU);
 
 		// Process through each lens
-		if (edgeDetector.enabled) {
-			TS_START_NIF("Edge Detector");
-			edgeDetector.ProcessFrame(intermediate, intermediate);
-			TS_STOP_NIF("Edge Detector");
-		}
-		if (faceDetector.enabled) {
-			TS_START_NIF("Face Detector");
-			faceDetector.ProcessFrame(intermediate, intermediate);
-			TS_STOP_NIF("Face Detector");
-		}
-		if (classifierLens.enabled) {
-			TS_START_NIF("Classifier Lens");
-			classifierLens.ProcessFrame(intermediate, intermediate);
-			TS_STOP_NIF("Classifier Lens");
-		}
+		edgeDetector.ProcessFrame(intermediate, intermediate);
+		faceDetector.ProcessFrame(intermediate, intermediate);
+		classifierLens.ProcessFrame(intermediate, intermediate);
 
 		TS_START_NIF("Frame Copy");
 		//output = rawFrame.clone();

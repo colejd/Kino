@@ -67,4 +67,6 @@ private:
 
 	Size lastImageSize { 0, 0 };
 
+	bool initialized = false;
+
 };

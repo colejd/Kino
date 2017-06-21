@@ -11,7 +11,7 @@ EdgeDetectorModule::~EdgeDetectorModule(){
 void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 
     if(!in.empty() && IsEnabled()){
-
+		TS_START_NIF("Edge Detector");
 		cv::UMat src;
 		in.copyTo(src);
         
@@ -155,17 +155,17 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out){
 		gray.release();
         latestStep.release();
         finalFrame.release();
-        
+		TS_STOP_NIF("Edge Detector");
     }
     //Directly draw the data from the frame
-    else{
-		TS_START_NIF("Copy Output");
-        //if(in.empty()) printf("[EdgeDetectorModule] Frame is empty\n");
-        //BlurImage(in, out, currentBlurType);
-        //filterStylize(in, out);
-        in.copyTo(out);
-		TS_STOP_NIF("Copy Output");
-    }
+  //  else {
+		//TS_START_NIF("Copy Output");
+  //      //if(in.empty()) printf("[EdgeDetectorModule] Frame is empty\n");
+  //      //BlurImage(in, out, currentBlurType);
+  //      //filterStylize(in, out);
+  //      in.copyTo(out);
+		//TS_STOP_NIF("Copy Output");
+  //  }
 
 }
 

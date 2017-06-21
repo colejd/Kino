@@ -3,8 +3,11 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/objdetect.hpp"
 
+#include "ofMain.h"
+
 #include "modules/ModuleCommon.hpp"
 #include "gui/UsesGUI.hpp"
+#include "ofxTimeMeasurements.h"
 
 using namespace std;
 
