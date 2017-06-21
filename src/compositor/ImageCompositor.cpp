@@ -39,8 +39,10 @@ void ImageCompositor::SetupWindowFBO(int width, int height) {
 	windowFboSettings.internalformat = GL_RGB; //Can use GL_BGR?
 	windowFboSettings.textureTarget = GL_TEXTURE_2D;
 	windowFboSettings.numSamples = fboNumSamples;
-	windowFboSettings.minFilter = GL_NEAREST; // Nearest-neighbor scaling
-	windowFboSettings.maxFilter = GL_NEAREST;
+	if (ConfigHandler::GetValue("WINDOW.NEAREST_NEIGHBOR_SCALING", false).asBool()) {
+		windowFboSettings.minFilter = GL_NEAREST; // Nearest-neighbor scaling
+		windowFboSettings.maxFilter = GL_NEAREST;
+	}
 
 	windowFbo.destroy();
 	windowFbo.allocate(windowFboSettings);
@@ -141,6 +143,9 @@ void ImageCompositor::DrawMatToFbo(const cv::InputArray input, ofFbo fbo, int co
 			TS_START_NIF("Allocate");
 			//TODO: Optimization here. Preallocate output and only reallocate if the mat is a different size
 			output.allocate(mat.cols, mat.rows, OF_IMAGE_COLOR);
+			if (ConfigHandler::GetValue("WINDOW.NEAREST_NEIGHBOR_SCALING", false).asBool()) {
+				output.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+			}
 			//output.allocate(mat.cols, mat.rows, GL_RGB);
 			TS_STOP_NIF("Allocate");
 			lastSize = matSize;
@@ -224,6 +229,9 @@ void ImageCompositor::DrawMatDirect(const cv::Mat& mat, ofImageType type, int x,
 	//Draw image from mat
 	ofImage output;
 	output.allocate(mat.cols, mat.rows, type);
+	if (ConfigHandler::GetValue("WINDOW.NEAREST_NEIGHBOR_SCALING", false).asBool()) {
+		output.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+	}
 	output.setFromPixels(mat.data, mat.cols, mat.rows, type);
 
 	windowFbo.begin();
