@@ -594,6 +594,7 @@
       <Filter>frameworks\opencv</Filter>
     </None>
     <None Include="bin\data\config\config.json" />
+    <None Include="overview.md" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib">

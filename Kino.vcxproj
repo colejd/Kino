@@ -281,6 +281,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <None Include="frameworks\opencv\dll\opencv_world320.dll" />
     <None Include="frameworks\opencv\dll\opencv_world320d.dll" />
     <None Include="license.md" />
+    <None Include="overview.md" />
     <None Include="postbuild.bat" />
     <None Include="readme.md" />
     <None Include="setup.bat" />
