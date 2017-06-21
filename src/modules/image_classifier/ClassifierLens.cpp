@@ -20,9 +20,13 @@ ClassifierLens::~ClassifierLens() {
 
 }
 
+/**
+Loads ofxDarknet from the paths specified by YOLO.USED_CONFIG in the config file.
+*/
 void ClassifierLens::InitFromConfig() {
 	// Construct the key to the desired config from YOLO.USED_CONFIG
 	string config_key = "YOLO.CONFIGS." + ConfigHandler::GetValue("YOLO.USED_CONFIG", "").asString();
+	Kino::app_log.AddLog("Loading YOLO config: %s\n", config_key.c_str());
 	// Find paths specified in the config given by the key
 	cfg_file = ConfigHandler::GetValue(config_key + ".CFG_FILE", "").asString();
 	weights_file = ConfigHandler::GetValue(config_key + ".WEIGHTS_FILE", "").asString();
