@@ -14,6 +14,6 @@ robocopy "frameworks/opencv/dll/" "bin/" "opencv_world320d.dll" %roboArgs%
 robocopy "frameworks/opencv/dll/" "bin/" "opencv_ffmpeg320_64.dll" %roboArgs%
 
 :: Darknet
-robocopy "../../../addons/ofxDarknet-mrzl-windows/libs/3rdparty/dll/x64/" "bin/" "pthreadVC2.dll" %roboArgs%
+robocopy "addons/ofxDarknet/libs/3rdparty/dll/x64/" "bin/" "pthreadVC2.dll" %roboArgs%
 
 echo "----- Kino Postbuild Script END -----"
