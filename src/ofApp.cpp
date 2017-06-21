@@ -46,7 +46,7 @@ void ofApp::setup() {
 
 	ToggleTimingWindow(); //Turn off the timing window for now
 
-	demoMode = ConfigHandler::GetValue("WEBCAM_DEMO_MODE", false).asBool();
+	demoMode = ConfigHandler::GetValue("CAMERA.DEMO_SETTINGS.ACTIVE", false).asBool();
 }
 
 void ofApp::update(){

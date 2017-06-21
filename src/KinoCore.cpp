@@ -14,10 +14,7 @@ KinoCore::~KinoCore()
 void KinoCore::Setup()
 {
 	cv::ocl::setUseOpenCL(ConfigHandler::GetValue("OPENCV.USE_OPENCL", false).asBool());
-	bool demoMode = ConfigHandler::GetValue("WEBCAM_DEMO_MODE", false).asBool();
-
-	if(demoMode)
-		Kino::app_log.AddLog("Demo mode active.\n");
+	bool demoMode = ConfigHandler::GetValue("CAMERA.DEMO_SETTINGS.ACTIVE", false).asBool();
 
 	PrintCVDebugInfo();
 
@@ -28,10 +25,25 @@ void KinoCore::Setup()
 	capture2 = make_unique<CameraCapture>();
 
 	if (demoMode) {
+		Kino::app_log.AddLog("Demo mode active.\n");
+
 		// Demo mode: show only input from the webcam and make full screen
-		//capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::GENERIC, true);
-		//capture1->StartFakeCapture(ofToDataPath("video/private/luna_skittles.MOV"), true);
-		capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
+		string cameraType = ConfigHandler::GetValue("CAMERA.DEMO_SETTINGS.CAMERA_MODE", "").asString();
+		int cameraIndex = ConfigHandler::GetValue("CAMERA.DEMO_SETTINGS.CAMERA_INDEX", 0).asInt();
+		if (cameraType == "SYSTEM") {
+			capture1->StartCapturing(cameraIndex, CameraCapture::CAPTURE_TYPE::GENERIC, true);
+		}
+		else if (cameraType == "PS3EYE") {
+			capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
+		}
+		else if (cameraType == "FAKE") {
+			string fakeVideoPath = ConfigHandler::GetValue("CAMERA.DEMO_SETTINGS.FAKE_VIDEO_PATH", "").asString();
+			capture1->StartFakeCapture(ofToDataPath(fakeVideoPath), true);
+		}
+		else {
+			Kino::app_log.AddLog("ERROR: the camera type given (%s) does not match any accepted types. \
+									Please use SYSTEM, PS3EYE, or FAKE.");
+		}
 
 	}
 	else {
@@ -75,7 +87,7 @@ void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::Out
 			TS_STOP_NIF("Frame Grab");
 		}
 
-		cv::UMat intermediate;
+		cv::Mat intermediate;
 		rawFrame.copyTo(intermediate);
 
 		//cv::UMat rawFrameGPU;

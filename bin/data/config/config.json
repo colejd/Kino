@@ -3,7 +3,6 @@
   // App settings
   "ENABLE_CONSOLE": true,
   "USE_VSYNC": false,
-  "WEBCAM_DEMO_MODE": true,
   "START_DISTORTED": false,
 
   // Window settings
@@ -22,6 +21,12 @@
 	  "GENERIC": {
 		  "PREFERRED_RES_X": 640,
 		  "PREFERRED_RES_Y": 480
+	  },
+	  "DEMO_SETTINGS": {
+		  "ACTIVE": true, // If true, system will use the following info to create and display a capture in fullscreen
+	  	  "CAMERA_MODE": "PS3EYE", // SYSTEM, PS3EYE, FAKE
+		  "CAMERA_INDEX": 0,
+		  "FAKE_VIDEO_PATH": "video/luna1.MOV" // Only needed in FAKE mode
 	  }
   },
 
