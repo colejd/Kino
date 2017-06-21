@@ -18,14 +18,15 @@ void KinoCore::Setup()
 
 	PrintCVDebugInfo();
 
+	// Initialize modules
 	edgeDetector = EdgeDetectorModule();
 	faceDetector = FaceDetectorModule();
 
+	// Initialize captures
 	capture1 = make_unique<CameraCapture>();
 	capture2 = make_unique<CameraCapture>();
 
 	if (demoMode) {
-
 		// Demo mode: show only input from one capture source in fullscreen
 		string cameraType = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_MODE", "").asString();
 		int cameraIndex = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_INDEX", 0).asInt();
