@@ -32,9 +32,11 @@
 
   // Configuration for the YOLO object detector (ofxDarknet)
   "YOLO": {
+    // Load on program start
+    "PRELOAD": true,
     // Relative to bin/data/
     "BASE_PATH": "data/darknet/",
-    // Pick one of  the configs below
+    // Pick one of the configs below
     "USED_CONFIG": "TINY_YOLO_VOC",
 
     // Paths are relative to data/data/darknet/

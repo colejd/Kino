@@ -9,7 +9,10 @@ ClassifierLens::ClassifierLens() {
 
 	//darknet.init("data/cfg/vgg-conv.cfg", "data/vgg-conv.weights");
 
-	//InitWithConfig(nightmare);
+	if (ConfigHandler::GetValue("YOLO.PRELOAD", false).asBool()) {
+		InitFromConfig();
+		initialized = true;
+	}
 
 }
 
@@ -36,6 +39,7 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 	if (IsEnabled()) {
 		TS_START_NIF("Classifier Lens");
 
+		// Init Darknet on demand if not already loaded
 		if (!initialized) {
 			InitFromConfig();
 			initialized = true;
