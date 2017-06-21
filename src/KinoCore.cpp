@@ -165,7 +165,7 @@ void KinoCore::PrintCVDebugInfo()
 	Kino::app_log.AddLog("Optimized code support: %s\n", useOptimized() ? "true" : "false");
 	Kino::app_log.AddLog("IPP support: %s\n", cv::ipp::useIPP() ? "true" : "false");
 	Kino::app_log.AddLog("Threads used by OpenCV: %i\n", getNumThreads());
-	Kino::app_log.AddLog("CPUs available: %2.i\n", cv::getNumberOfCPUs());
+	Kino::app_log.AddLog("CPUs available: %i\n", cv::getNumberOfCPUs());
 
 	Kino::app_log.AddLog("--- INFO ---\n\n");
 
