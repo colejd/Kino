@@ -112,6 +112,9 @@
     <ClCompile Include="src\modules\deepdream\DeepDreamLens.cpp">
       <Filter>src\modules\deepdream</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\camera_calibrator\CalibrationState.cpp">
+      <Filter>src\modules\camera_calibrator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -574,6 +577,9 @@
     </ClInclude>
     <ClInclude Include="src\modules\deepdream\DeepDreamLens.hpp">
       <Filter>src\modules\deepdream</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\camera_calibrator\CalibrationState.hpp">
+      <Filter>src\modules\camera_calibrator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

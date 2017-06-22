@@ -11,6 +11,7 @@
 #include <modules/face_detector/FaceDetectorModule.hpp>
 #include <modules/image_classifier/ClassifierLens.hpp>
 #include <modules/deepdream/DeepDreamLens.hpp>
+#include <modules/camera_calibrator/CameraCalibratorModule.hpp>
 
 #include "camera/CameraCapture.hpp"
 
@@ -35,6 +36,7 @@ public:
 	void DrawGUI();
 	void DrawAllGUIs();
 
+	CameraCalibratorModule cameraCalibrator;
 	EdgeDetectorModule edgeDetector;
 	FaceDetectorModule faceDetector;
 	ClassifierLens classifierLens;

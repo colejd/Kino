@@ -28,7 +28,7 @@ void KinoCore::Setup() {
 		string cameraType = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_MODE", "").asString();
 		int cameraIndex = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_INDEX", 0).asInt();
 
-		Kino::app_log.AddLog("Demo Mode active (mode: %s)\n", cameraType);
+		Kino::app_log.AddLog("Demo Mode active (mode: %s)\n", cameraType.c_str());
 
 		if (cameraType == "SYSTEM") {
 			capture1->StartCapturing(cameraIndex, CameraCapture::CAPTURE_TYPE::GENERIC, true);
@@ -52,11 +52,13 @@ void KinoCore::Setup() {
 		capture2->StartCapturing(1, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
 	}
 
+	cameraCalibrator.RegisterCameras(capture1, capture2);
+
 }
 
 void KinoCore::Update() {
-	ProcessCapture(capture1, leftMat, "Left");
-	ProcessCapture(capture2, rightMat, "Right");
+	ProcessCapture(capture1, leftMat, "LEFT");
+	ProcessCapture(capture2, rightMat, "RIGHT");
 }
 
 /**
@@ -93,6 +95,7 @@ void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::Out
 		//rawFrame.copyTo(rawFrameGPU);
 
 		// Process through each lens
+		cameraCalibrator.ProcessFrame(intermediate, intermediate, id);
 		edgeDetector.ProcessFrame(intermediate, intermediate);
 		faceDetector.ProcessFrame(intermediate, intermediate);
 		classifierLens.ProcessFrame(intermediate, intermediate);
@@ -174,6 +177,7 @@ Draw the imgui windows and controls for this class and all the modules it manage
 void KinoCore::DrawAllGUIs() {
 	DrawGUI();
 
+	cameraCalibrator.DrawGUI();
 	faceDetector.DrawGUI();
 	edgeDetector.DrawGUI();
 	classifierLens.DrawGUI();

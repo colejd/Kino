@@ -1,23 +1,28 @@
 #pragma once
 
+#include "ofMain.h"
+
 #include "opencv2/opencv.hpp"
 #include "opencv2/objdetect.hpp"
 
 #include "modules/ModuleCommon.hpp"
 #include "gui/UsesGUI.hpp"
+#include "KinoGlobals.hpp"
 
 #include "camera/CameraCapture.hpp"
+
+#include <string>
+
+#include "CalibrationModel.hpp"
+#include "CalibrationState.hpp"
 
 using namespace std;
 
 /**
-Two modes:
 
-Calibrate:
-Performs calibration on the selected camera and stores the result as a file
+Keep in mind the aspect ratio. It's 1 in the tutorial but I don't think that's correct.
 
-Distort:
-Reads the calibration file and distorts the image.
+Checkerboard squares are 26x26 mm.
 
 */
 
@@ -26,17 +31,18 @@ public:
 	CameraCalibratorModule();
 	~CameraCalibratorModule();
 
-	void ProcessFrame(cv::InputArray in, cv::OutputArray out, CameraCapture::CAPTURE_TYPE captureType, string id);
+	void RegisterCameras(std::unique_ptr<CameraCapture> const & leftCapture, std::unique_ptr<CameraCapture> const & rightCapture);
+	CalibrationState InitCalibrationState(std::unique_ptr<CameraCapture> const & cap, std::string id);
+
+	void ProcessFrame(cv::InputArray in, cv::OutputArray out, string id);
 
 	void DrawGUI() override;
 
-	enum class Mode {
-		Calibrate,
-		Distort
-	};
-
-	void SetMode(Mode mode);
-
 private:
-	Mode currentMode;
+	// The ID of the currently calibrating camera. Set to empty string if no camera is calibrating
+	string currentCalibrationID = "";
+
+	CalibrationState leftCalibration;
+	CalibrationState rightCalibration;
+
 };
