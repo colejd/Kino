@@ -35,6 +35,7 @@ bool CameraCapture::StartFakeCapture(string videoPath, bool threaded) {
 
 bool CameraCapture::StartCapturing(int index, CAPTURE_TYPE type, bool threaded)
 {
+	deviceType = type;
 	if (type == CAPTURE_TYPE::GENERIC) {
 		captureMethod = new SystemCameraCapture();
 	}

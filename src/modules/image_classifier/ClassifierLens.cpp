@@ -17,7 +17,6 @@ ClassifierLens::ClassifierLens() {
 }
 
 ClassifierLens::~ClassifierLens() {
-
 }
 
 /**

@@ -56,9 +56,7 @@ public:
 	const bool IsThreaded();
 	const bool IsInitialized();
 
-	int lastAttemptedDeviceIndex;
-	CAPTURE_TYPE lastAttemptedDeviceType;
-	bool lastAttemptedThreaded;
+	CAPTURE_TYPE deviceType;
 
 private:
 
