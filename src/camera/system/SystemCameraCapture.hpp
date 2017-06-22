@@ -17,6 +17,7 @@ public:
 	void Update() override;
 	const bool FrameIsReady() override;
 	cv::Mat GetFrame() override;
+	const std::string GetDeviceName() override;
 
 private:
 	cv::VideoCapture *cap;

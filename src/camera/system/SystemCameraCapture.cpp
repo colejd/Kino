@@ -63,3 +63,8 @@ cv::Mat SystemCameraCapture::GetFrame()
 {
 	return frame;
 }
+
+
+const std::string SystemCameraCapture::GetDeviceName() {
+	return "SYSTEM";
+}

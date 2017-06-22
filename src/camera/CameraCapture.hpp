@@ -55,6 +55,7 @@ public:
 	//Getters
 	const bool IsThreaded();
 	const bool IsInitialized();
+	const string DeviceName();
 
 	CAPTURE_TYPE deviceType;
 

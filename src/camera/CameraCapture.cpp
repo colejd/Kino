@@ -104,6 +104,10 @@ const bool CameraCapture::IsInitialized()
 	return initialized;
 }
 
+const string CameraCapture::DeviceName() {
+	return captureMethod->GetDeviceName();
+}
+
 void CameraCapture::StartThreadedUpdate()
 {
 	std::cout << "[CameraCapture] Starting threaded update.\n";

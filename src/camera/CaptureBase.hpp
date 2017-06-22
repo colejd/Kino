@@ -4,6 +4,7 @@
 
 #include "KinoGlobals.hpp"
 #include "ofxTimeMeasurements.h"
+#include <string>
 
 /**
 Abstract class defining common members that any deriving class will need to be
@@ -16,6 +17,7 @@ public:
 	virtual void Update() = 0;
 	virtual const bool FrameIsReady() = 0;
 	virtual cv::Mat GetFrame() = 0;
+	virtual const std::string GetDeviceName() = 0;
 
 protected:
 	int width;

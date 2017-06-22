@@ -67,3 +67,7 @@ cv::Mat FakeCapture::GetFrame()
 {
 	return frame;
 }
+
+const std::string FakeCapture::GetDeviceName() {
+	return "FAKE";
+}

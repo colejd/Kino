@@ -61,3 +61,8 @@ cv::Mat PS3EyeCapture::GetFrame()
 {
 	return frame;
 }
+
+
+const std::string PS3EyeCapture::GetDeviceName() {
+	return "PS3EYE";
+}
