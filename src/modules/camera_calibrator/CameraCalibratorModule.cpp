@@ -22,11 +22,10 @@ void CameraCalibratorModule::InitCalibrationState(unique_ptr<CameraCapture> cons
 	if (cap->IsInitialized()) {
 		calibrations[id].hasCapture = true;
 		// Load the calibration from the disk if it exists.
-		string calibrationBaseFilename = cap->DeviceName() + "_" + id;
-		string calibrationFilePath = ofToDataPath("calibration/" + calibrationBaseFilename + ".calibration");
-		calibrations[id].LoadFromFile(calibrationFilePath);
+		calibrations[id].unique_id = cap->DeviceName() + "_" + id;
+		calibrations[id].LoadFromFile();
 		if (!calibrations[id].complete) {
-			Kino::app_log.AddLog("No calibration for %s exists.\n", calibrationBaseFilename.c_str());
+			Kino::app_log.AddLog("No calibration for %s exists.\n", calibrations[id].unique_id.c_str());
 		}
 	}
 }
@@ -49,7 +48,9 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 			if (id == currentCalibrationID) {
 				TS_SCOPE("Process Calibration Image");
 				calibration->ProcessImage(in, out);
-				if (calibration->complete) StopCalibrating(id); // Quit the calibration
+				if (calibration->complete) {
+					StopCalibrating(id); // Quit the calibration
+				}
 			}
 		}
 
@@ -91,7 +92,10 @@ void CameraCalibratorModule::DrawGUI() {
 void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 
 	CalibrationState& calibration = calibrations[id];
-	
+
+	bool calibratingOther = (currentCalibrationID != id && currentCalibrationID != "");
+	if (calibratingOther) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
+
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildWindowRounding, 5.0f);
 	ImGui::BeginChild((id + "Sub").c_str(), ImVec2(250, 150), true);
 	{
@@ -131,8 +135,8 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 			}
 		}
 
-		ImGui::Text("%-20s (%i x %i)", "Board Size:", calibration.board_size.width, calibration.board_size.height);
-		ImGui::Text("%-20s %.2fmm", "Square Size:", calibration.square_size);
+		ImGui::Text("%-20s (%i x %i)", "Board Size:", calibration.boardSize.width, calibration.boardSize.height);
+		ImGui::Text("%-20s %.2fmm", "Square Size:", calibration.squareSize);
 		ImGui::Text("%-20s %.3f", "Reprojection Error:", calibration.reprojectionError);
 		ShowHelpMarker("Should be as close to 0 as possible.");
 
@@ -142,6 +146,8 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 	}
 	ImGui::EndChild();
 	ImGui::PopStyleVar();
+
+	if (calibratingOther) ImGui::PopStyleVar(); //Pop disabled style
 
 }
 
