@@ -1,25 +1,36 @@
 #include "CalibrationState.hpp"
 
-CalibrationState::CalibrationState(int board_width, int board_height, int num_imgs, float square_size) {
-
-	this->board_width = board_width;
-	this->board_height = board_height;
+CalibrationState::CalibrationState(int board_width, int board_height, int capturesRequired, float square_size) {
 	this->board_size = Size(board_width, board_height);
-	this->num_imgs = num_imgs;
+	this->capturesRequired = capturesRequired;
 	this->square_size = square_size;
 
-	this->board_n = board_width * board_height;
-
-	//found = false;
-	numCaptures = 0;
-
-	//vector< Point3f > obj;
-	//// Populate object points (units will be millimeters)
-	//for (int i = 0; i < board_height; i++)
-	//	for (int j = 0; j < board_width; j++)
-	//		obj.push_back(Point3f((float)j * square_size, (float)i * square_size, 0));
+	Reset();
 
 }
+
+
+void CalibrationState::Reset() {
+	complete = false;
+
+	object_points.clear();
+	image_points.clear();
+	corners.clear();
+	rvecs.clear();
+	tvecs.clear();
+
+	K = cv::Mat();
+	D = cv::Mat();
+
+	mapsCreated = false;
+	map1 = cv::Mat();
+	map2 = cv::Mat();
+
+	lastFrameTime = 0.0;
+	secondsSinceLastCapture = 0.0;
+	numCaptures = 0;
+}
+
 
 void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out) {
 
@@ -42,13 +53,13 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 		timeForNewCheckerboard = true;
 	}
 	
-	if (found && numCaptures < num_imgs && timeForNewCheckerboard) {
+	if (found && numCaptures < capturesRequired && timeForNewCheckerboard) {
 		// Do a new capture
 		numCaptures += 1;
 
 		vector< Point3f > obj;
-		for (int i = 0; i < board_height; i++)
-			for (int j = 0; j < board_width; j++)
+		for (int i = 0; i < board_size.height; i++)
+			for (int j = 0; j < board_size.width; j++)
 				obj.push_back(Point3f((float)j * square_size, (float)i * square_size, 0));
 
 		image_points.push_back(corners);
@@ -56,8 +67,8 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 
 	}
 
-	// We have enough samples -- finish calibrating.
-	if (numCaptures == num_imgs) {
+	if (numCaptures == capturesRequired) {
+		// We have enough samples -- finish calibrating.
 		int flag = 0;
 		flag |= CV_CALIB_FIX_K4;
 		flag |= CV_CALIB_FIX_K5;
@@ -68,16 +79,33 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 
 }
 
+
+void CalibrationState::UndistortImage(cv::InputArray in, cv::OutputArray out) {
+	if (!mapsCreated) {
+		initUndistortRectifyMap(K, D, cv::Mat(), K, in.size(), CV_32FC1, map1, map2);
+		mapsCreated = true;
+	}
+
+	remap(in, out, map1, map2, INTER_LINEAR, BORDER_CONSTANT, Scalar(0, 0, 0, 1));
+}
+
+
 bool CalibrationState::LoadFromFile(string path) {
 	// Populates the model from a file.
 	bool success = false;
 
-
+	// TODO: Add functionality
 
 	complete = success;
 	return success;
 }
 
+
 bool CalibrationState::SaveToFile(string fileName) {
+	// TODO: Add functionality
+
 	return false;
 }
+
+
+
