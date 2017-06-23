@@ -95,9 +95,30 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildWindowRounding, 5.0f);
 	ImGui::BeginChild((id + "Sub").c_str(), ImVec2(250, 150), true);
 	{
+		// Header
 		ImGui::Text(id.c_str());
+
+		ImVec4 calibratingColor;
+		string calibratingString;
+		if (calibration.complete) {
+			calibratingColor = ImVec4(0.0, 1.0, 0.0, 1.0);
+			calibratingString = "Calibrated";
+		}
+		else if (currentCalibrationID == id) {
+			calibratingColor = ImVec4(1.0, 1.0, 0.0, 1.0);
+			calibratingString = "Calibrating...";
+		}
+		else {
+			calibratingColor = ImVec4(1.0, 0.0, 0.0, 1.0);
+			calibratingString = "Uncalibrated";
+		}
+		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize(calibratingString.c_str()).x - 10);
+		ImGui::TextColored(calibratingColor, calibratingString.c_str());
+
 		ImGui::Separator();
 		ImGui::Spacing();
+
+		// Body
 
 		if (currentCalibrationID == "") {
 			if (ImGui::Button("Calibrate")) {
@@ -110,9 +131,6 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 			}
 		}
 
-		if (calibration.complete) ImGui::TextColored(ImVec4(0.0, 1.0, 0.0, 1.0), "Calibrated");
-		else if (currentCalibrationID == id) ImGui::TextColored(ImVec4(1.0, 1.0, 0.0, 1.0), "Calibrating...");
-		else ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "Uncalibrated");
 		ImGui::Text("%-20s (%i x %i)", "Board Size:", calibration.board_size.width, calibration.board_size.height);
 		ImGui::Text("%-20s %.2fmm", "Square Size:", calibration.square_size);
 		ImGui::Text("%-20s %.3f", "Reprojection Error:", calibration.reprojectionError);
