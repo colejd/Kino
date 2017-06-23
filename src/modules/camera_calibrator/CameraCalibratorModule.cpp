@@ -59,16 +59,6 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 void CameraCalibratorModule::DrawGUI() {
 	if (showGUI) {
 
-		/*ImGui::BeginMainMenuBar();
-		float menuBarHeight = ImGui::GetWindowSize().y;
-		ImGui::EndMainMenuBar();
-
-		ImVec2 size = ImVec2(300, ImGui::GetIO().DisplaySize.y);
-		ImGui::SetNextWindowSize(size);
-		ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 300, menuBarHeight));
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
-		ImGui::Begin("Camera Calibrator", &showGUI, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoSavedSettings);*/
-
 		ImGui::Begin("Camera Calibrator", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 		ImGui::Checkbox("Enabled", &enabled);
 		ImGui::Separator();
@@ -95,7 +85,6 @@ void CameraCalibratorModule::DrawGUI() {
 		if (!enabled) ImGui::PopStyleVar(); //Pop disabled style
 
 		ImGui::End();
-		//ImGui::PopStyleVar();
 	}
 }
 
@@ -149,21 +138,3 @@ void CameraCalibratorModule::StopCalibrating(string id) {
 }
 
 
-/**
-ImVec2 size = ImVec2(300, ImGui::GetIO().DisplaySize.y);
-ImGui::SetNextWindowSize(size);
-const ImGuiWindowFlags flags = (ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
-const float oldWindowRounding = ImGui::GetStyle().WindowRounding; ImGui::GetStyle().WindowRounding = 0;
-const bool visible = ImGui::Begin("imguidock window (= lumix engine's dock system)", NULL, ImVec2(0, 0), 1.0f, flags);
-ImGui::GetStyle().WindowRounding = oldWindowRounding;
-if (visible) {
-ImGui::BeginDockspace();
-
-ImGui::SetNextDock(ImGuiDockSlot_None);// optional
-ImGui::BeginDock("Test dock 1");
-ImGui::EndDock();
-
-ImGui::EndDockspace();
-}
-ImGui::End();
-*/
