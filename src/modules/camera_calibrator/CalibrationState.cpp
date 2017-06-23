@@ -21,6 +21,7 @@ void CalibrationState::Reset() {
 	reprojErrs.clear();
 
 	cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
+	cameraMatrix.at<double>(0, 0) = 1; // Set aspect ratio to 1 (for focal length)
 	distortionCoeffs = cv::Mat::zeros(8, 1, CV_64F);
 
 	mapsCreated = false;
@@ -73,6 +74,7 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 		int flag = 0;
 		flag |= CV_CALIB_FIX_K4;
 		flag |= CV_CALIB_FIX_K5;
+		flag |= CV_CALIB_FIX_ASPECT_RATIO;
 		double rms = calibrateCamera(objectPoints, imagePoints, in.size(), cameraMatrix, distortionCoeffs, rvecs, tvecs, flag);
 
 		Kino::app_log.AddLog("Reprojection error reported by calibrateCamera: %f\n", rms);
@@ -122,19 +124,33 @@ void CalibrationState::UndistortImage(cv::InputArray in, cv::OutputArray out) {
 
 bool CalibrationState::LoadFromFile() {
 	// Populates the model from a file.
-	bool success = false;
 
 	// TODO: Add functionality
-	string path = ofToDataPath("calibration/" + unique_id + ".xml");
+	string path = ofToDataPath("calibration/" + unique_id + ".yml");
+	FileStorage fs;
+	if (!fs.open(path, FileStorage::READ)) {
+		complete = false;
+		return false;
+	}
 
+	boardSize = cv::Size(fs["board_width"], fs["board_height"]);
 
-	complete = success;
-	return success;
+	fs["squareSize"] >> squareSize;
+	fs["camera_matrix"] >> cameraMatrix;
+	fs["distortion_coefficients"] >> distortionCoeffs;
+	fs["avg_reprojection_error"] >> reprojectionError;
+
+	//fs["per_view_reprojection_errors"] >> reprojErrs;
+	//fs["extrinsic_parameters"] >> ;
+	//fs["image_points"] >> imagePoints;
+
+	complete = true;
+	return true;
 }
 
 
 bool CalibrationState::SaveToFile() {
-	string path = ofToDataPath("calibration/" + unique_id + ".xml");
+	string path = ofToDataPath("calibration/" + unique_id + ".yml");
 	FileStorage fs(path, FileStorage::WRITE);
 
 	time_t tm;
