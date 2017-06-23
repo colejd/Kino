@@ -13,7 +13,6 @@
 
 #include <string>
 
-#include "CalibrationModel.hpp"
 #include "CalibrationState.hpp"
 
 using namespace std;
