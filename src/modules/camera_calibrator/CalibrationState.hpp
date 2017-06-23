@@ -17,26 +17,19 @@ public:
 	bool hasCapture = false;
 	bool complete = false;
 
-	// Timing information
-
-	float secondsBetweenCaptures = 1.0;
-	float lastFrameTime = 0.0;
-	float secondsSinceLastCapture = 0.0;
-
 	// Number of captures acquired
 	int numCaptures = 0;
 	// Number of captures needed to finalize calibration
 	int capturesRequired;
 
-	Size board_size; // Number of squares (width x height) on the checkerboard.
-	float square_size; // Size of each checkerboard square in millimeters (arbitrary, you can change units to whatever you want)
+	// Number of squares (width x height) on the checkerboard.
+	Size board_size;
+	// Size of each checkerboard square in millimeters (arbitrary, you can change units to whatever you want)
+	float square_size;
 
-	vector< vector< Point3f > > object_points;
-	vector< vector< Point2f > > image_points;
-	vector< Point2f > corners;
+	// The amount of error calculated from the reprojection. Should be as close to 0 as possible.
+	double reprojectionError = 0.0;
 
-	Mat K; // intrinsic
-	Mat D; // distCoeffs
 
 
 	CalibrationState(int board_width = 9, int board_height = 6, int capturesRequired = 20, float square_size = 26.0);
@@ -47,19 +40,32 @@ public:
 	// A cached version of `cv::undistort()`. Significantly faster.
 	void UndistortImage(cv::InputArray in, cv::OutputArray out);
 
-	
-	// Loads `K` and `D` from a file on disk.
+	// Loads `cameraMatrix` and `distortionCoeffs` from a file on disk.
 	bool LoadFromFile(string path);
 
-	
-	// Saves `K` and `D` to a file on disk.
+	// Saves `cameraMatrix` and `distortionCoeffs` to a file on disk.
 	bool SaveToFile(string fileName);
 
 	// Clears all information acquired from the calibration.
 	void Reset();
 
+
 private:
-	vector< Mat > rvecs, tvecs;
+
+	// Timing information
+	float secondsBetweenCaptures = 1.0;
+	float lastFrameTime = 0.0;
+	float secondsSinceLastCapture = 0.0;
+
+	vector<vector<Point3f>> objectPoints;
+	vector<vector<Point2f>> imagePoints;
+	vector<Point2f> corners;
+
+	Mat cameraMatrix; // Intrinsics
+	Mat distortionCoeffs;
+
+	// Rotation / translation vectors (derived by calibrateCamera)
+	vector<Mat> rvecs, tvecs;
 
 	bool mapsCreated = false;
 	cv::Mat map1, map2;

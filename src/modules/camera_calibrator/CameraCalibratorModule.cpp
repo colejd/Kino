@@ -104,7 +104,7 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 	CalibrationState& calibration = calibrations[id];
 	
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildWindowRounding, 5.0f);
-	ImGui::BeginChild((id + "Sub").c_str(), ImVec2(200, 150), true);
+	ImGui::BeginChild((id + "Sub").c_str(), ImVec2(250, 150), true);
 	{
 		ImGui::Text(id.c_str());
 		ImGui::Separator();
@@ -124,11 +124,13 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 		if (calibration.complete) ImGui::TextColored(ImVec4(0.0, 1.0, 0.0, 1.0), "Calibrated");
 		else if (currentCalibrationID == id) ImGui::TextColored(ImVec4(1.0, 1.0, 0.0, 1.0), "Calibrating...");
 		else ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "Uncalibrated");
-		ImGui::Text("%-15s (%i x %i)", "Board Size:", calibration.board_size.width, calibration.board_size.height);
-		ImGui::Text("%-15s %.2fmm", "Square Size:", calibration.square_size);
+		ImGui::Text("%-20s (%i x %i)", "Board Size:", calibration.board_size.width, calibration.board_size.height);
+		ImGui::Text("%-20s %.2fmm", "Square Size:", calibration.square_size);
+		ImGui::Text("%-20s %.3f", "Reprojection Error:", calibration.reprojectionError);
+		ShowHelpMarker("Should be as close to 0 as possible.");
 
 		if (currentCalibrationID == id) {
-			ImGui::Text("%-15s %d / %d", "Captures:", calibration.numCaptures, calibration.capturesRequired);
+			ImGui::Text("%-20s %d / %d", "Captures:", calibration.numCaptures, calibration.capturesRequired);
 		}
 	}
 	ImGui::EndChild();

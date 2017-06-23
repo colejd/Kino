@@ -13,14 +13,14 @@ CalibrationState::CalibrationState(int board_width, int board_height, int captur
 void CalibrationState::Reset() {
 	complete = false;
 
-	object_points.clear();
-	image_points.clear();
+	objectPoints.clear();
+	imagePoints.clear();
 	corners.clear();
 	rvecs.clear();
 	tvecs.clear();
 
-	K = cv::Mat();
-	D = cv::Mat();
+	cameraMatrix = cv::Mat();
+	distortionCoeffs = cv::Mat();
 
 	mapsCreated = false;
 	map1 = cv::Mat();
@@ -62,8 +62,8 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 			for (int j = 0; j < board_size.width; j++)
 				obj.push_back(Point3f((float)j * square_size, (float)i * square_size, 0));
 
-		image_points.push_back(corners);
-		object_points.push_back(obj);
+		imagePoints.push_back(corners);
+		objectPoints.push_back(obj);
 
 	}
 
@@ -72,7 +72,23 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 		int flag = 0;
 		flag |= CV_CALIB_FIX_K4;
 		flag |= CV_CALIB_FIX_K5;
-		calibrateCamera(object_points, image_points, in.size(), K, D, rvecs, tvecs, flag);
+		calibrateCamera(objectPoints, imagePoints, in.size(), cameraMatrix, distortionCoeffs, rvecs, tvecs, flag);
+
+		// Calculate error
+		vector<Point2f> imagePointsProjected;
+		size_t totalPoints = 0;
+		double totalErr = 0;
+		for (size_t i = 0; i < objectPoints.size(); ++i) {
+			projectPoints(objectPoints[i], rvecs[i], tvecs[i], cameraMatrix, distortionCoeffs, imagePointsProjected);
+			double err = norm(imagePoints[i], imagePointsProjected, NORM_L2);
+			
+			totalErr += err * err;
+			totalPoints += objectPoints[i].size();
+		}
+		reprojectionError = sqrt(totalErr / totalPoints);
+
+
+
 		complete = true;
 	}
 
@@ -82,7 +98,7 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 
 void CalibrationState::UndistortImage(cv::InputArray in, cv::OutputArray out) {
 	if (!mapsCreated) {
-		initUndistortRectifyMap(K, D, cv::Mat(), K, in.size(), CV_32FC1, map1, map2);
+		initUndistortRectifyMap(cameraMatrix, distortionCoeffs, cv::Mat(), cameraMatrix, in.size(), CV_32FC1, map1, map2);
 		mapsCreated = true;
 	}
 
