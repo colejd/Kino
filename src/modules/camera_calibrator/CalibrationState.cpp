@@ -54,7 +54,7 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 	}
 	
 	if (found && numCaptures < capturesRequired && timeForNewCheckerboard) {
-		// Do a new capture
+		// Use the current frame as an input image for the calibrator
 		numCaptures += 1;
 
 		vector< Point3f > obj;
