@@ -31,29 +31,26 @@ void CameraCalibratorModule::InitCalibrationState(unique_ptr<CameraCapture> cons
 	}
 }
 
-void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out, string id) {
+void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArray out, string id) {
 	if (IsEnabled()) {
+		TS_START_NIF("Camera Calibrator");
 
 		CalibrationState* calibration = &(calibrations[id]);
 
 		// If the model is fully formed, do the distortion.
 		if (calibration->complete) {
+			TS_SCOPE("Undistort");
 			calibration->UndistortImage(in, out);
 		}
 
 		// Otherwise, run calibration.
 		else {
-
-			cv::Mat latestStep;
-			in.copyTo(latestStep);
-
 			// Only run calibration if the ID given matches the desired ID
 			if (id == currentCalibrationID) {
-				calibration->ProcessImage(in, latestStep);
+				TS_SCOPE("Process Calibration Image");
+				calibration->ProcessImage(in, out);
 				if (calibration->complete) StopCalibrating(id); // Quit the calibration
 			}
-
-			latestStep.copyTo(out);
 		}
 
 	}
@@ -81,13 +78,13 @@ void CameraCalibratorModule::DrawGUI() {
 			// Draw info about left calibration
 			if (calibrations["LEFT"].hasCapture) {
 				ImGui::Spacing();
-				DrawCalibrationStatePanel("LEFT", calibrations["LEFT"]);
+				DrawCalibrationStatePanel("LEFT");
 			}
 
 			// Draw info about right calibration
 			if (calibrations["RIGHT"].hasCapture) {
 				ImGui::Spacing();
-				DrawCalibrationStatePanel("RIGHT", calibrations["RIGHT"]);
+				DrawCalibrationStatePanel("RIGHT");
 			}
 			
 
@@ -102,7 +99,9 @@ void CameraCalibratorModule::DrawGUI() {
 	}
 }
 
-void CameraCalibratorModule::DrawCalibrationStatePanel(string id, CalibrationState& calibration) {
+void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
+
+	CalibrationState& calibration = calibrations[id];
 	
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildWindowRounding, 5.0f);
 	ImGui::BeginChild((id + "Sub").c_str(), ImVec2(200, 150), true);
@@ -125,7 +124,7 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id, CalibrationSta
 		if (calibration.complete) ImGui::TextColored(ImVec4(0.0, 1.0, 0.0, 1.0), "Calibrated");
 		else if (currentCalibrationID == id) ImGui::TextColored(ImVec4(1.0, 1.0, 0.0, 1.0), "Calibrating...");
 		else ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "Uncalibrated");
-		ImGui::Text("%-15s (%i, %i)", "Board Size:", calibration.board_size.width, calibration.board_size.height);
+		ImGui::Text("%-15s (%i x %i)", "Board Size:", calibration.board_size.width, calibration.board_size.height);
 		ImGui::Text("%-15s %.2fmm", "Square Size:", calibration.square_size);
 
 		if (currentCalibrationID == id) {

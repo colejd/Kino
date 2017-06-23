@@ -11,6 +11,7 @@
 #include <modules/ModuleCommon.hpp>
 #include <gui/UsesGUI.hpp>
 #include <KinoGlobals.hpp>
+#include <ofxTimeMeasurements.h>
 
 #include <camera/CameraCapture.hpp>
 #include "CalibrationState.hpp"
@@ -33,13 +34,13 @@ public:
 	void RegisterCameras(unique_ptr<CameraCapture> const& leftCapture, unique_ptr<CameraCapture> const & rightCapture);
 
 	// Runs calibration or undistortion on `in` and writes the result to `out`. ID is expected to be "LEFT" or "RIGHT".
-	void ProcessFrame(cv::InputArray in, cv::OutputArray out, string id);
+	void ProcessFrame(cv::InputArray in, cv::InputOutputArray out, string id);
 
 	void StartCalibrating(string id);
 	void StopCalibrating(string id);
 
 	void DrawGUI() override;
-	void DrawCalibrationStatePanel(string id, CalibrationState& calibration);
+	void DrawCalibrationStatePanel(string id);
 private:
 	// The ID of the currently calibrating camera. Set to empty string if no camera is calibrating.
 	string currentCalibrationID = "";
