@@ -54,6 +54,8 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 			}
 		}
 
+		in.copyTo(id == "LEFT" ? lastLeftMat : lastRightMat);
+
 	}
 }
 
@@ -67,15 +69,27 @@ void CameraCalibratorModule::DrawGUI() {
 		//Begin main content
 		{
 			// Draw info about left calibration
-			if (calibrations["LEFT"].hasCapture) {
+			bool leftHasCapture = calibrations["LEFT"].hasCapture;
+			if (leftHasCapture) {
 				ImGui::Spacing();
 				DrawCalibrationStatePanel("LEFT");
 			}
 
 			// Draw info about right calibration
-			if (calibrations["RIGHT"].hasCapture) {
+			bool rightHasCapture = calibrations["RIGHT"].hasCapture;
+			if (rightHasCapture) {
 				ImGui::Spacing();
 				DrawCalibrationStatePanel("RIGHT");
+			}
+
+			if (leftHasCapture && rightHasCapture) {
+				if (ImGui::Button("Save Capture Pairs")) {
+					string basePath = ofToDataPath("calibration/stereo_images/");
+					imwrite(basePath + "Capture" + std::to_string(capCount) + "_LEFT.png", lastLeftMat);
+					imwrite(basePath + "Capture" + std::to_string(capCount) + "_RIGHT.png", lastRightMat);
+					capCount += 1;
+					Kino::app_log.AddLog("Stereo image pair written to data/calibration/stereo_images/");
+				}
 			}
 			
 

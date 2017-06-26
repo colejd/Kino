@@ -41,6 +41,9 @@ public:
 
 	void DrawGUI() override;
 	void DrawCalibrationStatePanel(string id);
+
+	cv::Mat lastLeftMat;
+	cv::Mat lastRightMat;
 private:
 	// The ID of the currently calibrating camera. Set to empty string if no camera is calibrating.
 	string currentCalibrationID = "";
@@ -50,5 +53,7 @@ private:
 
 	// Adds a `CalibrationState` for the given capture to the `calibrations` map.
 	void InitCalibrationState(unique_ptr<CameraCapture> const& cap, string id);
+
+	int capCount = 1;
 
 };
