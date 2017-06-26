@@ -138,7 +138,9 @@ void ofApp::DrawGUI() {
 	}
 
 	if (!demoMode && ImGui::BeginMenu("HMD")) {
-		ImGui::MenuItem("Swap Eyes", "S", &(compositor->swapStereoSides));
+		if (!demoMode) {
+			ImGui::MenuItem("Swap Cameras", "S", &(core->swapSides));
+		}
 		ImGui::MenuItem("Distortion", "D", &(compositor->doDistortion));
 
 		ImGui::EndMenu();
@@ -330,7 +332,7 @@ void ofApp::keyPressed(int key) {
 		ofToggleFullscreen();
 	}
 	else if (key == 's' || key == 'S') {
-		compositor->swapStereoSides = !(compositor->swapStereoSides);
+		core->swapSides = !(core->swapSides);
 	}
 	else if (key == 'd' || key == 'D') {
 		compositor->doDistortion = !compositor->doDistortion;

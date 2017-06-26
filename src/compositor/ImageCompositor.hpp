@@ -52,7 +52,6 @@ public:
 	void DrawWindowFbo();
 
 	int convergence = 0;
-	bool swapStereoSides = false;
 
 	//FBO which is scaled to the entire window
 	ofFbo windowFbo;

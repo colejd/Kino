@@ -57,8 +57,14 @@ void KinoCore::Setup() {
 }
 
 void KinoCore::Update() {
-	ProcessCapture(capture1, leftMat, "LEFT");
-	ProcessCapture(capture2, rightMat, "RIGHT");
+	if (!swapSides) {
+		ProcessCapture(capture1, leftMat, "LEFT");
+		ProcessCapture(capture2, rightMat, "RIGHT");
+	}
+	else {
+		ProcessCapture(capture1, rightMat, "RIGHT");
+		ProcessCapture(capture2, leftMat, "LEFT");
+	}
 }
 
 /**

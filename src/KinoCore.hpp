@@ -51,6 +51,7 @@ public:
 	void ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id);
 
 	bool pauseCaptureUpdates = false;
+	bool swapSides = false;
 
 private:
 	cv::Mat rawFrame;

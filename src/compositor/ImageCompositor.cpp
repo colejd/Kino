@@ -60,7 +60,6 @@ void ImageCompositor::SetupWindowFBO(int width, int height) {
 void ImageCompositor::DrawGUI() {
 	if (showGUI) {
 		ImGui::Begin("Compositor Settings", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
-		ImGui::Checkbox("Swap Sides", &swapStereoSides);
 		ImGui::Checkbox("Mirror Images", &mirror);
 		if (ImGui::SliderInt("Convergence", &convergence, convergenceMin, convergenceMax)) {
 			//Constrain to [convergenceMin, convergenceMax] in case the user enters some crazy value
@@ -100,14 +99,8 @@ void ImageCompositor::DrawWindowFbo() {
 void ImageCompositor::DrawMatsToFbo(const cv::InputArray leftMat, cv::InputArray rightMat)
 {
 	//Draw two images side by side
-	if (swapStereoSides) {
-		DrawMatToFbo(rightMat, leftFbo, convergence);
-		DrawMatToFbo(leftMat, rightFbo, -convergence);
-	}
-	else {
-		DrawMatToFbo(leftMat, leftFbo, convergence);
-		DrawMatToFbo(rightMat, rightFbo, -convergence);
-	}
+	DrawMatToFbo(leftMat, leftFbo, convergence);
+	DrawMatToFbo(rightMat, rightFbo, -convergence);
 }
 
 void ImageCompositor::DrawMatToFbo(const cv::InputArray input, ofFbo fbo, int convergence)
