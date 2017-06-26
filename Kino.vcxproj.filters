@@ -115,6 +115,7 @@
     <ClCompile Include="src\modules\camera_calibrator\CalibrationState.cpp">
       <Filter>src\modules\camera_calibrator</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\camera_calibrator\StereoCalibrationState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -581,6 +582,7 @@
     <ClInclude Include="src\modules\camera_calibrator\CalibrationState.hpp">
       <Filter>src\modules\camera_calibrator</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\camera_calibrator\StereoCalibrationState.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc">

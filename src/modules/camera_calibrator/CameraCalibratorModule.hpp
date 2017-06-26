@@ -44,6 +44,13 @@ public:
 
 	cv::Mat lastLeftMat;
 	cv::Mat lastRightMat;
+
+	enum class Mode {
+		INDIVIDUAL,
+		STEREO
+	};
+	Mode currentMode = Mode::STEREO;
+
 private:
 	// The ID of the currently calibrating camera. Set to empty string if no camera is calibrating.
 	string currentCalibrationID = "";

@@ -34,6 +34,8 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 	if (IsEnabled()) {
 		TS_START_NIF("Camera Calibrator");
 
+		in.copyTo(id == "LEFT" ? lastLeftMat : lastRightMat);
+
 		CalibrationState* calibration = &(calibrations[id]);
 
 		// If the model is fully formed, do the distortion.
@@ -45,16 +47,22 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 		// Otherwise, run calibration.
 		else {
 			// Only run calibration if the ID given matches the desired ID
-			if (id == currentCalibrationID) {
-				TS_SCOPE("Process Calibration Image");
-				calibration->ProcessImage(in, out);
-				if (calibration->complete) {
-					StopCalibrating(id); // Quit the calibration
+			if (currentMode == Mode::INDIVIDUAL) {
+				if (id == currentCalibrationID) {
+					TS_SCOPE("Process Calibration Image");
+					calibration->ProcessImage(in, out);
+					if (calibration->complete) {
+						StopCalibrating(id); // Quit the calibration
+					}
+				}
+			}
+			else if (currentMode == Mode::STEREO) {
+				if (id == "RIGHT" && currentCalibrationID == "STEREO") {
+					// send lastleftmat and lastrightmat to stereo calibration
 				}
 			}
 		}
 
-		in.copyTo(id == "LEFT" ? lastLeftMat : lastRightMat);
 
 	}
 }
@@ -68,6 +76,29 @@ void CameraCalibratorModule::DrawGUI() {
 		if (!enabled) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
 		//Begin main content
 		{
+
+			// Do mode dropdown
+			int mode = (int)currentMode;
+			ImGui::Combo("Mode", &mode, "INDIVIDUAL\0STEREO\0\0");
+			if (mode == (int)Mode::INDIVIDUAL) {
+				currentMode = Mode::INDIVIDUAL;
+			}
+			else {
+				currentMode = Mode::STEREO;
+			}
+
+			// Show stereo calibration button if in stereo mode
+			if (currentMode == Mode::STEREO) {
+				if (currentCalibrationID == "") {
+					if (ImGui::Button("Calibrate Stereo")) {
+						currentCalibrationID = "STEREO";
+						calibrations["LEFT"].Reset();
+						calibrations["RIGHT"].Reset();
+					}
+				}
+			}
+
+
 			// Draw info about left calibration
 			bool leftHasCapture = calibrations["LEFT"].hasCapture;
 			if (leftHasCapture) {
@@ -137,15 +168,16 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 		ImGui::Spacing();
 
 		// Body
-
-		if (currentCalibrationID == "") {
-			if (ImGui::Button("Calibrate")) {
-				StartCalibrating(id);
+		if (currentMode == Mode::INDIVIDUAL) {
+			if (currentCalibrationID == "") {
+				if (ImGui::Button("Calibrate")) {
+					StartCalibrating(id);
+				}
 			}
-		}
-		else if (currentCalibrationID == id){
-			if (ImGui::Button("Stop Calibrating")) {
-				StopCalibrating(id);
+			else if (currentCalibrationID == id) {
+				if (ImGui::Button("Stop Calibrating")) {
+					StopCalibrating(id);
+				}
 			}
 		}
 
