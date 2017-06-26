@@ -331,7 +331,7 @@ void ofApp::keyPressed(int key) {
 	else if (key == 'f' || key == 'F') {
 		ofToggleFullscreen();
 	}
-	else if (key == 's' || key == 'S') {
+	else if ((key == 's' || key == 'S') && !demoMode) {
 		core->swapSides = !(core->swapSides);
 	}
 	else if (key == 'd' || key == 'D') {
