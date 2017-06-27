@@ -42,7 +42,7 @@ void CameraCalibratorModule::InitCalibrationState(unique_ptr<CameraCapture> cons
 
 void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArray out, string id) {
 	if (IsEnabled()) {
-		TS_START_NIF("Camera Calibrator");
+		TS_SCOPE("Camera Calibrator");
 
 		in.copyTo(id == "LEFT" ? lastLeftMat : lastRightMat);
 
