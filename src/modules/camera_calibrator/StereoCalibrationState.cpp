@@ -116,27 +116,34 @@ void StereoCalibrationState::CalibrateWithImageSet() {
 
 	// Use accumulated data to finalize calibration.
 
-	// Figure out camera calibration params individually (more accurate)
-	vector<Mat> rvecsLeft, tvecsLeft, rvecsRight, tvecsRight;
-	int calibFlag = 0;
-	calibFlag |= CV_CALIB_FIX_K4;
-	calibFlag |= CV_CALIB_FIX_K5;
-	calibFlag |= CV_CALIB_FIX_ASPECT_RATIO;
-	double rms;
-	rms = calibrateCamera(objectPoints, imagePointsLeft, size, cameraMatrixLeft, distortionCoeffsLeft, rvecsLeft, tvecsLeft, calibFlag);
-	Kino::app_log.AddLog("Reprojection error reported by left calibration: %f\n", rms);
-	rms = calibrateCamera(objectPoints, imagePointsRight, size, cameraMatrixRight, distortionCoeffsRight, rvecsRight, tvecsRight, calibFlag);
-	Kino::app_log.AddLog("Reprojection error reported by right calibration: %f\n", rms);
+	if (calibrateIndividually) {
+		// Figure out camera calibration params individually (more accurate)
+		vector<Mat> rvecsLeft, tvecsLeft, rvecsRight, tvecsRight;
+		int calibFlag = 0;
+		calibFlag |= CV_CALIB_FIX_K4;
+		calibFlag |= CV_CALIB_FIX_K5;
+		calibFlag |= CV_CALIB_FIX_ASPECT_RATIO;
+		double rms;
+		rms = calibrateCamera(objectPoints, imagePointsLeft, size, cameraMatrixLeft, distortionCoeffsLeft, rvecsLeft, tvecsLeft, calibFlag);
+		Kino::app_log.AddLog("Reprojection error reported by left calibration: %f\n", rms);
+		rms = calibrateCamera(objectPoints, imagePointsRight, size, cameraMatrixRight, distortionCoeffsRight, rvecsRight, tvecsRight, calibFlag);
+		Kino::app_log.AddLog("Reprojection error reported by right calibration: %f\n", rms);
+	}
 
 	// Stereo calibrate using individual calibrations as inputs
-	int flag = 0;
-	flag |= CV_CALIB_FIX_INTRINSIC; // The default value
+	int stereoFlag = 0;
+	if (calibrateIndividually) {
+		stereoFlag |= CV_CALIB_FIX_INTRINSIC; // The default value
+	}
+	else {
+		stereoFlag |= CV_CALIB_ZERO_TANGENT_DIST;
+		stereoFlag |= CV_CALIB_FIX_FOCAL_LENGTH;
+	}
 	reprojectionError = stereoCalibrate(objectPoints, imagePointsLeft, imagePointsRight, cameraMatrixLeft, distortionCoeffsLeft, cameraMatrixRight, distortionCoeffsRight, size, R, T, E, F);
 
 	Kino::app_log.AddLog("Reprojection error reported by stereo calibration: %f\n", reprojectionError);
 
-
-	stereoRectify(cameraMatrixLeft, distortionCoeffsLeft, cameraMatrixRight, distortionCoeffsRight, size, R, T, R1, R2, P1, P2, Q, flag);
+	stereoRectify(cameraMatrixLeft, distortionCoeffsLeft, cameraMatrixRight, distortionCoeffsRight, size, R, T, R1, R2, P1, P2, Q, stereoFlag);
 
 	mapsCreated = false;
 

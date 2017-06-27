@@ -65,5 +65,9 @@ private:
 	void InitCalibrationState(unique_ptr<CameraCapture> const& cap, string id);
 
 	int capCount = 1;
+	int leftCapCount = 1;
+	int rightCapCount = 1;
+
+	bool captureMode = false;
 
 };

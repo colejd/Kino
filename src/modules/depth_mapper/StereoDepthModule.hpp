@@ -29,4 +29,7 @@ private:
 	cv::Mat lastLeftMat;
 	cv::Mat lastRightMat;
 
+	int numDisparities = 16;
+	int blockSize = 9;
+
 };

@@ -70,7 +70,17 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 		}
 
 		else if (currentMode == Mode::STEREO) {
-			if (stereoCalibration.complete) {
+			if (captureMode) {
+				cv::Mat gray;
+				cv::cvtColor(in, gray, CV_BGR2GRAY);
+				vector<Point2f> corners;
+				bool found = cv::findChessboardCorners(in, stereoCalibration.boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE); //CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
+				if (found) {
+					cornerSubPix(gray, corners, cv::Size(5, 5), cv::Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+					drawChessboardCorners(out, stereoCalibration.boardSize, corners, found);
+				}
+			}
+			else if (stereoCalibration.complete) {
 				// Rectify
 				TS_SCOPE("Undistort Stereo");
 				stereoCalibration.UndistortImage(in, out, id);
@@ -124,15 +134,18 @@ void CameraCalibratorModule::DrawGUI() {
 				ImGui::Spacing();
 				DrawStereoCalibrationPanel();
 
-				if (ImGui::Button("Save Capture Pairs")) {
+				ImGui::Checkbox("Capture Mode", &captureMode);
+				if (captureMode && ImGui::Button("Save Capture Pairs")) {
+					string basePath = ofToDataPath("calibration/images/" + stereoCalibration.unique_id + "/");
+
 					// Left image
-					string basePathLeft = ofToDataPath("calibration/images/" + calibrations["LEFT"].unique_id + "/");
-					ofDirectory::createDirectory(basePathLeft);
+					string basePathLeft = basePath + "LEFT/";
+					ofDirectory::createDirectory(basePathLeft, false, true);
 					imwrite(basePathLeft + "Capture" + std::to_string(capCount) + ".png", lastLeftMat);
 
 					// Right image
-					string basePathRight = ofToDataPath("calibration/images/" + calibrations["RIGHT"].unique_id + "/");
-					ofDirectory::createDirectory(basePathRight);
+					string basePathRight = basePath + "RIGHT/";
+					ofDirectory::createDirectory(basePathRight, false, true);
 					imwrite(basePathRight + "Capture" + std::to_string(capCount) + ".png", lastRightMat);
 
 					capCount += 1;
@@ -205,6 +218,17 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 		if (currentlyCalibratingID == id) {
 			ImGui::Text("%-20s %d / %d", "Captures:", calibration.numCaptures, calibration.capturesRequired);
 		}
+
+		if (ImGui::Button("Save Capture")) {
+			string basePath = ofToDataPath("calibration/images/" + calibration.unique_id + "/");
+
+			ofDirectory::createDirectory(basePath, false, true);
+			bool isLeft = (id == "LEFT");
+			imwrite(basePath + "Capture" + std::to_string(isLeft ? leftCapCount : rightCapCount) + ".png", isLeft ? lastLeftMat : lastRightMat);
+			if (isLeft) leftCapCount += 1;
+			else rightCapCount += 1;
+			
+		}
 	}
 	ImGui::EndChild();
 	ImGui::PopStyleVar();
@@ -245,6 +269,8 @@ void CameraCalibratorModule::DrawStereoCalibrationPanel() {
 
 			}
 		}
+
+		ImGui::Checkbox("Calibrate Individually", &(stereoCalibration.calibrateIndividually));
 
 		ImGui::Text("%-20s %.2fmm", "Unit Size:", stereoCalibration.squareSize);
 		ImGui::Text("%-20s %.3f", "Reprojection Error:", stereoCalibration.reprojectionError);

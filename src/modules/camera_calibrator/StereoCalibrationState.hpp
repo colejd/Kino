@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 #include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <string>
 
 #include <KinoGlobals.hpp>
@@ -52,11 +55,9 @@ public:
 
 	void CalibrateWithImageSet();
 
-
-private:
+	bool calibrateIndividually = true;
 
 	vector<vector<Point3f>> objectPoints;
-	//vector<vector<Point2f>> imagePoints1, imagePoints2;
 	vector<vector<Point2f>> imagePointsLeft, imagePointsRight;
 	vector<Point2f> cornersLeft, cornersRight;
 
@@ -68,6 +69,8 @@ private:
 
 	// Rectification parameters
 	cv::Mat R1, R2, P1, P2, Q;
+
+private:
 	
 
 	bool mapsCreated = false;
