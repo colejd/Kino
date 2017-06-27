@@ -12,6 +12,7 @@
 #include <modules/image_classifier/ClassifierLens.hpp>
 #include <modules/deepdream/DeepDreamLens.hpp>
 #include <modules/camera_calibrator/CameraCalibratorModule.hpp>
+#include <modules/depth_mapper/StereoDepthModule.hpp>
 
 #include "camera/CameraCapture.hpp"
 
@@ -41,6 +42,7 @@ public:
 	FaceDetectorModule faceDetector;
 	ClassifierLens classifierLens;
 	DeepDreamLens deepdreamLens;
+	StereoDepthModule depthModule;
 
 	cv::UMat leftMat = cv::UMat();
 	cv::UMat rightMat = cv::UMat();

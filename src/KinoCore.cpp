@@ -18,6 +18,7 @@ void KinoCore::Setup() {
 	// Initialize modules
 	edgeDetector = EdgeDetectorModule();
 	faceDetector = FaceDetectorModule();
+	depthModule = StereoDepthModule();
 
 	// Initialize captures
 	capture1 = make_unique<CameraCapture>();
@@ -102,6 +103,7 @@ void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::Out
 
 		// Process through each lens
 		cameraCalibrator.ProcessFrame(intermediate, intermediate, id);
+		depthModule.ProcessFrame(intermediate, intermediate, id);
 		edgeDetector.ProcessFrame(intermediate, intermediate);
 		faceDetector.ProcessFrame(intermediate, intermediate);
 		classifierLens.ProcessFrame(intermediate, intermediate);
@@ -188,6 +190,7 @@ void KinoCore::DrawAllGUIs() {
 	edgeDetector.DrawGUI();
 	classifierLens.DrawGUI();
 	deepdreamLens.DrawGUI();
+	depthModule.DrawGUI();
 }
 
 void KinoCore::DrawGUI() {

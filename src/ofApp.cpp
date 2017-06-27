@@ -129,6 +129,7 @@ void ofApp::DrawGUI() {
 
 	if (ImGui::BeginMenu("Modules")) {
 		ImGui::MenuItem("Camera Calibrator", nullptr, &(core->cameraCalibrator.showGUI));
+		ImGui::MenuItem("Stereo Depth", nullptr, &(core->depthModule.showGUI));
 		ImGui::MenuItem("Edge Detection", "E", &(core->edgeDetector.showGUI));
 		ImGui::MenuItem("Face Detection", nullptr, &(core->faceDetector.showGUI));
 		ImGui::MenuItem("Image Classifier", "C", &(core->classifierLens.showGUI));
