@@ -12,7 +12,6 @@
 #include <gui/UsesGUI.hpp>
 #include <KinoGlobals.hpp>
 #include <ofxTimeMeasurements.h>
-#include <helpers/WindowsHelper.hpp>
 
 #include <camera/CameraCapture.hpp>
 #include "CalibrationState.hpp"

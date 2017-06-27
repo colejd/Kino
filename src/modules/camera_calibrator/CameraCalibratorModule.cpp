@@ -74,6 +74,7 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 				// Rectify
 				TS_SCOPE("Undistort Stereo");
 				stereoCalibration.UndistortImage(in, out, id);
+
 			}
 		}
 
