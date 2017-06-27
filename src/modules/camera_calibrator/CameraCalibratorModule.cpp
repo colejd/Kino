@@ -185,16 +185,14 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 		ImGui::Spacing();
 
 		// Body
-		if (currentMode == Mode::INDIVIDUAL) {
-			if (currentlyCalibratingID == "") {
-				if (ImGui::Button("Calibrate")) {
-					StartCalibrating(id);
-				}
+		if (currentlyCalibratingID == "") {
+			if (ImGui::Button("Calibrate")) {
+				StartCalibrating(id);
 			}
-			else if (currentlyCalibratingID == id) {
-				if (ImGui::Button("Stop Calibrating")) {
-					StopCalibrating(id);
-				}
+		}
+		else if (currentlyCalibratingID == id) {
+			if (ImGui::Button("Stop Calibrating")) {
+				StopCalibrating(id);
 			}
 		}
 
