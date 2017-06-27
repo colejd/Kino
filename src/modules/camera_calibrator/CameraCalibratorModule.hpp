@@ -12,9 +12,11 @@
 #include <gui/UsesGUI.hpp>
 #include <KinoGlobals.hpp>
 #include <ofxTimeMeasurements.h>
+#include <helpers/WindowsHelper.hpp>
 
 #include <camera/CameraCapture.hpp>
 #include "CalibrationState.hpp"
+#include "StereoCalibrationState.hpp"
 
 using namespace std;
 using namespace cv;
@@ -41,6 +43,7 @@ public:
 
 	void DrawGUI() override;
 	void DrawCalibrationStatePanel(string id);
+	void DrawStereoCalibrationPanel();
 
 	cv::Mat lastLeftMat;
 	cv::Mat lastRightMat;
@@ -53,10 +56,11 @@ public:
 
 private:
 	// The ID of the currently calibrating camera. Set to empty string if no camera is calibrating.
-	string currentCalibrationID = "";
+	string currentlyCalibratingID = "";
 
 	// Mapping of `CalibrationState` objects to string identifiers ("LEFT" or "RIGHT").
 	std::map<string, CalibrationState> calibrations;
+	StereoCalibrationState stereoCalibration;
 
 	// Adds a `CalibrationState` for the given capture to the `calibrations` map.
 	void InitCalibrationState(unique_ptr<CameraCapture> const& cap, string id);

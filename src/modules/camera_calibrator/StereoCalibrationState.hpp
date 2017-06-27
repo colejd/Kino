@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "ofMain.h"
 #include <opencv2/opencv.hpp>
 #include <string>
@@ -9,6 +8,8 @@
 
 using namespace cv;
 using namespace std;
+
+// http://sourishghosh.com/2016/stereo-calibration-cpp-opencv/
 
 class StereoCalibrationState {
 public:
@@ -34,8 +35,8 @@ public:
 
 	StereoCalibrationState(int board_width = 9, int board_height = 6, int capturesRequired = 20, float squareSize = 26.0);
 
-	// Runs the calibration routine on `in`. Any found checkerboards are drawn to `out`.
-	void ProcessImages(cv::InputArray inLeft, cv::InputArray inRight, cv::InputOutputArray outLeft, cv::InputOutputArray outRight);
+	bool QueueImages(cv::InputArray inLeft, cv::InputArray inRight);
+
 
 	// A cached version of `cv::undistort()`. Significantly faster.
 	void UndistortImage(cv::InputArray in, cv::OutputArray out, string id);
@@ -49,27 +50,29 @@ public:
 	// Clears all information acquired from the calibration.
 	void Reset();
 
+	void CalibrateWithImageSet();
+
 
 private:
 
-	// Timing information
-	float secondsBetweenCaptures = 1.0;
-	float lastFrameTime = 0.0;
-	float secondsSinceLastCapture = 0.0;
-
 	vector<vector<Point3f>> objectPoints;
-	vector<vector<Point2f>> imagePoints;
-	vector<Point2f> corners;
+	//vector<vector<Point2f>> imagePoints1, imagePoints2;
+	vector<vector<Point2f>> imagePointsLeft, imagePointsRight;
+	vector<Point2f> cornersLeft, cornersRight;
 
-	vector<float> reprojErrs;
+	// Variables needed to restore from disk
+	Mat cameraMatrixLeft, cameraMatrixRight;
+	Mat distortionCoeffsLeft, distortionCoeffsRight;
+	Vec3d T;
+	Mat R, F, E;
 
-	Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
-	Mat distortionCoeffs = Mat::zeros(8, 1, CV_64F);
-
-	// Rotation / translation vectors (derived by calibrateCamera)
-	vector<Mat> rvecs, tvecs;
+	// Rectification parameters
+	cv::Mat R1, R2, P1, P2, Q;
+	
 
 	bool mapsCreated = false;
-	cv::Mat map1, map2;
+	cv::Mat map1_left, map2_left, map1_right, map2_right;
+
+	bool ValidateDir(ofDirectory dir);
 
 };

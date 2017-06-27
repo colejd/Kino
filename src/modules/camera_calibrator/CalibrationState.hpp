@@ -11,7 +11,7 @@ using namespace std;
 
 /**
 Manages the calibration and undistortion of a single camera feed. To use, iteratively call
-`ProcessImage()` until it's done, then use `UndistortImage()` to undistort any image from
+`IngestImageForCalibration()` until it's done, then use `UndistortImage()` to undistort any image from
 that camera.
 
 Most of the calibration code itself was adapted to a per-frame technique from
@@ -43,7 +43,10 @@ public:
 	CalibrationState(int board_width = 9, int board_height = 6, int capturesRequired = 20, float squareSize = 26.0);
 
 	// Runs the calibration routine on `in`. Any found checkerboards are drawn to `out`.
-	void ProcessImage(cv::InputArray in, cv::InputOutputArray out);
+	void IngestImageForCalibration(cv::InputArray in, cv::InputOutputArray out);
+
+	bool QueueImage(cv::InputArray in, cv::InputOutputArray out = cv::Mat(), bool keepResults = true);
+
 
 	// A cached version of `cv::undistort()`. Significantly faster.
 	void UndistortImage(cv::InputArray in, cv::OutputArray out);
@@ -56,6 +59,8 @@ public:
 
 	// Clears all information acquired from the calibration.
 	void Reset();
+
+	void CalibrateWithImageSet();
 
 
 private:

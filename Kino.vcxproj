@@ -251,6 +251,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClInclude Include="src\gui\UsesGUI.hpp" />
     <ClInclude Include="src\helpers\Paths.hpp" />
     <ClInclude Include="src\helpers\Vectors.h" />
+    <ClInclude Include="src\helpers\WindowsHelper.hpp" />
     <ClInclude Include="src\modules\camera_calibrator\CalibrationState.hpp" />
     <ClInclude Include="src\modules\camera_calibrator\CameraCalibratorModule.hpp" />
     <ClInclude Include="src\modules\camera_calibrator\StereoCalibrationState.hpp" />

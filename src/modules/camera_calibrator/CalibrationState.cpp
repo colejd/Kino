@@ -34,38 +34,23 @@ void CalibrationState::Reset() {
 }
 
 
-void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out) {
-
-	cv::Mat gray;
-	cv::cvtColor(in, gray, CV_BGR2GRAY);
-
-	bool found = cv::findChessboardCorners(in, boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE); //CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
-	if (found) {
-		cornerSubPix(gray, corners, cv::Size(5, 5), cv::Size(-1, -1),
-			TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
-		drawChessboardCorners(out, boardSize, corners, found);
-	}
+void CalibrationState::IngestImageForCalibration(cv::InputArray in, cv::InputOutputArray out) {
 
 	bool timeForNewCheckerboard = false;
 	float time = ofGetElapsedTimef();
 	secondsSinceLastCapture += time - lastFrameTime;
 	lastFrameTime = time;
 	if (secondsSinceLastCapture > secondsBetweenCaptures) {
-		secondsSinceLastCapture = 0.0;
 		timeForNewCheckerboard = true;
 	}
 	
-	if (found && numCaptures < capturesRequired && timeForNewCheckerboard) {
+	bool didQueue = QueueImage(in, out, numCaptures < capturesRequired && timeForNewCheckerboard);
+	if (didQueue) {
+		Kino::app_log.AddLog("DID QUEUE\n");
 		// Use the current frame as an input image for the calibrator
 		numCaptures += 1;
-
-		vector< Point3f > obj;
-		for (int i = 0; i < boardSize.height; i++)
-			for (int j = 0; j < boardSize.width; j++)
-				obj.push_back(Point3f((float)j * squareSize, (float)i * squareSize, 0));
-
-		imagePoints.push_back(corners);
-		objectPoints.push_back(obj);
+		// Reset the timer
+		secondsSinceLastCapture = 0.0;
 
 	}
 
@@ -106,6 +91,116 @@ void CalibrationState::ProcessImage(cv::InputArray in, cv::InputOutputArray out)
 		}
 	}
 
+
+}
+
+
+bool CalibrationState::QueueImage(cv::InputArray in, cv::InputOutputArray out, bool keepResults) {
+	cv::Mat gray;
+	cv::cvtColor(in, gray, CV_BGR2GRAY);
+
+	bool found = cv::findChessboardCorners(in, boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE); //CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
+	if (found) {
+		cornerSubPix(gray, corners, cv::Size(5, 5), cv::Size(-1, -1),
+			TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+
+		// Draw to `out` if it exists.
+		if (!out.empty()) {
+			drawChessboardCorners(out, boardSize, corners, found);
+		}
+
+		// Push results to configuration state unless specified.
+		if (keepResults) {
+			vector< Point3f > obj;
+			for (int i = 0; i < boardSize.height; i++)
+				for (int j = 0; j < boardSize.width; j++)
+					obj.push_back(Point3f((float)j * squareSize, (float)i * squareSize, 0));
+
+			imagePoints.push_back(corners);
+			objectPoints.push_back(obj);
+
+			return true;
+		}
+
+	}
+
+	return false;
+}
+
+
+/**
+This calibration state will immediately populate itself using the images located at a special directory.
+Probably /data/calibration/images/<unique_id>/
+*/
+void CalibrationState::CalibrateWithImageSet() {
+	Reset();
+
+	string path = ofToDataPath("calibration/images/" + unique_id + "/");
+	ofDirectory dir(path);
+
+	if (!dir.exists()) {
+		Kino::app_log.AddLog("[CalibrationState] Configuration directory does not exist for %s\n", unique_id.c_str());
+		return;
+	}
+
+	vector<ofFile> files = dir.getFiles();
+	if (files.size() == 0) {
+		Kino::app_log.AddLog("[CalibrationState] There are no images in the directory %s\n", dir.path().c_str());
+		return;
+	}
+
+	Kino::app_log.AddLog("[CalibrationState] Calibrating with %i images...\n", files.size());
+
+	cv::Size size;
+
+	for (ofFile file : files) {
+		// Turn the file into a mat and use it to calibrate
+		cv::Mat mat = imread(file.getAbsolutePath(), CV_LOAD_IMAGE_COLOR);
+		size = cv::Size(mat.cols, mat.rows);
+		bool didQueue = QueueImage(mat);
+		if (!didQueue) {
+			Kino::app_log.AddLog("[CalibrationState] Could not find a checkerboard in the given image: %s\n", file.getFileName().c_str());
+		}
+
+	}
+
+	// Use accumulated data to finalize calibration.
+
+	int flag = 0;
+	flag |= CV_CALIB_FIX_K4;
+	flag |= CV_CALIB_FIX_K5;
+	flag |= CV_CALIB_FIX_ASPECT_RATIO;
+	double rms = calibrateCamera(objectPoints, imagePoints, size, cameraMatrix, distortionCoeffs, rvecs, tvecs, flag);
+
+	Kino::app_log.AddLog("Reprojection error reported by calibrateCamera: %f\n", rms);
+
+	// Calculate error
+	reprojErrs.resize(objectPoints.size());
+	vector<Point2f> imagePointsProjected;
+	size_t totalPoints = 0;
+	double totalErr = 0;
+	for (size_t i = 0; i < objectPoints.size(); ++i) {
+		projectPoints(objectPoints[i], rvecs[i], tvecs[i], cameraMatrix, distortionCoeffs, imagePointsProjected);
+		double err = norm(imagePoints[i], imagePointsProjected, NORM_L2);
+
+		size_t n = objectPoints[i].size();
+		reprojErrs[i] = (float)std::sqrt(err * err / n);
+		totalErr += err * err;
+		totalPoints += n;
+	}
+	reprojectionError = sqrt(totalErr / totalPoints);
+	Kino::app_log.AddLog("Reprojection error computed: %f\n", reprojectionError);
+
+	if (checkRange(cameraMatrix) && checkRange(distortionCoeffs)) {
+		complete = true; // Mark the calibration as finished
+		SaveToFile();
+	}
+	else {
+		Kino::app_log.AddLog("Calibration contained invalid data. Please retry.");
+		Reset();
+	}
+
+	
 
 }
 
