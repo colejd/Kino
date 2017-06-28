@@ -16,6 +16,10 @@ StereoDepthModule::StereoDepthModule() {
 	//sbm->setMode(StereoSGBM::MODE_HH);
 	//sbm->setP1(600);
 	//sbm->setP2(2400);
+
+	// Reserve GL texture ID for disparity mat
+	glGenTextures(1, &previewTextureID);
+
 }
 
 StereoDepthModule::~StereoDepthModule() {
@@ -87,24 +91,23 @@ void StereoDepthModule::DrawGUI() {
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 				ImGui::BeginChild("Disparity Preview", previewSize, true, ImGuiWindowFlags_ChildWindowAutoFitY);
 				{
-
-					GLuint textureID;
-					glGenTextures(1, &textureID);
-					glBindTexture(GL_TEXTURE_2D, textureID);
+					// Update OpenGL image data
+					glBindTexture(GL_TEXTURE_2D, previewTextureID);
 
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-					GLint internalFormat = GL_RGB;
-					GLint imageFormat = GL_BGR;
+					GLint internalFormat = GL_RGB; // Format of the OpenGL texture
+					GLint imageFormat = GL_BGR; // Format of the input data (OpenCV Mat here)
 					glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, disparity.cols, disparity.rows, 0, imageFormat, GL_UNSIGNED_BYTE, disparity.ptr());
 					glGenerateMipmap(GL_TEXTURE_2D);
 
+					// Draw image to fill container (up to container to maintain aspect)
 					float width = ImGui::GetWindowWidth() - (ImGui::GetStyle().WindowPadding.x * 2);
 					float height = ImGui::GetWindowHeight() - (ImGui::GetStyle().WindowPadding.y * 2);
-					ImGui::Image((ImTextureID)textureID, ImVec2(width, height));
+					ImGui::Image((ImTextureID)previewTextureID, ImVec2(width, height));
 
 				}
 				ImGui::EndChild();

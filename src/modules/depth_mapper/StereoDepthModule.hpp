@@ -36,4 +36,6 @@ private:
 
 	cv::Mat disparity;
 
+	GLuint previewTextureID;
+
 };
