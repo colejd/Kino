@@ -31,11 +31,14 @@ public:
 private:
 	bool moduleCanRun = false;
 
-	int numDisparities = 16;
+	int numDisparities = 112;
 	int blockSize = 9;
 
 	cv::Mat disparity;
 
 	GLuint previewTextureID;
+
+	bool doDownsampling = false;
+	float downSampleRatio = 0.5f;
 
 };
