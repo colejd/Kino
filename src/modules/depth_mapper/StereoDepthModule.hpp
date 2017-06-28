@@ -9,6 +9,9 @@
 #include <gui/UsesGUI.hpp>
 #include <KinoGlobals.hpp>
 
+#include <gl/GL.h>
+#include <gl/glew.h>
+
 using namespace std;
 using namespace cv;
 
@@ -30,5 +33,7 @@ private:
 
 	int numDisparities = 16;
 	int blockSize = 9;
+
+	cv::Mat disparity;
 
 };

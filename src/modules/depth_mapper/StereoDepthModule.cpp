@@ -48,7 +48,7 @@ void StereoDepthModule::ProcessFrames(InputArray inLeft, InputArray inRight, Out
 
 		//imshow("Disparity", imgDisparity16S);
 
-		cv::cvtColor(imgDisparity8U, outRight, COLOR_GRAY2BGR);
+		cv::cvtColor(imgDisparity8U, disparity, COLOR_GRAY2BGR);
 
 	}
 }
@@ -56,7 +56,7 @@ void StereoDepthModule::ProcessFrames(InputArray inLeft, InputArray inRight, Out
 void StereoDepthModule::DrawGUI() {
 	if (showGUI) {
 
-		ImGui::Begin("Stereo Depth Module", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin("Stereo Depth Module", &showGUI);
 
 		if (!moduleCanRun) {
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Cannot run without two camera captures enabled!");
@@ -74,6 +74,43 @@ void StereoDepthModule::DrawGUI() {
 			ImGui::DragInt("Block Size", &blockSize, 2, 5, 127);
 			sbm->setBlockSize(blockSize);
 
+			// Draw a preview of the window if it exists
+			if (!disparity.empty()) {
+				ImGui::Spacing();
+
+				ImGui::Text("Output");
+
+				float baseSize = ImGui::GetWindowWidth() - (ImGui::GetStyle().WindowPadding.x * 2); // Determines the width of the image. Height is scaled.
+				double aspect = (double)disparity.rows / (double)disparity.cols;
+				ImVec2 previewSize(baseSize, baseSize * aspect);
+
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+				ImGui::BeginChild("Disparity Preview", previewSize, true, ImGuiWindowFlags_ChildWindowAutoFitY);
+				{
+
+					GLuint textureID;
+					glGenTextures(1, &textureID);
+					glBindTexture(GL_TEXTURE_2D, textureID);
+
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+					GLint internalFormat = GL_RGB;
+					GLint imageFormat = GL_BGR;
+					glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, disparity.cols, disparity.rows, 0, imageFormat, GL_UNSIGNED_BYTE, disparity.ptr());
+					glGenerateMipmap(GL_TEXTURE_2D);
+
+					float width = ImGui::GetWindowWidth() - (ImGui::GetStyle().WindowPadding.x * 2);
+					float height = ImGui::GetWindowHeight() - (ImGui::GetStyle().WindowPadding.y * 2);
+					ImGui::Image((ImTextureID)textureID, ImVec2(width, height));
+
+				}
+				ImGui::EndChild();
+				ImGui::PopStyleVar();
+
+			}
 
 
 		}
