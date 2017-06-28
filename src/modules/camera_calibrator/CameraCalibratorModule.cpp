@@ -1,7 +1,14 @@
 #include "CameraCalibratorModule.hpp"
 
 CameraCalibratorModule::CameraCalibratorModule() {
-	// TODO: Automatically set mode to stereo unless demo mode
+	// Automatically set mode to stereo unless demo mode
+	bool demoMode = ConfigHandler::GetValue("DEMO_SETTINGS.ACTIVE", false).asBool();
+	if (demoMode) {
+		currentMode = Mode::INDIVIDUAL;
+	}
+	else {
+		currentMode = Mode::STEREO;
+	}
 }
 
 CameraCalibratorModule::~CameraCalibratorModule() {
@@ -41,45 +48,54 @@ void CameraCalibratorModule::InitCalibrationState(unique_ptr<CameraCapture> cons
 }
 
 void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
-	moduleCanRun = !inLeft.empty() && !inRight.empty();
-	if (IsEnabled() && moduleCanRun) {
+	moduleCanRunStereo = !inLeft.empty() && !inRight.empty();
+	// Switch to individual if we're on stereo and we don't have two cameras
+	if (!moduleCanRunStereo) currentMode = Mode::INDIVIDUAL;
+
+	if (IsEnabled()) {
 		TS_SCOPE("Camera Calibrator");
+
+		inLeft.copyTo(lastLeftMat);
+		inRight.copyTo(lastRightMat);
 
 		if (currentMode == Mode::INDIVIDUAL) {
 
-			CalibrationState* leftCalib = &(calibrations[LEFT_ID]);
-			CalibrationState* rightCalib = &(calibrations[RIGHT_ID]);
-
-			// If the model is fully formed, do the distortion.
-			if (leftCalib->complete) {
-				TS_SCOPE("Undistort");
-				leftCalib->UndistortImage(inLeft, outLeft);
-			}
-			// Otherwise, run calibration.
-			else {
-				// Only run calibration if the ID given matches the desired ID
-				if (currentlyCalibratingID == LEFT_ID) {
-					TS_SCOPE("Process Calibration Image");
-					leftCalib->IngestImageForCalibration(inLeft, outLeft);
-					if (leftCalib->complete) {
-						StopCalibrating(LEFT_ID); // Quit the calibration
+			if (!inLeft.empty()) {
+				CalibrationState* leftCalib = &(calibrations[LEFT_ID]);
+				// If the model is fully formed, do the distortion.
+				if (leftCalib->complete) {
+					TS_SCOPE("Undistort");
+					leftCalib->UndistortImage(inLeft, outLeft);
+				}
+				// Otherwise, run calibration.
+				else {
+					// Only run calibration if the ID given matches the desired ID
+					if (currentlyCalibratingID == LEFT_ID) {
+						TS_SCOPE("Process Calibration Image");
+						leftCalib->IngestImageForCalibration(inLeft, outLeft);
+						if (leftCalib->complete) {
+							StopCalibrating(LEFT_ID); // Quit the calibration
+						}
 					}
 				}
 			}
 
-			// If the model is fully formed, do the distortion.
-			if (rightCalib->complete) {
-				TS_SCOPE("Undistort");
-				rightCalib->UndistortImage(inRight, outRight);
-			}
-			// Otherwise, run calibration.
-			else {
-				// Only run calibration if the ID given matches the desired ID
-				if (currentlyCalibratingID == RIGHT_ID) {
-					TS_SCOPE("Process Calibration Image");
-					rightCalib->IngestImageForCalibration(inRight, outRight);
-					if (rightCalib->complete) {
-						StopCalibrating(RIGHT_ID); // Quit the calibration
+			if (!inRight.empty()) {
+				CalibrationState* rightCalib = &(calibrations[RIGHT_ID]);
+				// If the model is fully formed, do the distortion.
+				if (rightCalib->complete) {
+					TS_SCOPE("Undistort");
+					rightCalib->UndistortImage(inRight, outRight);
+				}
+				// Otherwise, run calibration.
+				else {
+					// Only run calibration if the ID given matches the desired ID
+					if (currentlyCalibratingID == RIGHT_ID) {
+						TS_SCOPE("Process Calibration Image");
+						rightCalib->IngestImageForCalibration(inRight, outRight);
+						if (rightCalib->complete) {
+							StopCalibrating(RIGHT_ID); // Quit the calibration
+						}
 					}
 				}
 			}
@@ -106,11 +122,6 @@ void CameraCalibratorModule::DrawGUI() {
 	if (showGUI) {
 		ImGui::Begin("Camera Calibrator", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
-		if (!moduleCanRun) {
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Cannot run without two camera captures enabled!");
-			return;
-		}
-
 		ImGui::Checkbox("Enabled", &enabled);
 
 		ImGui::Separator();
@@ -120,7 +131,10 @@ void CameraCalibratorModule::DrawGUI() {
 
 			// Do mode dropdown
 			int mode = (int)currentMode;
-			ImGui::Combo("Mode", &mode, "INDIVIDUAL\0STEREO\0\0");
+			char* items = "Individual\0\0";
+			if (moduleCanRunStereo) items = "Individual\0Stereo\0\0"; // Show Stereo option only if it's possible to use it
+			ImGui::Combo("Mode", &mode, items);
+
 			if (mode == (int)Mode::INDIVIDUAL) {
 				currentMode = Mode::INDIVIDUAL;
 			}

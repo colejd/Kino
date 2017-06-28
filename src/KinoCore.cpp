@@ -11,7 +11,7 @@ KinoCore::~KinoCore() {
 
 void KinoCore::Setup() {
 	cv::ocl::setUseOpenCL(ConfigHandler::GetValue("OPENCV.USE_OPENCL", false).asBool());
-	bool demoMode = ConfigHandler::GetValue("DEMO_SETTINGS.ACTIVE", false).asBool();
+	demoMode = ConfigHandler::GetValue("DEMO_SETTINGS.ACTIVE", false).asBool();
 
 	PrintCVDebugInfo();
 
@@ -102,7 +102,7 @@ void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, string 
 
 /**
 Synchronized frame consumption (runs only when both frames are ready).
-Processes 
+Processes each frame through each module.
 */
 void KinoCore::ConsumeFrames() {
 	Frame *left = &framebuffer[LEFT_ID];

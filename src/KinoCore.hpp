@@ -59,6 +59,8 @@ public:
 	bool swapSides = false;
 
 	std::map<string, Frame> framebuffer;
+
+	bool demoMode;
 private:
 	
 };

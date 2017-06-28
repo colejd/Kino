@@ -12,6 +12,7 @@
 #include <gui/UsesGUI.hpp>
 #include <KinoGlobals.hpp>
 #include <ofxTimeMeasurements.h>
+#include "config/ConfigHandler.hpp"
 
 #include <camera/CameraCapture.hpp>
 #include "CalibrationState.hpp"
@@ -44,17 +45,14 @@ public:
 	void DrawCalibrationStatePanel(string id);
 	void DrawStereoCalibrationPanel();
 
-	cv::Mat lastLeftMat;
-	cv::Mat lastRightMat;
-
 	enum class Mode {
 		INDIVIDUAL,
 		STEREO
 	};
-	Mode currentMode = Mode::STEREO;
+	Mode currentMode = Mode::INDIVIDUAL;
 
 private:
-	bool moduleCanRun = false;
+	bool moduleCanRunStereo = false;
 
 	// The ID of the currently calibrating camera. Set to empty string if no camera is calibrating.
 	string currentlyCalibratingID = "";
@@ -71,6 +69,10 @@ private:
 	int rightCapCount = 1;
 
 	bool captureMode = false;
+
+	// Cached mats saved to disk when requested by gui
+	Mat lastLeftMat;
+	Mat lastRightMat;
 
 	void DrawCheckerboardPreview(InputArray in, OutputArray out);
 
