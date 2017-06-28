@@ -165,6 +165,9 @@ void ofApp::DrawGUI() {
 	//ImGui::SameLine(ImGui::GetWindowWidth() - 160); ImGui::TextColored(textColor, "core: %.1f ms", coreFps);
 
 
+	//ImGui::SameLine(ImGui::GetWindowWidth() - 500); ImGui::Text("Cameras: %4.0f %4.0f", core->framebuffer["LEFT"].fps, core->framebuffer["RIGHT"].fps);
+
+
 #ifdef _DEBUG
 	ImGui::SameLine(ImGui::GetWindowWidth() - 250);
 	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Debug Build");

@@ -53,76 +53,123 @@ void KinoCore::Setup() {
 		capture2->StartCapturing(1, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
 	}
 
+	// Init framebuffer
+	framebuffer["LEFT"] = Frame();
+	framebuffer["RIGHT"] = Frame();
+
 	cameraCalibrator.RegisterCameras(capture1, capture2);
 
 }
 
 void KinoCore::Update() {
-	if (!swapSides) {
-		ProcessCapture(capture1, leftMat, "LEFT");
-		ProcessCapture(capture2, rightMat, "RIGHT");
-	}
-	else {
-		ProcessCapture(capture1, rightMat, "RIGHT");
-		ProcessCapture(capture2, leftMat, "LEFT");
-	}
+
+	// Update captures into framebuffer, swapping if desired by user settings
+	ProcessCapture(capture1, !swapSides ? "LEFT" : "RIGHT");
+	ProcessCapture(capture2, !swapSides ? "RIGHT" : "LEFT");
+
+	// Run the stereo modules with the frame data
+	ConsumeFrames();
 }
 
 /**
-If the capture has a new frame ready, run the frame through each module. The
-results are written to `output`.
+Fills the frame buffers when each camera is ready. Marks them as ready for synchronization purposes.
 */
-void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id) {
+void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, string id) {
+	TS_SCOPE("Process Capture");
 	if (!cap->IsInitialized()) {
+		framebuffer[id].MarkReady();
 		return;
 	}
 
-	string capTimerID = "Capture " + id + " Update";
-	TS_START_NIF(capTimerID);
 
 	if (cap->IsThreaded() == false) {
 		//If the capture isn't threaded, we need to manually update it before querying it here.
-		TS_START_NIF("Update");
+		TS_SCOPE("Update Capture");
 		cap->UpdateCapture();
-		TS_STOP_NIF("Update");
 	}
 	if (cap->FrameIsReady()) {
-		//cv::Mat rawFrame(cap->GetWidth(), cap->GetHeight(), CV_8UC3, cap->GetLatestFrame().data);
 
 		if (!pauseCaptureUpdates) {
-			TS_START_NIF("Frame Grab");
-			rawFrame = cap->RetrieveCapture().clone();
-			TS_STOP_NIF("Frame Grab");
+			TS_SCOPE("Frame Grab");
+			//rawFrame = cap->RetrieveCapture().clone();
+			cap->RetrieveCapture().copyTo(framebuffer[id].data);
+			framebuffer[id].MarkReady();
 		}
 
+	}
+
+}
+
+/**
+Synchronized frame consumption (runs only when both frames are ready).
+Processes 
+*/
+void KinoCore::ConsumeFrames() {
+	Frame *left = &framebuffer["LEFT"];
+	Frame *right = &framebuffer["RIGHT"];
+
+	// If either frame isn't ready, don't continue
+	if (!left->IsReady() || !right->IsReady()) {
+		return;
+	}
+
+	TS_SCOPE("Consume Frames");
+
+	// Process the frame data through each module, assigning to leftMat and rightMat
+
+	// Left
+	{
+		TS_SCOPE("Left");
+
+		TS_START_NIF("Frame In");
 		cv::Mat intermediate;
-		rawFrame.copyTo(intermediate);
+		left->data.copyTo(intermediate);
+		TS_STOP_NIF("Frame In");
 
-		//cv::UMat rawFrameGPU;
-		//rawFrame.copyTo(rawFrameGPU);
-
-		// Process through each lens
-		cameraCalibrator.ProcessFrame(intermediate, intermediate, id);
-		depthModule.ProcessFrame(intermediate, intermediate, id);
+		TS_START_NIF("Frame Process");
+		cameraCalibrator.ProcessFrame(intermediate, intermediate, "LEFT");
+		depthModule.ProcessFrame(intermediate, intermediate, "LEFT");
 		edgeDetector.ProcessFrame(intermediate, intermediate);
 		faceDetector.ProcessFrame(intermediate, intermediate);
 		classifierLens.ProcessFrame(intermediate, intermediate);
 		deepdreamLens.ProcessFrame(intermediate, intermediate);
+		TS_STOP_NIF("Frame Process");
 
-		TS_START_NIF("Frame Copy");
-		//output = rawFrame.clone();
-		intermediate.copyTo(output);
-		TS_STOP_NIF("Frame Copy");
-
-		//leftMat = rawFrameGPU.getMat(0).clone();
-
-		//More or less a mutex unlock for capture->GetLatestFrame()
-		//capture1->MarkFrameUsed();
-		//rawFrame.release();
-		//rawFrameGPU.release();
+		TS_START_NIF("Frame Out");
+		intermediate.copyTo(leftMat);
+		TS_STOP_NIF("Frame Out");
 	}
-	TS_STOP_NIF(capTimerID);
+
+	// Right
+	{
+		TS_SCOPE("Right");
+
+		TS_START_NIF("Frame In");
+		cv::Mat intermediate;
+		right->data.copyTo(intermediate);
+		TS_STOP_NIF("Frame In");
+
+		TS_START_NIF("Frame Process");
+		cameraCalibrator.ProcessFrame(intermediate, intermediate, "RIGHT");
+		depthModule.ProcessFrame(intermediate, intermediate, "RIGHT");
+		edgeDetector.ProcessFrame(intermediate, intermediate);
+		faceDetector.ProcessFrame(intermediate, intermediate);
+		classifierLens.ProcessFrame(intermediate, intermediate);
+		deepdreamLens.ProcessFrame(intermediate, intermediate);
+		TS_STOP_NIF("Frame Process");
+
+		TS_START_NIF("Frame Out");
+		intermediate.copyTo(rightMat);
+		TS_STOP_NIF("Frame Out");
+	}
+
+
+
+	// Mark the frames as consumed
+	left->MarkUsed();
+	right->MarkUsed();
 }
+
 
 /**
 Prints OpenCV debug information.

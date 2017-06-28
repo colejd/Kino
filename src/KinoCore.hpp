@@ -18,6 +18,33 @@
 
 #include "ofxTimeMeasurements.h"
 
+
+class Frame {
+public:
+	Frame() {};
+	~Frame() {};
+
+	void MarkReady() { 
+		ready = true; 
+
+		float time = ofGetElapsedTimef();
+		float delta = time - lastReadyTime;
+		fps = 1.0 / delta;
+
+		lastReadyTime = time;
+	};
+	void MarkUsed() { ready = false; };
+	bool IsReady() { return ready; };
+
+	cv::UMat data;
+	float fps;
+
+private:
+	bool ready = false;
+
+	float lastReadyTime;
+};
+
 /*
 Holds the code for grabbing images from a camera and performing
 OpenCV operations on them. Should not have any engine-specific code
@@ -31,6 +58,7 @@ public:
 
 	void Setup();
 	void Update();
+	void ConsumeFrames();
 
 	void PrintCVDebugInfo();
 
@@ -50,11 +78,12 @@ public:
 	std::unique_ptr<CameraCapture> capture1;
 	std::unique_ptr<CameraCapture> capture2;
 
-	void ProcessCapture(std::unique_ptr<CameraCapture> const& cap, cv::OutputArray output, string id);
+	void ProcessCapture(std::unique_ptr<CameraCapture> const& cap, string id);
 
 	bool pauseCaptureUpdates = false;
 	bool swapSides = false;
 
+	std::map<string, Frame> framebuffer;
 private:
-	cv::Mat rawFrame;
+	
 };
