@@ -10,6 +10,7 @@
 #include "ofxTimeMeasurements.h"
 
 using namespace std;
+using namespace cv;
 
 class FaceDetectorModule : public ModuleCommon, public UsesGUI {
 public:
@@ -17,6 +18,7 @@ public:
 	~FaceDetectorModule();
 
 	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 
 	void DrawGUI() override;
 

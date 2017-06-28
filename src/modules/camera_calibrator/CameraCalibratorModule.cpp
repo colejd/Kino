@@ -40,30 +40,46 @@ void CameraCalibratorModule::InitCalibrationState(unique_ptr<CameraCapture> cons
 	}
 }
 
-void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArray out, string id) {
-	if (IsEnabled()) {
+void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+	moduleCanRun = !inLeft.empty() && !inRight.empty();
+	if (IsEnabled() && moduleCanRun) {
 		TS_SCOPE("Camera Calibrator");
-
-		in.copyTo(id == "LEFT" ? lastLeftMat : lastRightMat);
 
 		if (currentMode == Mode::INDIVIDUAL) {
 
-			CalibrationState* calibration = &(calibrations[id]);
+			CalibrationState* leftCalib = &(calibrations["LEFT"]);
+			CalibrationState* rightCalib = &(calibrations["RIGHT"]);
 
 			// If the model is fully formed, do the distortion.
-			if (calibration->complete) {
+			if (leftCalib->complete) {
 				TS_SCOPE("Undistort");
-				calibration->UndistortImage(in, out);
+				leftCalib->UndistortImage(inLeft, outLeft);
 			}
-
 			// Otherwise, run calibration.
 			else {
 				// Only run calibration if the ID given matches the desired ID
-				if (id == currentlyCalibratingID) {
+				if (currentlyCalibratingID == "LEFT") {
 					TS_SCOPE("Process Calibration Image");
-					calibration->IngestImageForCalibration(in, out);
-					if (calibration->complete) {
-						StopCalibrating(id); // Quit the calibration
+					leftCalib->IngestImageForCalibration(inLeft, outLeft);
+					if (leftCalib->complete) {
+						StopCalibrating("LEFT"); // Quit the calibration
+					}
+				}
+			}
+
+			// If the model is fully formed, do the distortion.
+			if (rightCalib->complete) {
+				TS_SCOPE("Undistort");
+				rightCalib->UndistortImage(inRight, outRight);
+			}
+			// Otherwise, run calibration.
+			else {
+				// Only run calibration if the ID given matches the desired ID
+				if (currentlyCalibratingID == "RIGHT") {
+					TS_SCOPE("Process Calibration Image");
+					rightCalib->IngestImageForCalibration(inRight, outRight);
+					if (rightCalib->complete) {
+						StopCalibrating("RIGHT"); // Quit the calibration
 					}
 				}
 			}
@@ -71,19 +87,13 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 
 		else if (currentMode == Mode::STEREO) {
 			if (captureMode) {
-				cv::Mat gray;
-				cv::cvtColor(in, gray, CV_BGR2GRAY);
-				vector<Point2f> corners;
-				bool found = cv::findChessboardCorners(in, stereoCalibration.boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE); //CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
-				if (found) {
-					cornerSubPix(gray, corners, cv::Size(5, 5), cv::Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
-					drawChessboardCorners(out, stereoCalibration.boardSize, corners, found);
-				}
+				DrawCheckerboardPreview(inLeft, outLeft);
+				DrawCheckerboardPreview(inRight, outRight);
 			}
 			else if (stereoCalibration.complete) {
 				// Rectify
 				TS_SCOPE("Undistort Stereo");
-				stereoCalibration.UndistortImage(in, out, id);
+				stereoCalibration.UndistortImage(inLeft, inRight, outLeft, outRight);
 
 			}
 		}
@@ -94,9 +104,15 @@ void CameraCalibratorModule::ProcessFrame(cv::InputArray in, cv::InputOutputArra
 
 void CameraCalibratorModule::DrawGUI() {
 	if (showGUI) {
-
 		ImGui::Begin("Camera Calibrator", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+
+		if (!moduleCanRun) {
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Cannot run without two camera captures enabled!");
+			return;
+		}
+
 		ImGui::Checkbox("Enabled", &enabled);
+
 		ImGui::Separator();
 		if (!enabled) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
 		//Begin main content
@@ -290,4 +306,19 @@ void CameraCalibratorModule::StartCalibrating(string id) {
 
 void CameraCalibratorModule::StopCalibrating(string id) {
 	currentlyCalibratingID = "";
+}
+
+
+void CameraCalibratorModule::DrawCheckerboardPreview(InputArray in, OutputArray out) {
+	cv::Mat gray;
+	cv::cvtColor(in, gray, CV_BGR2GRAY);
+	vector<Point2f> corners;
+	bool found = cv::findChessboardCorners(in, stereoCalibration.boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE); //CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
+	if (found) {
+		cv::Mat dst;
+		in.copyTo(dst);
+		cornerSubPix(gray, corners, cv::Size(5, 5), cv::Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+		drawChessboardCorners(dst, stereoCalibration.boardSize, corners, found);
+		dst.copyTo(out);
+	}
 }

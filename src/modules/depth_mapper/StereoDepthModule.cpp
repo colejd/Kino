@@ -22,36 +22,33 @@ StereoDepthModule::~StereoDepthModule() {
 
 }
 
-void StereoDepthModule::ProcessFrame(cv::InputArray in, cv::InputOutputArray out, string id) {
-	if (IsEnabled()) {
+void StereoDepthModule::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+	moduleCanRun = !inLeft.empty() && !inRight.empty();
+	if (IsEnabled() && moduleCanRun) {
 		TS_SCOPE("Stereo Depth Module");
-
-		in.copyTo(id == "LEFT" ? lastLeftMat : lastRightMat);
 		
-		if (id == "RIGHT" && !lastLeftMat.empty() && !lastRightMat.empty()) {
-			Mat imgDisparity16S = Mat(lastLeftMat.rows, lastLeftMat.cols, CV_16S);
-			Mat imgDisparity8U = Mat(lastLeftMat.rows, lastLeftMat.cols, CV_8UC1);
+		Mat imgDisparity16S = Mat(inLeft.size(), CV_16S);
+		Mat imgDisparity8U = Mat(inRight.size(), CV_8UC1);
 
-			Mat leftGray, rightGray;
-			cvtColor(lastLeftMat, leftGray, COLOR_BGR2GRAY);
-			cvtColor(lastRightMat, rightGray, COLOR_BGR2GRAY);
+		Mat leftGray, rightGray;
+		cvtColor(inLeft, leftGray, COLOR_BGR2GRAY);
+		cvtColor(inRight, rightGray, COLOR_BGR2GRAY);
 
-			//blur(leftGray, leftGray, cv::Size(7, 7));
-			//blur(rightGray, rightGray, cv::Size(7, 7));
+		//blur(leftGray, leftGray, cv::Size(7, 7));
+		//blur(rightGray, rightGray, cv::Size(7, 7));
 
-			sbm->compute(leftGray, rightGray, imgDisparity16S);
+		sbm->compute(leftGray, rightGray, imgDisparity16S);
 
-			//double minVal;
-			//double maxVal;
-			//minMaxLoc(imgDisparity16S, &minVal, &maxVal);
-			//imgDisparity16S.convertTo(imgDisparity8U, CV_8UC1, 255 / (maxVal - minVal));
+		//double minVal;
+		//double maxVal;
+		//minMaxLoc(imgDisparity16S, &minVal, &maxVal);
+		//imgDisparity16S.convertTo(imgDisparity8U, CV_8UC1, 255 / (maxVal - minVal));
 
-			normalize(imgDisparity16S, imgDisparity8U, 0, 255, CV_MINMAX, CV_8U);
+		normalize(imgDisparity16S, imgDisparity8U, 0, 255, CV_MINMAX, CV_8U);
 
-			//imshow("Disparity", imgDisparity16S);
+		//imshow("Disparity", imgDisparity16S);
 
-			cv::cvtColor(imgDisparity8U, out, COLOR_GRAY2BGR);
-		}
+		cv::cvtColor(imgDisparity8U, outRight, COLOR_GRAY2BGR);
 
 	}
 }
@@ -60,6 +57,12 @@ void StereoDepthModule::DrawGUI() {
 	if (showGUI) {
 
 		ImGui::Begin("Stereo Depth Module", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+
+		if (!moduleCanRun) {
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Cannot run without two camera captures enabled!");
+			return;
+		}
+
 		ImGui::Checkbox("Enabled", &enabled);
 		ImGui::Separator();
 		if (!enabled) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style

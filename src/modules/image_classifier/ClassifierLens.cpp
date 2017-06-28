@@ -37,6 +37,12 @@ void ClassifierLens::InitFromConfig() {
 		names_list == "" ? "" : ofToDataPath(basePath + names_list));
 }
 
+void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+	ProcessFrame(inLeft, outLeft);
+	if (!inRight.empty()) {
+		ProcessFrame(inRight, outRight);
+	}
+}
 
 void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 	if (IsEnabled()) {

@@ -18,32 +18,7 @@
 
 #include "ofxTimeMeasurements.h"
 
-
-class Frame {
-public:
-	Frame() {};
-	~Frame() {};
-
-	void MarkReady() { 
-		ready = true; 
-
-		float time = ofGetElapsedTimef();
-		float delta = time - lastReadyTime;
-		fps = 1.0 / delta;
-
-		lastReadyTime = time;
-	};
-	void MarkUsed() { ready = false; };
-	bool IsReady() { return ready; };
-
-	cv::UMat data;
-	float fps;
-
-private:
-	bool ready = false;
-
-	float lastReadyTime;
-};
+class Frame;
 
 /*
 Holds the code for grabbing images from a camera and performing
@@ -86,4 +61,30 @@ public:
 	std::map<string, Frame> framebuffer;
 private:
 	
+};
+
+class Frame {
+public:
+	Frame() {};
+	~Frame() {};
+
+	void MarkReady() {
+		ready = true;
+
+		float time = ofGetElapsedTimef();
+		float delta = time - lastReadyTime;
+		fps = 1.0 / delta;
+
+		lastReadyTime = time;
+	};
+	void MarkUsed() { ready = false; };
+	bool IsReady() { return ready; };
+
+	cv::UMat data;
+	float fps;
+
+private:
+	bool ready = false;
+
+	float lastReadyTime;
 };

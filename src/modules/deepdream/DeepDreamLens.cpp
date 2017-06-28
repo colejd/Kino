@@ -14,6 +14,13 @@ void DeepDreamLens::Initialize() {
 	initialized = true;
 }
 
+void DeepDreamLens::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+	ProcessFrame(inLeft, outLeft);
+	if (!inRight.empty()) {
+		ProcessFrame(inRight, outRight);
+	}
+}
+
 void DeepDreamLens::ProcessFrame(InputArray in, OutputArray out) {
 	if (IsEnabled()) {
 		TS_START_NIF("DeepDream Lens");

@@ -43,9 +43,9 @@ public:
 	CalibrationState(int board_width = 9, int board_height = 6, int capturesRequired = 20, float squareSize = 26.0);
 
 	// Runs the calibration routine on `in`. Any found checkerboards are drawn to `out`.
-	void IngestImageForCalibration(cv::InputArray in, cv::InputOutputArray out);
+	void IngestImageForCalibration(cv::InputArray in, cv::OutputArray out);
 
-	bool QueueImage(cv::InputArray in, cv::InputOutputArray out = cv::Mat(), bool keepResults = true);
+	bool QueueImage(cv::InputArray in, cv::OutputArray out = cv::Mat(), bool keepResults = true);
 
 
 	// A cached version of `cv::undistort()`. Significantly faster.

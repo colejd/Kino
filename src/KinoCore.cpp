@@ -115,55 +115,28 @@ void KinoCore::ConsumeFrames() {
 
 	TS_SCOPE("Consume Frames");
 
-	// Process the frame data through each module, assigning to leftMat and rightMat
+	// Make copies of the frame data for processing
+	TS_START_NIF("Frame In");
+	cv::Mat leftTemp, rightTemp;
+	left->data.copyTo(leftTemp);
+	right->data.copyTo(rightTemp);
+	TS_STOP_NIF("Frame In");
 
-	// Left
-	{
-		TS_SCOPE("Left");
+	// Process the data through each module
+	TS_START_NIF("Frame Process");
+	cameraCalibrator.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
+	edgeDetector.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
+	faceDetector.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
+	classifierLens.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
+	deepdreamLens.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
+	depthModule.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
+	TS_STOP_NIF("Frame Process");
 
-		TS_START_NIF("Frame In");
-		cv::Mat intermediate;
-		left->data.copyTo(intermediate);
-		TS_STOP_NIF("Frame In");
-
-		TS_START_NIF("Frame Process");
-		cameraCalibrator.ProcessFrame(intermediate, intermediate, "LEFT");
-		depthModule.ProcessFrame(intermediate, intermediate, "LEFT");
-		edgeDetector.ProcessFrame(intermediate, intermediate);
-		faceDetector.ProcessFrame(intermediate, intermediate);
-		classifierLens.ProcessFrame(intermediate, intermediate);
-		deepdreamLens.ProcessFrame(intermediate, intermediate);
-		TS_STOP_NIF("Frame Process");
-
-		TS_START_NIF("Frame Out");
-		intermediate.copyTo(leftMat);
-		TS_STOP_NIF("Frame Out");
-	}
-
-	// Right
-	{
-		TS_SCOPE("Right");
-
-		TS_START_NIF("Frame In");
-		cv::Mat intermediate;
-		right->data.copyTo(intermediate);
-		TS_STOP_NIF("Frame In");
-
-		TS_START_NIF("Frame Process");
-		cameraCalibrator.ProcessFrame(intermediate, intermediate, "RIGHT");
-		depthModule.ProcessFrame(intermediate, intermediate, "RIGHT");
-		edgeDetector.ProcessFrame(intermediate, intermediate);
-		faceDetector.ProcessFrame(intermediate, intermediate);
-		classifierLens.ProcessFrame(intermediate, intermediate);
-		deepdreamLens.ProcessFrame(intermediate, intermediate);
-		TS_STOP_NIF("Frame Process");
-
-		TS_START_NIF("Frame Out");
-		intermediate.copyTo(rightMat);
-		TS_STOP_NIF("Frame Out");
-	}
-
-
+	// Copy the final results to the mats the compositor will read from
+	TS_START_NIF("Frame Out");
+	leftTemp.copyTo(leftMat);
+	rightTemp.copyTo(rightMat);
+	TS_STOP_NIF("Frame Out");
 
 	// Mark the frames as consumed
 	left->MarkUsed();

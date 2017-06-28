@@ -163,20 +163,16 @@ void StereoCalibrationState::CalibrateWithImageSet() {
 }
 
 
-void StereoCalibrationState::UndistortImage(cv::InputArray in, cv::OutputArray out, string id) {
+void StereoCalibrationState::UndistortImage(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
 	if (!mapsCreated) {
 		if (!R1.empty() && !R2.empty() && !P1.empty() && !P2.empty()) {
-			initUndistortRectifyMap(cameraMatrixLeft, distortionCoeffsLeft, R1, P1, in.size(), CV_32FC1, map1_left, map2_left);
-			initUndistortRectifyMap(cameraMatrixRight, distortionCoeffsRight, R2, P2, in.size(), CV_32FC1, map1_right, map2_right);
+			initUndistortRectifyMap(cameraMatrixLeft, distortionCoeffsLeft, R1, P1, inLeft.size(), CV_32FC1, map1_left, map2_left);
+			initUndistortRectifyMap(cameraMatrixRight, distortionCoeffsRight, R2, P2, inRight.size(), CV_32FC1, map1_right, map2_right);
 			mapsCreated = true;
 		}
 	}
-	if (id == "LEFT") {
-		remap(in, out, map1_left, map2_left, INTER_LINEAR, BORDER_CONSTANT, Scalar(0, 0, 0, 1));
-	}
-	else {
-		remap(in, out, map1_right, map2_right, INTER_LINEAR, BORDER_CONSTANT, Scalar(0, 0, 0, 1));
-	}
+	remap(inLeft, outLeft, map1_left, map2_left, INTER_LINEAR, BORDER_CONSTANT, Scalar(0, 0, 0, 1));
+	remap(inRight, outRight, map1_right, map2_right, INTER_LINEAR, BORDER_CONSTANT, Scalar(0, 0, 0, 1));
 }
 
 

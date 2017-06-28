@@ -14,12 +14,16 @@
 
 #include <helpers/Paths.hpp>
 
+using namespace std;
+using namespace cv;
+
 class ClassifierLens : public ModuleCommon, public UsesGUI {
 public:
 	ClassifierLens();
 	~ClassifierLens();
 
 	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 	void DrawGUI() override;
 
 	void InitFromConfig();

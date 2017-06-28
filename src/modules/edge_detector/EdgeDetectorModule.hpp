@@ -30,6 +30,7 @@ public:
 	void DrawGUI() override;
 
 	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 
 	void ProcessFrameOld(cv::InputArray in, cv::OutputArray out);
 

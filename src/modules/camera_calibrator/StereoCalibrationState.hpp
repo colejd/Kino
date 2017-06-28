@@ -42,7 +42,7 @@ public:
 
 
 	// A cached version of `cv::undistort()`. Significantly faster.
-	void UndistortImage(cv::InputArray in, cv::OutputArray out, string id);
+	void UndistortImage(cv::InputArray inLeft, cv::InputArray inRight, cv::OutputArray outLeft, cv::OutputArray outRight);
 
 	// Loads `cameraMatrix` and `distortionCoeffs` from a file on disk (determined by unique_id).
 	bool LoadFromFile();

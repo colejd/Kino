@@ -21,6 +21,13 @@ FaceDetectorModule::~FaceDetectorModule() {
 
 }
 
+void FaceDetectorModule::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+	ProcessFrame(inLeft, outLeft);
+	if (!inRight.empty()) {
+		ProcessFrame(inRight, outRight);
+	}
+}
+
 void FaceDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
 	if (IsEnabled()) {
 		TS_START_NIF("Face Detector");

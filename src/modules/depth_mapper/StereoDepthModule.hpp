@@ -19,15 +19,14 @@ public:
 	~StereoDepthModule();
 
 	// Runs calibration or undistortion on `in` and writes the result to `out`. ID is expected to be "LEFT" or "RIGHT".
-	void ProcessFrame(cv::InputArray in, cv::InputOutputArray out, string id);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 	void DrawGUI() override;
 
 	Ptr<StereoBM> sbm;
 
 
 private:
-	cv::Mat lastLeftMat;
-	cv::Mat lastRightMat;
+	bool moduleCanRun = false;
 
 	int numDisparities = 16;
 	int blockSize = 9;

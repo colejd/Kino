@@ -35,7 +35,7 @@ public:
 	void RegisterCameras(unique_ptr<CameraCapture> const& leftCapture, unique_ptr<CameraCapture> const & rightCapture);
 
 	// Runs calibration or undistortion on `in` and writes the result to `out`. ID is expected to be "LEFT" or "RIGHT".
-	void ProcessFrame(cv::InputArray in, cv::InputOutputArray out, string id);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 
 	void StartCalibrating(string id);
 	void StopCalibrating(string id);
@@ -54,6 +54,8 @@ public:
 	Mode currentMode = Mode::STEREO;
 
 private:
+	bool moduleCanRun = false;
+
 	// The ID of the currently calibrating camera. Set to empty string if no camera is calibrating.
 	string currentlyCalibratingID = "";
 
@@ -69,5 +71,7 @@ private:
 	int rightCapCount = 1;
 
 	bool captureMode = false;
+
+	void DrawCheckerboardPreview(InputArray in, OutputArray out);
 
 };

@@ -15,12 +15,16 @@
 
 #include <helpers/Paths.hpp>
 
+using namespace std;
+using namespace cv;
+
 class DeepDreamLens : public ModuleCommon, public UsesGUI {
 public:
 	DeepDreamLens();
 	~DeepDreamLens();
 
 	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 	void DrawGUI() override;
 
 	void Initialize();

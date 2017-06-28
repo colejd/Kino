@@ -8,6 +8,13 @@ EdgeDetectorModule::~EdgeDetectorModule() {
 
 }
 
+void EdgeDetectorModule::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+	ProcessFrame(inLeft, outLeft);
+	if (!inRight.empty()) {
+		ProcessFrame(inRight, outRight);
+	}
+}
+
 void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
 
 	if (!in.empty() && IsEnabled()) {

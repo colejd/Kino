@@ -34,7 +34,7 @@ void CalibrationState::Reset() {
 }
 
 
-void CalibrationState::IngestImageForCalibration(cv::InputArray in, cv::InputOutputArray out) {
+void CalibrationState::IngestImageForCalibration(cv::InputArray in, cv::OutputArray out) {
 
 	bool timeForNewCheckerboard = false;
 	float time = ofGetElapsedTimef();
@@ -95,7 +95,7 @@ void CalibrationState::IngestImageForCalibration(cv::InputArray in, cv::InputOut
 }
 
 
-bool CalibrationState::QueueImage(cv::InputArray in, cv::InputOutputArray out, bool keepResults) {
+bool CalibrationState::QueueImage(cv::InputArray in, cv::OutputArray out, bool keepResults) {
 	cv::Mat gray;
 	cv::cvtColor(in, gray, CV_BGR2GRAY);
 
@@ -106,7 +106,9 @@ bool CalibrationState::QueueImage(cv::InputArray in, cv::InputOutputArray out, b
 
 		// Draw to `out` if it exists.
 		if (!out.empty()) {
-			drawChessboardCorners(out, boardSize, corners, found);
+			cv::Mat dst;
+			drawChessboardCorners(dst, boardSize, corners, found);
+			dst.copyTo(out);
 		}
 
 		// Push results to configuration state unless specified.
