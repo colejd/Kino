@@ -69,6 +69,7 @@ void StereoDepthModule::DrawGUI() {
 
 		ImGui::Checkbox("Enabled", &enabled);
 		ImGui::Separator();
+		ImGui::Spacing();
 		if (!enabled) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
 		//Begin main content
 		{
@@ -79,17 +80,20 @@ void StereoDepthModule::DrawGUI() {
 			sbm->setBlockSize(blockSize);
 
 			// Draw a preview of the window if it exists
-			if (!disparity.empty()) {
-				ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
 
-				ImGui::Text("Output");
+			ImGui::Text("Output");
+
+			if (!disparity.empty()) {
 
 				float baseSize = ImGui::GetWindowWidth() - (ImGui::GetStyle().WindowPadding.x * 2); // Determines the width of the image. Height is scaled.
 				double aspect = (double)disparity.rows / (double)disparity.cols;
 				ImVec2 previewSize(baseSize, baseSize * aspect);
 
 				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-				ImGui::BeginChild("Disparity Preview", previewSize, true, ImGuiWindowFlags_ChildWindowAutoFitY);
+				ImGui::BeginChild("Disparity Preview", previewSize, true);
 				{
 					// Update OpenGL image data
 					glBindTexture(GL_TEXTURE_2D, previewTextureID);
@@ -113,6 +117,13 @@ void StereoDepthModule::DrawGUI() {
 				ImGui::EndChild();
 				ImGui::PopStyleVar();
 
+			}
+			else {
+				// Draw fake output window with small size
+				int width = ImGui::GetWindowWidth() - (ImGui::GetStyle().WindowPadding.x * 2);
+				ImGui::BeginChild("Disparity Preview", ImVec2(std::min(320, width), 240), true);
+
+				ImGui::EndChild();
 			}
 
 
