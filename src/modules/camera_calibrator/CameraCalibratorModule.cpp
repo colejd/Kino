@@ -111,6 +111,14 @@ void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight
 				TS_SCOPE("Undistort Stereo");
 				stereoCalibration.UndistortImage(inLeft, inRight, outLeft, outRight);
 
+				if (drawEpipolar) {
+
+					cv::Mat left, right;
+					outLeft.copyTo(left);
+					outRight.copyTo(right);
+					CameraCalibratorModule::drawEpipolarLines<float, float>("Epipolar", stereoCalibration.F, left, right, stereoCalibration.imagePointsLeft[10], stereoCalibration.imagePointsRight[10]);
+				}
+
 			}
 		}
 
@@ -185,6 +193,7 @@ void CameraCalibratorModule::DrawGUI() {
 			}
 			
 
+			ImGui::Checkbox("Draw Epipolar", &drawEpipolar);
 			
 
 		}

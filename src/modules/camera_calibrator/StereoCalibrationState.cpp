@@ -208,6 +208,9 @@ bool StereoCalibrationState::LoadFromFile() {
 	fs["P2"] >> P2;
 	fs["Q"] >> Q;
 
+	fs["imagePointsLeft"] >> imagePointsLeft;
+	fs["imagePointsRight"] >> imagePointsRight;
+
 
 	complete = true;
 	return true;
@@ -248,6 +251,9 @@ bool StereoCalibrationState::SaveToFile() {
 	fs << "Q" << Q;
 
 	fs << "avg_reprojection_error" << reprojectionError;
+
+	fs << "imagePointsLeft" << imagePointsLeft;
+	fs << "imagePointsRight" << imagePointsRight;
 
 	return true;
 }
