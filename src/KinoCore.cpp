@@ -54,8 +54,8 @@ void KinoCore::Setup() {
 	}
 
 	// Init framebuffer
-	framebuffer["LEFT"] = Frame();
-	framebuffer["RIGHT"] = Frame();
+	framebuffer[LEFT_ID] = Frame();
+	framebuffer[RIGHT_ID] = Frame();
 
 	cameraCalibrator.RegisterCameras(capture1, capture2);
 
@@ -64,8 +64,8 @@ void KinoCore::Setup() {
 void KinoCore::Update() {
 
 	// Update captures into framebuffer, swapping if desired by user settings
-	ProcessCapture(capture1, !swapSides ? "LEFT" : "RIGHT");
-	ProcessCapture(capture2, !swapSides ? "RIGHT" : "LEFT");
+	ProcessCapture(capture1, !swapSides ? LEFT_ID : RIGHT_ID);
+	ProcessCapture(capture2, !swapSides ? RIGHT_ID : LEFT_ID);
 
 	// Run the stereo modules with the frame data
 	ConsumeFrames();
@@ -105,8 +105,8 @@ Synchronized frame consumption (runs only when both frames are ready).
 Processes 
 */
 void KinoCore::ConsumeFrames() {
-	Frame *left = &framebuffer["LEFT"];
-	Frame *right = &framebuffer["RIGHT"];
+	Frame *left = &framebuffer[LEFT_ID];
+	Frame *right = &framebuffer[RIGHT_ID];
 
 	// If either frame isn't ready, don't continue
 	if (!left->IsReady() || !right->IsReady()) {

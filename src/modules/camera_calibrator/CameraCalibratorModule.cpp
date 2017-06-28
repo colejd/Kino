@@ -12,8 +12,8 @@ CameraCalibratorModule::~CameraCalibratorModule() {
 Registers camera captures for calibration and distortion. Builds the map.
 */
 void CameraCalibratorModule::RegisterCameras(unique_ptr<CameraCapture> const& leftCapture, unique_ptr<CameraCapture> const& rightCapture) {
-	InitCalibrationState(leftCapture, "LEFT");
-	InitCalibrationState(rightCapture, "RIGHT");
+	InitCalibrationState(leftCapture, LEFT_ID);
+	InitCalibrationState(rightCapture, RIGHT_ID);
 
 	// Create stereo capture
 	if (leftCapture->IsInitialized() && rightCapture->IsInitialized()) {
@@ -47,8 +47,8 @@ void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight
 
 		if (currentMode == Mode::INDIVIDUAL) {
 
-			CalibrationState* leftCalib = &(calibrations["LEFT"]);
-			CalibrationState* rightCalib = &(calibrations["RIGHT"]);
+			CalibrationState* leftCalib = &(calibrations[LEFT_ID]);
+			CalibrationState* rightCalib = &(calibrations[RIGHT_ID]);
 
 			// If the model is fully formed, do the distortion.
 			if (leftCalib->complete) {
@@ -58,11 +58,11 @@ void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight
 			// Otherwise, run calibration.
 			else {
 				// Only run calibration if the ID given matches the desired ID
-				if (currentlyCalibratingID == "LEFT") {
+				if (currentlyCalibratingID == LEFT_ID) {
 					TS_SCOPE("Process Calibration Image");
 					leftCalib->IngestImageForCalibration(inLeft, outLeft);
 					if (leftCalib->complete) {
-						StopCalibrating("LEFT"); // Quit the calibration
+						StopCalibrating(LEFT_ID); // Quit the calibration
 					}
 				}
 			}
@@ -75,11 +75,11 @@ void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight
 			// Otherwise, run calibration.
 			else {
 				// Only run calibration if the ID given matches the desired ID
-				if (currentlyCalibratingID == "RIGHT") {
+				if (currentlyCalibratingID == RIGHT_ID) {
 					TS_SCOPE("Process Calibration Image");
 					rightCalib->IngestImageForCalibration(inRight, outRight);
 					if (rightCalib->complete) {
-						StopCalibrating("RIGHT"); // Quit the calibration
+						StopCalibrating(RIGHT_ID); // Quit the calibration
 					}
 				}
 			}
@@ -131,17 +131,17 @@ void CameraCalibratorModule::DrawGUI() {
 			// Draw GUI for INDIVIDUAL
 			if (currentMode == Mode::INDIVIDUAL) {
 				// Draw info about left calibration
-				bool leftHasCapture = calibrations["LEFT"].hasCapture;
+				bool leftHasCapture = calibrations[LEFT_ID].hasCapture;
 				if (leftHasCapture) {
 					ImGui::Spacing();
-					DrawCalibrationStatePanel("LEFT");
+					DrawCalibrationStatePanel(LEFT_ID);
 				}
 
 				// Draw info about right calibration
-				bool rightHasCapture = calibrations["RIGHT"].hasCapture;
+				bool rightHasCapture = calibrations[RIGHT_ID].hasCapture;
 				if (rightHasCapture) {
 					ImGui::Spacing();
-					DrawCalibrationStatePanel("RIGHT");
+					DrawCalibrationStatePanel(RIGHT_ID);
 				}
 			}
 
@@ -239,7 +239,7 @@ void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {
 			string basePath = ofToDataPath("calibration/images/" + calibration.unique_id + "/");
 
 			ofDirectory::createDirectory(basePath, false, true);
-			bool isLeft = (id == "LEFT");
+			bool isLeft = (id == LEFT_ID);
 			imwrite(basePath + "Capture" + std::to_string(isLeft ? leftCapCount : rightCapCount) + ".png", isLeft ? lastLeftMat : lastRightMat);
 			if (isLeft) leftCapCount += 1;
 			else rightCapCount += 1;
