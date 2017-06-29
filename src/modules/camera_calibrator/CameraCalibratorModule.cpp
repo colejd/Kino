@@ -111,12 +111,8 @@ void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight
 				TS_SCOPE("Undistort Stereo");
 				stereoCalibration.UndistortImage(inLeft, inRight, outLeft, outRight);
 
-				if (drawEpipolar) {
-
-					cv::Mat left, right;
-					outLeft.copyTo(left);
-					outRight.copyTo(right);
-					CameraCalibratorModule::drawEpipolarLines<float, float>("Epipolar", stereoCalibration.F, left, right, stereoCalibration.imagePointsLeft[10], stereoCalibration.imagePointsRight[10]);
+				if (drawEpipolarLines) {
+					VisualizeEpipolarLines(outLeft, outRight, outLeft, outRight);
 				}
 
 			}
@@ -187,13 +183,13 @@ void CameraCalibratorModule::DrawGUI() {
 					imwrite(basePathRight + "Capture" + std::to_string(capCount) + ".png", lastRightMat);
 
 					capCount += 1;
-					Kino::app_log.AddLog("Stereo image pair written to data/calibration/images/");
+					Kino::app_log.AddLog("Stereo image pair written to LEFT and RIGHT in data/calibration/images/");
 				}
 
 			}
 			
 
-			ImGui::Checkbox("Draw Epipolar", &drawEpipolar);
+			ImGui::Checkbox("Draw Feature Matches", &drawEpipolarLines);
 			
 
 		}
@@ -344,4 +340,101 @@ void CameraCalibratorModule::DrawCheckerboardPreview(InputArray in, OutputArray 
 		drawChessboardCorners(dst, stereoCalibration.boardSize, corners, found);
 		dst.copyTo(out);
 	}
+}
+
+
+/**
+Adapted from https://stackoverflow.com/a/31835365
+
+Uses feature matching to find common elements between the two image sides, then
+draws the epipolar lines using the found points. The calibration is correct if
+the lines are horizontal.
+
+We can calculate and show the epilines based on this:
+http://docs.opencv.org/master/da/de9/tutorial_py_epipolar_geometry.html
+
+*/
+void CameraCalibratorModule::VisualizeEpipolarLines(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+
+	std::vector<KeyPoint> keypointsLeft, keypointsRight;
+
+	//-- Step 1: Detect the keypoints using SURF Detector
+	detector->detect(inLeft, keypointsLeft);
+	detector->detect(inRight, keypointsRight);
+
+	//-- Step 2: Calculate descriptors (feature vectors)
+	UMat descriptorsLeft, descriptorsRight;
+	extractor->compute(inLeft, keypointsLeft, descriptorsLeft);
+	extractor->compute(inRight, keypointsRight, descriptorsRight);
+
+	//-- Step 3: Matching descriptor vectors using FLANN matcher
+	std::vector< DMatch > matches;
+	matcher->match(descriptorsLeft, descriptorsRight, matches);
+
+	double max_dist = 0;
+	double min_dist = 100;
+
+	//-- Quick calculation of max and min distances between keypoints
+	for (int i = 0; i < descriptorsLeft.rows; i++) {
+		double dist = matches[i].distance;
+		if (dist < min_dist) min_dist = dist;
+		if (dist > max_dist) max_dist = dist;
+	}
+
+	//printf("-- Max dist : %f \n", max_dist);
+	//printf("-- Min dist : %f \n", min_dist);
+
+	//-- Draw only "good" matches (i.e. whose distance is less than 3*min_dist )
+	std::vector< DMatch > good_matches;
+
+	for (DMatch m : matches) {
+		bool pass = false;
+		pass = m.distance < 3 * min_dist;
+		// Filter for similar Y coords
+		//pass = std::abs(keypointsLeft[m.queryIdx].pt.y - keypointsRight[m.trainIdx].pt.y) < 3;
+		if (pass) {
+			good_matches.push_back(m);
+		}
+	}
+
+	Mat img_matches;
+
+	//drawMatches(inLeft, keypointsLeft, inRight, keypointsRight, good_matches, img_matches, Scalar::all(-1), Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+
+	//-- Localize the object
+	std::vector<Point2f> leftPoints;
+	std::vector<Point2f> rightPoints;
+
+	for (int i = 0; i < good_matches.size(); i++) {
+		//-- Get the keypoints from the good matches
+		leftPoints.push_back(keypointsLeft[good_matches[i].queryIdx].pt);
+		rightPoints.push_back(keypointsRight[good_matches[i].trainIdx].pt);
+	}
+
+	cv::Mat leftMat, rightMat;
+	inLeft.copyTo(leftMat);
+	inRight.copyTo(rightMat);
+
+	img_matches = StereoCalibrationState::drawEpipolarLines<float, float>("", stereoCalibration.F, leftMat, rightMat, leftPoints, rightPoints);
+
+	// Copy results to output (split img_matches in half vertically)
+	img_matches(cv::Rect(0, 0, img_matches.cols / 2, img_matches.rows)).copyTo(outLeft);
+	img_matches(cv::Rect(img_matches.cols / 2, 0, img_matches.cols / 2, img_matches.rows)).copyTo(outRight);
+
+	//-- Get the corners from the image_1 ( the object to be "detected" )
+	//std::vector<Point2f> cornersLeft(4);
+	//cornersLeft[0] = cvPoint(0, 0); cornersLeft[1] = cvPoint(left.cols, 0);
+	//cornersLeft[2] = cvPoint(left.cols, left.rows); cornersLeft[3] = cvPoint(0, left.rows);
+	//std::vector<Point2f> cornersRight(4);
+
+	//Mat H = findHomography(leftPoints, rightPoints, CV_RANSAC);
+	//perspectiveTransform(obj_corners, scene_corners, H);
+
+	//-- Draw lines between the corners (the mapped object in the scene - image_2 )
+	//line(img_matches, scene_corners[0] + Point2f(left.cols, 0), scene_corners[1] + Point2f(left.cols, 0), Scalar(0, 255, 0), 4);
+	//line(img_matches, scene_corners[1] + Point2f(left.cols, 0), scene_corners[2] + Point2f(left.cols, 0), Scalar(0, 255, 0), 4);
+	//line(img_matches, scene_corners[2] + Point2f(left.cols, 0), scene_corners[3] + Point2f(left.cols, 0), Scalar(0, 255, 0), 4);
+	//line(img_matches, scene_corners[3] + Point2f(left.cols, 0), scene_corners[0] + Point2f(left.cols, 0), Scalar(0, 255, 0), 4);
+
+	//imshow("Good Matches & Object detection", img_matches);
 }

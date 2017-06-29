@@ -16,8 +16,6 @@ void StereoCalibrationState::Reset() {
 	objectPoints.clear();
 	imagePointsLeft.clear();
 	imagePointsRight.clear();
-	cornersLeft.clear();
-	cornersRight.clear();
 
 	// Variables needed to restore from disk
 	cameraMatrixLeft = Mat();
@@ -37,41 +35,43 @@ void StereoCalibrationState::Reset() {
 	Q = Mat();
 }
 
-bool StereoCalibrationState::QueueImages(cv::InputArray inLeft, cv::InputArray inRight) {
-
+bool StereoCalibrationState::FindCheckerboards(cv::InputArray inLeft, cv::InputArray inRight, vector<Point2f> &cornersLeft, vector<Point2f> &cornersRight) {
 	bool foundLeft = cv::findChessboardCorners(inLeft, boardSize, cornersLeft, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE); //CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
-	if (foundLeft) {
-		cv::Mat leftGray;
-		cv::cvtColor(inLeft, leftGray, CV_BGR2GRAY);
-
-		cornerSubPix(leftGray, cornersLeft, cv::Size(5, 5), cv::Size(-1, -1),
-						TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
-	}
-
 	bool foundRight = cv::findChessboardCorners(inRight, boardSize, cornersRight, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE); //CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
-	if (foundRight) {
-		cv::Mat rightGray;
-		cv::cvtColor(inRight, rightGray, CV_BGR2GRAY);
+	return foundLeft && foundRight;
+}
 
-		cornerSubPix(rightGray, cornersRight, cv::Size(5, 5), cv::Size(-1, -1),
-						TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
-	}
+bool StereoCalibrationState::QueueImages(cv::InputArray inLeft, cv::InputArray inRight) {
+	vector<Point2f> cornersLeft, cornersRight;
+
+	bool pass = FindCheckerboards(inLeft, inRight, cornersLeft, cornersRight);
 	
+	if (!pass) return false;
+
+
+	cv::Mat leftGray;
+	cv::cvtColor(inLeft, leftGray, CV_BGR2GRAY);
+
+	cornerSubPix(leftGray, cornersLeft, cv::Size(5, 5), cv::Size(-1, -1),
+					TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+
 	
-	if(foundLeft && foundRight){
-		vector< Point3f > obj;
-		for (int i = 0; i < boardSize.height; i++)
-			for (int j = 0; j < boardSize.width; j++)
-				obj.push_back(Point3f((float)j * squareSize, (float)i * squareSize, 0));
+	cv::Mat rightGray;
+	cv::cvtColor(inRight, rightGray, CV_BGR2GRAY);
 
-		objectPoints.push_back(obj);
-		imagePointsLeft.push_back(cornersLeft);
-		imagePointsRight.push_back(cornersRight);
+	cornerSubPix(rightGray, cornersRight, cv::Size(5, 5), cv::Size(-1, -1),
+					TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+	
+	vector< Point3f > obj;
+	for (int i = 0; i < boardSize.height; i++)
+		for (int j = 0; j < boardSize.width; j++)
+			obj.push_back(Point3f((float)j * squareSize, (float)i * squareSize, 0));
 
-		return true;
-	}
+	objectPoints.push_back(obj);
+	imagePointsLeft.push_back(cornersLeft);
+	imagePointsRight.push_back(cornersRight);
 
-	return false;
+	return true;
 }
 
 
@@ -87,8 +87,11 @@ void StereoCalibrationState::CalibrateWithImageSet() {
 	ofDirectory leftDir(basePath + "LEFT");
 	ofDirectory rightDir(basePath + "RIGHT");
 
+	ofDirectory debugDir(basePath + "DEBUG");
+
 	ValidateDir(leftDir);
 	ValidateDir(rightDir);
+	ValidateDir(debugDir);
 
 	vector<ofFile> leftFiles = leftDir.getFiles();
 	vector<ofFile> rightFiles = rightDir.getFiles();
@@ -146,6 +149,25 @@ void StereoCalibrationState::CalibrateWithImageSet() {
 	stereoRectify(cameraMatrixLeft, distortionCoeffsLeft, cameraMatrixRight, distortionCoeffsRight, size, R, T, R1, R2, P1, P2, Q, stereoFlag);
 
 	mapsCreated = false;
+
+	// Go through all the images that got analyzed, and draw the epilines with the fundamental matrix (F) we just found.
+	int pointIndex = 0;
+	for (int i = 0; i < leftFiles.size(); i++) {
+		cv::Mat leftMat = imread(leftFiles[i].getAbsolutePath(), CV_LOAD_IMAGE_COLOR);
+		cv::Mat rightMat = imread(rightFiles[i].getAbsolutePath(), CV_LOAD_IMAGE_COLOR);
+
+		bool isValid = FindCheckerboards(leftMat, rightMat);
+		if (isValid) {
+			// Draw epipolar lines on undistorted leftMat and rightMat, then save to disk.
+			/*cv::Mat distortedLeft, distortedRight;
+			UndistortImage(leftMat, rightMat, distortedLeft, distortedRight);
+			cv::Mat debugOutput = StereoCalibrationState::drawEpipolarLines<float, float>("", F, distortedLeft, distortedRight, imagePointsLeft[pointIndex], imagePointsRight[pointIndex]);*/
+			cv::Mat debugOutput = StereoCalibrationState::drawEpipolarLines<float, float>("", F, leftMat, rightMat, imagePointsLeft[pointIndex], imagePointsRight[pointIndex]);
+			imwrite(debugDir.path() + "Debug_" + to_string(pointIndex) + ".png", debugOutput);
+			pointIndex += 1;
+		}
+
+	}
 
 	if (checkRange(cameraMatrixLeft) && checkRange(distortionCoeffsLeft) && 
 		checkRange(cameraMatrixRight) && checkRange(distortionCoeffsRight)) {
@@ -208,8 +230,8 @@ bool StereoCalibrationState::LoadFromFile() {
 	fs["P2"] >> P2;
 	fs["Q"] >> Q;
 
-	fs["imagePointsLeft"] >> imagePointsLeft;
-	fs["imagePointsRight"] >> imagePointsRight;
+	//fs["imagePointsLeft"] >> imagePointsLeft;
+	//fs["imagePointsRight"] >> imagePointsRight;
 
 
 	complete = true;
@@ -252,8 +274,8 @@ bool StereoCalibrationState::SaveToFile() {
 
 	fs << "avg_reprojection_error" << reprojectionError;
 
-	fs << "imagePointsLeft" << imagePointsLeft;
-	fs << "imagePointsRight" << imagePointsRight;
+	//fs << "imagePointsLeft" << imagePointsLeft;
+	//fs << "imagePointsRight" << imagePointsRight;
 
 	return true;
 }
