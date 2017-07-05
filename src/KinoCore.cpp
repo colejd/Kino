@@ -149,18 +149,26 @@ Prints OpenCV debug information.
 */
 void KinoCore::PrintCVDebugInfo() {
 	Kino::app_log.AddLog("\n");
-	Kino::app_log.AddLog("--- INFO ---\n");
+	Kino::app_log.AddLog("------------\n");
 
-	std::cout << "Using OpenCV " << CV_VERSION << std::endl;
-
-	//std::cout << getBuildInformation();
-
+	Kino::app_log.AddLog("Build Information:\n");
+	Kino::app_log.PushIndent();
 #ifdef _DEBUG
 	Kino::app_log.AddLog("Debug build\n");
 	//std::cout << cv::getBuildInformation();
 #else
 	Kino::app_log.AddLog("Release build\n");
 #endif
+	Kino::app_log.PopIndent();
+
+	Kino::app_log.AddLog("\n");
+
+	Kino::app_log.AddLog("OpenCV Information:\n");
+	Kino::app_log.PushIndent();
+
+	std::cout << "Using OpenCV " << CV_VERSION << std::endl;
+
+	//std::cout << getBuildInformation();
 
 	// Get number of system cameras attached
 	/*
@@ -176,26 +184,32 @@ void KinoCore::PrintCVDebugInfo() {
 
 	bool openCLSupport = ocl::useOpenCL();
 	Kino::app_log.AddLog("OpenCL acceleration is %s\n", cv::ocl::haveOpenCL() ? "available" : "not available");
-	Kino::app_log.AddLog("OpenCL used: %s\n", openCLSupport ? "true" : "false");
+	Kino::app_log.AddLog("OpenCL is %s (config)\n", openCLSupport ? "used" : "not used");
 #ifdef _DEBUG
 	if (openCLSupport) {
 		std::vector<cv::ocl::PlatformInfo> platforms;
 		cv::ocl::getPlatfomsInfo(platforms);
+		Kino::app_log.LogDebug("Enumerating OpenCL Platforms:\n");
+		Kino::app_log.PushIndent();
 		for (int i = 0; i < platforms.size(); i++) {
-			Kino::app_log.AddLog("  Platform %i of %lu\n", i + 1, platforms.size());
-			Kino::app_log.AddLog("    Name:     %s\n", platforms[i].name().c_str());
-			Kino::app_log.AddLog("    Vendor:   %s\n", platforms[i].vendor().c_str());
-			Kino::app_log.AddLog("    Device:   %i\n", platforms[i].deviceNumber());
-			Kino::app_log.AddLog("    Version:  %s\n", platforms[i].version().c_str());
+			Kino::app_log.LogDebug("Platform %i of %lu\n", i + 1, platforms.size());
+			Kino::app_log.PushIndent();
+			Kino::app_log.LogDebug("Name:     %s\n", platforms[i].name().c_str());
+			Kino::app_log.LogDebug("Vendor:   %s\n", platforms[i].vendor().c_str());
+			Kino::app_log.LogDebug("Device:   %i\n", platforms[i].deviceNumber());
+			Kino::app_log.LogDebug("Version:  %s\n", platforms[i].version().c_str());
+			Kino::app_log.PopIndent();
 		}
+		Kino::app_log.PopIndent();
 	}
 #endif
 	Kino::app_log.AddLog("Optimized code support: %s\n", useOptimized() ? "true" : "false");
 	Kino::app_log.AddLog("IPP support: %s\n", cv::ipp::useIPP() ? "true" : "false");
 	Kino::app_log.AddLog("Threads used by OpenCV: %i\n", getNumThreads());
-	Kino::app_log.AddLog("CPUs available: %i\n", cv::getNumberOfCPUs());
+	Kino::app_log.AddLog("CPU cores available: %i\n", cv::getNumberOfCPUs());
+	Kino::app_log.PopIndent();
 
-	Kino::app_log.AddLog("--- INFO ---\n\n");
+	Kino::app_log.AddLog("------------\n\n");
 
 }
 
