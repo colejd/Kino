@@ -350,6 +350,7 @@ void ofApp::keyPressed(int key) {
 	}
 	
 	if (modifierPressed) {
+		// Functions
 		if (key == 'f' || key == 'F') {
 			ofToggleFullscreen();
 		}
