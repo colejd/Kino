@@ -3,6 +3,8 @@
 #include "ofMain.h"
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/ximgproc/disparity_filter.hpp>
+
 #include <ofxTimeMeasurements.h>
 
 #include <modules/ModuleCommon.hpp>
@@ -14,7 +16,7 @@
 
 using namespace std;
 using namespace cv;
-
+using namespace cv::ximgproc;
 
 class StereoDepthModule : public ModuleCommon, public UsesGUI {
 public:
@@ -25,20 +27,29 @@ public:
 	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 	void DrawGUI() override;
 
-	Ptr<StereoBM> sbm;
+	Ptr<StereoBM> leftBM;
+	Ptr<StereoMatcher> rightBM;
 
 
 private:
 	bool moduleCanRun = false;
 
-	int numDisparities = 112;
-	int blockSize = 9;
+	int numDisparities = 112; // 112 (160)
+	int blockSize = 9; // 9 (15)
 
 	cv::Mat disparity;
 
-	GLuint previewTextureID;
-
 	bool doDownsampling = false;
 	float downSampleRatio = 0.5f;
+
+	bool filter = false;
+	Ptr<DisparityWLSFilter> wls_filter;
+	float wls_lambda = 8000.0;
+	float wls_sigma = 1.5;
+
+	void DrawImguiMat(InputArray mat, string id);
+
+	// Keeps track of GL texture assignments, using unique ID strings as keys.
+	std::map<string, GLuint> textureMap;
 
 };
