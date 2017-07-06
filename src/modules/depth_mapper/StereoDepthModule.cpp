@@ -71,7 +71,7 @@ void StereoDepthModule::ProcessFrames(InputArray inLeft, InputArray inRight, Out
 		int originalWidth = leftGrayRaw.cols;
 		int originalHeight = rightGrayRaw.rows;
 
-		Mat leftGray, rightGray;
+		UMat leftGray, rightGray;
 		// Downsample analysisMat if requested
 		if (doDownsampling) {
 			cv::resize(leftGrayRaw, leftGray, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
