@@ -45,7 +45,7 @@ void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, Output
 }
 
 void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
-	if (IsEnabled()) {
+	if (IsEnabled() && !in.empty()) {
 		TS_START_NIF("Classifier Lens");
 
 		// Init Darknet on demand if not already loaded
@@ -154,12 +154,17 @@ void ClassifierLens::DrawGUI() {
 			// Info
 
 			if (ImGui::TreeNode("Darknet Info")) {
-				ImGui::Text("%-10s %s", "Preset: ", ConfigHandler::GetValue("YOLO.USED_CONFIG", "").asString().c_str());
-				ImGui::Text("%-10s %s", "Config:", Paths::GetFileNameFromPath(cfg_file).c_str());
-				ImGui::Text("%-10s %s", "Weights:", Paths::GetFileNameFromPath(weights_file).c_str());
+				if (initialized) {
+					ImGui::Text("%-10s %s", "Preset: ", ConfigHandler::GetValue("YOLO.USED_CONFIG", "").asString().c_str());
+					ImGui::Text("%-10s %s", "Config:", Paths::GetFileNameFromPath(cfg_file).c_str());
+					ImGui::Text("%-10s %s", "Weights:", Paths::GetFileNameFromPath(weights_file).c_str());
 
-				string namesList = Paths::GetFileNameFromPath(names_list);
-				ImGui::Text("%-10s %s", "Names:", namesList == "" ? "None" : namesList.c_str());
+					string namesList = Paths::GetFileNameFromPath(names_list);
+					ImGui::Text("%-10s %s", "Names:", namesList == "" ? "None" : namesList.c_str());
+				}
+				else {
+					ImGui::TextColored(ImColor(255, 255, 0), "No configuration loaded.");
+				}
 
 				ImGui::TreePop();
 			}
