@@ -14,6 +14,9 @@ ClassifierLens::ClassifierLens() {
 		initialized = true;
 	}
 
+	trackerLeft = TrackerKCF::create();
+	trackerRight = TrackerKCF::create();
+
 }
 
 ClassifierLens::~ClassifierLens() {
@@ -38,15 +41,8 @@ void ClassifierLens::InitFromConfig() {
 }
 
 void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
-	ProcessFrame(inLeft, outLeft);
-	if (!inRight.empty()) {
-		ProcessFrame(inRight, outRight);
-	}
-}
-
-void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
-	if (IsEnabled() && !in.empty()) {
-		TS_START_NIF("Classifier Lens");
+	if (IsEnabled() && !inLeft.empty() && !inRight.empty()) {
+		TS_SCOPE("Classifier Lens");
 
 		// Init Darknet on demand if not already loaded
 		if (!initialized) {
@@ -54,79 +50,96 @@ void ClassifierLens::ProcessFrame(InputArray in, OutputArray out) {
 			initialized = true;
 		}
 
-		// Will be drawn to, and eventually copied to the out mat.
-		Mat drawingMat;
-		in.copyTo(drawingMat);
+		Mat drawMatLeft, drawMatRight;
+		inLeft.copyTo(drawMatLeft);
+		inRight.copyTo(drawMatRight);
 
-		// Used for analysis.
-		Mat analysisMat;
-
+		Mat analysisMatLeft, analysisMatRight;
 		// Downsample analysisMat if requested
 		if (doDownsampling) {
-			cv::resize(in, analysisMat, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+			cv::resize(inLeft, analysisMatLeft, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+			cv::resize(inRight, analysisMatRight, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
 		}
 		else {
-			in.copyTo(analysisMat);
+			inLeft.copyTo(analysisMatLeft);
+			inRight.copyTo(analysisMatRight);
 		}
-		// Store the size of the downsampled image for debug later
-		lastImageSize = Size{ analysisMat.cols, analysisMat.rows };
 
-		cv::cvtColor(analysisMat, analysisMat, CV_BGR2RGB);
+		lastSizeLeft = analysisMatLeft.size();
+		lastSizeRight = analysisMatRight.size();
+
+		// Step 1: Acquire targets
+
+		// TODO: Not sure these two steps are needed since customizing ofxDarknet to accept mats natively
+		cv::cvtColor(analysisMatLeft, analysisMatLeft, CV_BGR2RGB);
+		cv::cvtColor(analysisMatRight, analysisMatRight, CV_BGR2RGB);
 
 		TS_START_NIF("YOLO");
-		detections = darknet.yolo(analysisMat, threshold);
+		detectionsLeft = darknet.yolo(analysisMatLeft, threshold);
+		detectionsRight = darknet.yolo(analysisMatRight, threshold);
 		TS_STOP_NIF("YOLO");
 
-		TS_START_NIF("Draw Rects");
-		for (detected_object d : detections)
-		{
+		TS_START_NIF("Draw Detections");
+		DrawDetections(drawMatLeft, detectionsLeft);
+		DrawDetections(drawMatRight, detectionsRight);
+		TS_STOP_NIF("Draw Detections");
 
-			int lineThickness = 4;
 
-			Scalar color = CV_RGB(0, 255, 0);
+		// Step 2: Track targets
+		// Need some kind of tracker dispatcher that creates trackers for each detected object,
+		// but doesn't create new ones for objects that are already tracked (similar ROIs)
 
-			cv::Rect rect = cv::Rect(d.rect.x, d.rect.y, d.rect.width, d.rect.height);
-			if (doDownsampling) { // Rescale the rect to match original size if downsampling was performed
-				rect = cv::Rect(d.rect.x / downSampleRatio, d.rect.y / downSampleRatio, d.rect.width / downSampleRatio, d.rect.height / downSampleRatio);
-			}
 
-			// Draw the bounding box
-			// Random color: Scalar(rand() & 255, rand() & 255, rand() & 255)
-			cv::rectangle(drawingMat, rect, color, lineThickness, LINE_4);
 
-			// Draw the label in the bounding box
-			int fontface = cv::FONT_HERSHEY_DUPLEX;
-			double scale = 0.8;
-			int textThickness = 1;
-			int baseline = 0;
-			string label = d.label;
+		drawMatLeft.copyTo(outLeft);
+		drawMatRight.copyTo(outRight);
 
-			cv::Size text = cv::getTextSize(label, fontface, scale, textThickness, &baseline);
-
-			// Interior label
-			cv::Point origin = cv::Point(rect.x + (lineThickness / 2.0), rect.y + text.height + (lineThickness / 2.0));
-			cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
-
-			// Exterior label
-			//cv::Point origin = cv::Point(rect.x - (lineThickness / 2.0), rect.y - text.height - (lineThickness / 2.0) + baseline); // Exterior label
-			//cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
-
-			cv::putText(drawingMat, label, origin, fontface, scale, CV_RGB(0, 0, 0), textThickness, LINE_AA);
-
-		}
-		TS_STOP_NIF("Draw Rects");
-
-		drawingMat.copyTo(out);
-
-		TS_STOP_NIF("Classifier Lens");
 	}
 	else {
-		detections.clear();
-		//initialized = false;
+		detectionsLeft.clear();
+		detectionsRight.clear();
 	}
+}
 
+void ClassifierLens::DrawDetections(InputOutputArray mat, std::vector< detected_object > detections) {
+	for (detected_object d : detections)
+	{
 
+		int lineThickness = 4;
 
+		Scalar color = CV_RGB(0, 255, 0);
+
+		cv::Rect rect = cv::Rect(d.rect.x, d.rect.y, d.rect.width, d.rect.height);
+		if (doDownsampling) { // Rescale the rect to match original size if downsampling was performed
+			rect = cv::Rect(d.rect.x / downSampleRatio, d.rect.y / downSampleRatio, d.rect.width / downSampleRatio, d.rect.height / downSampleRatio);
+		}
+
+		cv::Point origin(rect.x, rect.y);
+		cv::Point opposite(rect.x + rect.width, rect.y + rect.height);
+		// Draw the bounding box
+		// Random color: Scalar(rand() & 255, rand() & 255, rand() & 255)
+		cv::rectangle(mat, origin, opposite, color, lineThickness, LINE_4);
+
+		// Draw the label in the bounding box
+		int fontface = cv::FONT_HERSHEY_DUPLEX;
+		double scale = 0.8;
+		int textThickness = 1;
+		int baseline = 0;
+		string label = d.label;
+
+		cv::Size text = cv::getTextSize(label, fontface, scale, textThickness, &baseline);
+
+		// Interior label
+		cv::Point rectOrigin = cv::Point(rect.x + (lineThickness / 2.0), rect.y + text.height + (lineThickness / 2.0));
+		cv::rectangle(mat, rectOrigin + cv::Point(0, baseline), rectOrigin + cv::Point(text.width, -text.height), color, CV_FILLED);
+
+		// Exterior label
+		//cv::Point origin = cv::Point(rect.x - (lineThickness / 2.0), rect.y - text.height - (lineThickness / 2.0) + baseline); // Exterior label
+		//cv::rectangle(drawingMat, origin + cv::Point(0, baseline), origin + cv::Point(text.width, -text.height), color, CV_FILLED);
+
+		cv::putText(mat, label, rectOrigin, fontface, scale, CV_RGB(0, 0, 0), textThickness, LINE_AA);
+
+	}
 }
 
 void ClassifierLens::DrawGUI() {
@@ -149,7 +162,7 @@ void ClassifierLens::DrawGUI() {
 			ImGui::SliderFloat("Downsample Ratio", &downSampleRatio, 0.01f, 1.0f, "%.2f");
 			ShowHelpMarker("Multiplier for decreasing the resolution of the processed image.");
 			if (!doDownsampling) ImGui::PopStyleVar(); //Pop disabled style
-			ImGui::Text("Dimensions: (%i, %i)", lastImageSize.x, lastImageSize.y);
+			ImGui::Text("Dimensions - Left: (%i, %i), Right: (%i, %i)", lastSizeLeft.width, lastSizeLeft.height, lastSizeRight.width, lastSizeRight.height);
 
 			// Info
 
@@ -193,10 +206,10 @@ void ClassifierLens::DrawGUI() {
 			// Fill scroll box with items if enabled
 			if (enabled) {
 
-				ImGuiListClipper clipper(detections.size(), ImGui::GetTextLineHeightWithSpacing());
+				ImGuiListClipper clipper(detectionsLeft.size(), ImGui::GetTextLineHeightWithSpacing());
 				for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
 
-					detected_object d = detections[i];
+					detected_object d = detectionsLeft[i];
 					ImGui::Text("%*s ", -maxCharsInLabel, d.label.c_str()); // Left pad the line with maxCharsInLine length
 
 					if (drawLine) { // Draw the line only once

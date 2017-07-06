@@ -2,6 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/tracking.hpp>
 
 #include "modules/ModuleCommon.hpp"
 #include "gui/UsesGUI.hpp"
@@ -22,32 +23,34 @@ public:
 	ClassifierLens();
 	~ClassifierLens();
 
-	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
 	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
 	void DrawGUI() override;
 
 	void InitFromConfig();
 
-	bool doDownsampling = false;
-	float downSampleRatio = 0.5f;
-
-	struct Size {
-		int x;
-		int y;
-	};
-
 private:
-	std::vector< detected_object > detections;
 	ofxDarknet darknet;
+	std::vector< detected_object > detectionsLeft;
+	std::vector< detected_object > detectionsRight;
 
 	float threshold = 0.25;
 
-	Size lastImageSize{ 0, 0 };
+	cv::Size lastSizeLeft;
+	cv::Size lastSizeRight;
 
 	bool initialized = false;
 
 	string cfg_file;
 	string weights_file;
 	string names_list;
+
+	// These are smart pointers, no need to manually allocate.
+	Ptr<Tracker> trackerLeft;
+	Ptr<Tracker> trackerRight;
+
+	bool doDownsampling = false;
+	float downSampleRatio = 0.5f;
+
+	void DrawDetections(InputOutputArray mat, std::vector< detected_object > detections);
 
 };
