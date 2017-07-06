@@ -89,7 +89,7 @@ enum
 
 /** @brief Restores the selected region in an image using the region neighborhood.
 
-@param src Input 8-bit 1-channel or 3-channel image.
+@param src Input 8-bit, 16-bit unsigned or 32-bit float 1-channel or 8-bit 3-channel image.
 @param inpaintMask Inpainting mask, 8-bit 1-channel image. Non-zero pixels indicate the area that
 needs to be inpainted.
 @param dst Output image with the same size and type as src .
@@ -591,7 +591,7 @@ public:
 @param samples number of pixel locations to use
 @param lambda smoothness term weight. Greater values produce smoother results, but can alter the
 response.
-@param random if true sample pixel locations are chosen at random, otherwise the form a
+@param random if true sample pixel locations are chosen at random, otherwise they form a
 rectangular grid.
  */
 CV_EXPORTS_W Ptr<CalibrateDebevec> createCalibrateDebevec(int samples = 70, float lambda = 10.0f, bool random = false);
@@ -748,7 +748,7 @@ complex outlines into a new background
 consuming and often leaves an undesirable halo. Seamless cloning, even averaged with the
 original image, is not effective. Mixed seamless cloning based on a loose selection proves
 effective.
--   **FEATURE_EXCHANGE** Feature exchange allows the user to easily replace certain features of
+-   **MONOCHROME_TRANSFER** Monochrome transfer allows the user to easily replace certain features of
 one object by alternative features.
  */
 CV_EXPORTS_W void seamlessClone( InputArray src, InputArray dst, InputArray mask, Point p,

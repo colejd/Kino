@@ -297,7 +297,7 @@ row is ignored.
 Unlike findHomography and estimateRigidTransform, the function findTransformECC implements an
 area-based alignment that builds on intensity similarities. In essence, the function updates the
 initial transformation that roughly aligns the images. If this information is missing, the identity
-warp (unity matrix) should be given as input. Note that if images undergo strong
+warp (unity matrix) is used as an initialization. Note that if images undergo strong
 displacements/rotations, an initial transformation that roughly aligns the images is necessary
 (e.g., a simple euclidean/similarity transform that allows for the images showing the same image
 content approximately). Use inverse warping in the second image to take an image close to the first
@@ -544,7 +544,7 @@ public:
 */
 CV_EXPORTS_W Ptr<DualTVL1OpticalFlow> createOptFlow_DualTVL1();
 
-/** @brief Class computing a dense optical flow using the Gunnar Farneback’s algorithm.
+/** @brief Class computing a dense optical flow using the Gunnar Farneback's algorithm.
  */
 class CV_EXPORTS_W FarnebackOpticalFlow : public DenseOpticalFlow
 {

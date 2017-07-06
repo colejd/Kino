@@ -9,9 +9,7 @@ set roboArgs=/njs /njh /np /fp
 robocopy "frameworks/libusb/dll/" "bin/" "libusb-1.0.dll" %roboArgs%
 
 :: OpenCV
-robocopy "frameworks/opencv/dll/" "bin/" "opencv_world320.dll" %roboArgs%
-robocopy "frameworks/opencv/dll/" "bin/" "opencv_world320d.dll" %roboArgs%
-robocopy "frameworks/opencv/dll/" "bin/" "opencv_ffmpeg320_64.dll" %roboArgs%
+robocopy "frameworks/opencv/dll/" "bin/" %roboArgs%
 
 :: Darknet
 robocopy "addons/ofxDarknet/libs/3rdparty/dll/x64/" "bin/" "pthreadVC2.dll" %roboArgs%

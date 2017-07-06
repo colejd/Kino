@@ -617,27 +617,12 @@
     <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb">
       <Filter>frameworks\libusb</Filter>
     </None>
-    <None Include="frameworks\opencv\dll\opencv_ffmpeg320_64.dll">
-      <Filter>frameworks\opencv</Filter>
-    </None>
-    <None Include="frameworks\opencv\dll\opencv_world320.dll">
-      <Filter>frameworks\opencv</Filter>
-    </None>
-    <None Include="frameworks\opencv\dll\opencv_world320d.dll">
-      <Filter>frameworks\opencv</Filter>
-    </None>
     <None Include="bin\data\config\config.json" />
     <None Include="overview.md" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib">
       <Filter>frameworks\libusb</Filter>
-    </Library>
-    <Library Include="frameworks\opencv\lib\opencv_world320.lib">
-      <Filter>frameworks\opencv</Filter>
-    </Library>
-    <Library Include="frameworks\opencv\lib\opencv_world320d.lib">
-      <Filter>frameworks\opencv</Filter>
     </Library>
   </ItemGroup>
 </Project>
