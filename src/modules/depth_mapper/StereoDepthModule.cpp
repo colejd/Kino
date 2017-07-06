@@ -119,6 +119,7 @@ void StereoDepthModule::DrawGUI() {
 
 		if (!moduleCanRun) {
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Cannot run without two camera captures enabled!");
+			ImGui::End();
 			return;
 		}
 
