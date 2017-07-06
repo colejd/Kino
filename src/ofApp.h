@@ -61,7 +61,7 @@ public:
 	bool demoMode = false;
 
 private:
-	bool ctrlPressed = false;
+	bool modifierPressed = false;
 
 	void TakeScreenshot();
 

@@ -114,7 +114,8 @@ void ofApp::DrawGUI() {
 	ImGui::BeginMainMenuBar();
 
 	if (ImGui::BeginMenu("File")) {
-		if (ImGui::MenuItem("Fullscreen", "F")) {
+		ImGui::MenuItem("Pause", "Alt + P", &core->pauseCaptureUpdates);
+		if (ImGui::MenuItem("Fullscreen", "Alt + F")) {
 			ofToggleFullscreen();
 		}
 		if (ImGui::MenuItem("Take Screenshot", "F11")) {
@@ -128,21 +129,21 @@ void ofApp::DrawGUI() {
 	}
 
 	if (ImGui::BeginMenu("Modules")) {
-		ImGui::MenuItem("Camera Calibrator", nullptr, &(core->cameraCalibrator.showGUI));
-		ImGui::MenuItem("Stereo Depth", nullptr, &(core->depthModule.showGUI));
-		ImGui::MenuItem("Edge Detection", "E", &(core->edgeDetector.showGUI));
-		ImGui::MenuItem("Face Detection", nullptr, &(core->faceDetector.showGUI));
-		ImGui::MenuItem("Image Classifier", "C", &(core->classifierLens.showGUI));
-		ImGui::MenuItem("DeepDream", nullptr, &(core->deepdreamLens.showGUI));
+		ImGui::MenuItem("Camera Calibrator", "Alt + 1", &(core->cameraCalibrator.showGUI));
+		ImGui::MenuItem("Edge Detection",	 "Alt + 2", &(core->edgeDetector.showGUI));
+		ImGui::MenuItem("Image Classifier",	 "Alt + 3", &(core->classifierLens.showGUI));
+		ImGui::MenuItem("Stereo Depth",		 "Alt + 4", &(core->depthModule.showGUI));
+		ImGui::MenuItem("Face Detection",	 nullptr,	&(core->faceDetector.showGUI));
+		ImGui::MenuItem("DeepDream",		 nullptr,	&(core->deepdreamLens.showGUI));
 
 		ImGui::EndMenu();
 	}
 
 	if (!demoMode && ImGui::BeginMenu("HMD")) {
 		if (!demoMode) {
-			ImGui::MenuItem("Swap Cameras", "S", &(core->swapSides));
+			ImGui::MenuItem("Swap Cameras", "Alt + S", &(core->swapSides));
 		}
-		ImGui::MenuItem("Distortion", "D", &(compositor->doDistortion));
+		ImGui::MenuItem("Distortion", "Alt + D", &(compositor->doDistortion));
 
 		ImGui::EndMenu();
 	}
@@ -150,7 +151,7 @@ void ofApp::DrawGUI() {
 	if (ImGui::BeginMenu("View")) {
 		ImGui::MenuItem("General Settings", nullptr, &showGeneralSettingsWindow);
 		if (!demoMode) ImGui::MenuItem("Compositor Settings", nullptr, &(compositor->showGUI));
-		ImGui::MenuItem("Log", "L", &showLog);
+		ImGui::MenuItem("Log", "Alt + L", &showLog);
 		ImGui::MenuItem("FPS Graph", nullptr, &showPerformanceGraph);
 		if (ImGui::MenuItem("Performance", nullptr)) {
 			ToggleTimingWindow();
@@ -205,7 +206,6 @@ void ofApp::DrawGUI() {
 			//useVerticalSync = !useVerticalSync;
 			ofSetVerticalSync(useVerticalSync);
 		}
-		ImGui::Checkbox("Pause", &core->pauseCaptureUpdates);
 		//ImGui::SliderInt("Stereo Convergence", &convergence, 0, 100);
 
 		ImGui::End();
@@ -332,33 +332,6 @@ void ofApp::keyPressed(int key) {
 	else if (key == '`') {
 		ToggleTimingWindow();
 	}
-	else if (key == 'f' || key == 'F') {
-		ofToggleFullscreen();
-	}
-	else if ((key == 's' || key == 'S') && !demoMode) {
-		core->swapSides = !(core->swapSides);
-	}
-	else if (key == 'd' || key == 'D') {
-		compositor->doDistortion = !compositor->doDistortion;
-	}
-	else if (key == '-' || key == '_') {
-		compositor->IncrementConvergence(-1);
-	}
-	else if (key == '=' || key == '+') {
-		compositor->IncrementConvergence(1);
-	}
-	else if (key == 'e' || key == 'E') {
-		core->edgeDetector.ToggleGUIEnabled();
-	}
-	else if (key == 'c' || key == 'C') {
-		core->classifierLens.ToggleGUIEnabled();
-	}
-	else if (key == 'l' || key == 'L') {
-		showLog = !showLog;
-	}
-	else if (key == 'p' || key == 'P') {
-		core->pauseCaptureUpdates = !core->pauseCaptureUpdates;
-	}
 	else if (key == OF_KEY_F1) {
 		showHelp = !showHelp;
 	}
@@ -366,10 +339,53 @@ void ofApp::keyPressed(int key) {
 		// Take and save a screenshot
 		TakeScreenshot();
 	}
+	else if (key == OF_KEY_ALT) {
+		modifierPressed = true;
+	}
+	else if (key == '-' || key == '_') {
+		compositor->IncrementConvergence(-1);
+	}
+	else if (key == '=' || key == '+') {
+		compositor->IncrementConvergence(1);
+	}
+	
+	if (modifierPressed) {
+		if (key == 'f' || key == 'F') {
+			ofToggleFullscreen();
+		}
+		else if ((key == 's' || key == 'S') && !demoMode) {
+			core->swapSides = !(core->swapSides);
+		}
+		else if (key == 'd' || key == 'D') {
+			compositor->doDistortion = !compositor->doDistortion;
+		}
+		else if (key == 'l' || key == 'L') {
+			showLog = !showLog;
+		}
+		else if (key == 'p' || key == 'P') {
+			core->pauseCaptureUpdates = !core->pauseCaptureUpdates;
+		}
+
+		// Modules
+		else if (key == '1') {
+			core->cameraCalibrator.ToggleGUIEnabled();
+		}
+		else if (key == '2') {
+			core->edgeDetector.ToggleGUIEnabled();
+		}
+		else if (key == '3') {
+			core->classifierLens.ToggleGUIEnabled();
+		}
+		else if (key == '4') {
+			core->depthModule.ToggleGUIEnabled();
+		}
+	}
 }
 
 void ofApp::keyReleased(int key) {
-
+	if (key == OF_KEY_ALT) {
+		modifierPressed = false;
+	}
 }
 
 void ofApp::mouseMoved(int x, int y) {
