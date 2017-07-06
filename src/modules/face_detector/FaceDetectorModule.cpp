@@ -29,7 +29,7 @@ void FaceDetectorModule::ProcessFrames(InputArray inLeft, InputArray inRight, Ou
 }
 
 void FaceDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
-	if (IsEnabled()) {
+	if (IsEnabled() && !in.empty()) {
 		TS_START_NIF("Face Detector");
 
 		float scale = imageScale;
