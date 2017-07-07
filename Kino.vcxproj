@@ -72,7 +72,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>%(AdditionalDependencies);libusb-1.0.lib;opencv_aruco330d.lib;opencv_bgsegm330d.lib;opencv_bioinspired330d.lib;opencv_calib3d330d.lib;opencv_ccalib330d.lib;opencv_core330d.lib;opencv_datasets330d.lib;opencv_dnn330d.lib;opencv_dpm330d.lib;opencv_face330d.lib;opencv_features2d330d.lib;opencv_flann330d.lib;opencv_fuzzy330d.lib;opencv_highgui330d.lib;opencv_imgcodecs330d.lib;opencv_imgproc330d.lib;opencv_img_hash330d.lib;opencv_line_descriptor330d.lib;opencv_ml330d.lib;opencv_objdetect330d.lib;opencv_optflow330d.lib;opencv_phase_unwrapping330d.lib;opencv_photo330d.lib;opencv_plot330d.lib;opencv_reg330d.lib;opencv_rgbd330d.lib;opencv_saliency330d.lib;opencv_shape330d.lib;opencv_stereo330d.lib;opencv_stitching330d.lib;opencv_structured_light330d.lib;opencv_superres330d.lib;opencv_surface_matching330d.lib;opencv_text330d.lib;opencv_tracking330d.lib;opencv_video330d.lib;opencv_videoio330d.lib;opencv_videostab330d.lib;opencv_xfeatures2d330d.lib;opencv_ximgproc330d.lib;opencv_xobjdetect330d.lib;opencv_xphoto330d.lib;pthreadVC2.lib;cublas.lib;cudart.lib;cudnn.lib;curand.lib;darknet_debug.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);libusb-1.0d.lib;opencv_aruco330d.lib;opencv_bgsegm330d.lib;opencv_bioinspired330d.lib;opencv_calib3d330d.lib;opencv_ccalib330d.lib;opencv_core330d.lib;opencv_datasets330d.lib;opencv_dnn330d.lib;opencv_dpm330d.lib;opencv_face330d.lib;opencv_features2d330d.lib;opencv_flann330d.lib;opencv_fuzzy330d.lib;opencv_highgui330d.lib;opencv_imgcodecs330d.lib;opencv_imgproc330d.lib;opencv_img_hash330d.lib;opencv_line_descriptor330d.lib;opencv_ml330d.lib;opencv_objdetect330d.lib;opencv_optflow330d.lib;opencv_phase_unwrapping330d.lib;opencv_photo330d.lib;opencv_plot330d.lib;opencv_reg330d.lib;opencv_rgbd330d.lib;opencv_saliency330d.lib;opencv_shape330d.lib;opencv_stereo330d.lib;opencv_stitching330d.lib;opencv_structured_light330d.lib;opencv_superres330d.lib;opencv_surface_matching330d.lib;opencv_text330d.lib;opencv_tracking330d.lib;opencv_video330d.lib;opencv_videoio330d.lib;opencv_videostab330d.lib;opencv_xfeatures2d330d.lib;opencv_ximgproc330d.lib;opencv_xobjdetect330d.lib;opencv_xphoto330d.lib;pthreadVC2.lib;cublas.lib;cudart.lib;cudnn.lib;curand.lib;darknet_debug.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ProjectDir)\frameworks\opencv\lib;$(ProjectDir)\frameworks\libusb\lib\x64;addons\ofxDarknet\libs\3rdparty\lib\vs\x64;addons\ofxDarknet\libs\cuda\lib\vs\x64;addons\ofxDarknet\libs\darknet\lib\vs\x64\Debug</AdditionalLibraryDirectories>
       <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
@@ -132,10 +132,12 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui_demo.cpp" />
     <ClCompile Include="addons\ofxImGui\libs\imgui\src\imgui_draw.cpp" />
     <ClCompile Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurements.cpp" />
+    <ClCompile Include="src\camera\ps4eye\PS4EyeCapture.cpp" />
     <ClCompile Include="src\camera\CameraCapture.cpp" />
     <ClCompile Include="src\camera\fake\FakeCapture.cpp" />
     <ClCompile Include="src\camera\ps3eye\driver\ps3eye.cpp" />
     <ClCompile Include="src\camera\ps3eye\PS3EyeCapture.cpp" />
+    <ClCompile Include="src\camera\ps4eye\driver\ps4eye.cpp" />
     <ClCompile Include="src\camera\system\SystemCameraCapture.cpp" />
     <ClCompile Include="src\compositor\DistortionManager.cpp" />
     <ClCompile Include="src\compositor\ImageCompositor.cpp" />
@@ -235,11 +237,14 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurementsMacros.h" />
     <ClInclude Include="addons\ofxTimeMeasurements\src\ofxTimeMeasurementsScoped.h" />
     <ClInclude Include="frameworks\libusb\include\libusb.h" />
+    <ClInclude Include="src\camera\ps4eye\PS4EyeCapture.hpp" />
     <ClInclude Include="src\camera\CameraCapture.hpp" />
     <ClInclude Include="src\camera\CaptureBase.hpp" />
     <ClInclude Include="src\camera\fake\FakeCapture.hpp" />
     <ClInclude Include="src\camera\ps3eye\driver\ps3eye.h" />
     <ClInclude Include="src\camera\ps3eye\PS3EyeCapture.hpp" />
+    <ClInclude Include="src\camera\ps4eye\driver\ps4eye.h" />
+    <ClInclude Include="src\camera\ps4eye\driver\ps4eye_regs.h" />
     <ClInclude Include="src\camera\system\SystemCameraCapture.hpp" />
     <ClInclude Include="src\compositor\DistortionManager.hpp" />
     <ClInclude Include="src\compositor\ImageCompositor.hpp" />
@@ -284,16 +289,12 @@ if errorlevel 1 exit 0 else exit %errorlevel%
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="bin\data\config\config.json" />
-    <None Include="frameworks\libusb\dll\libusb-1.0.dll" />
-    <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb" />
     <None Include="license.md" />
     <None Include="overview.md" />
     <None Include="postbuild.bat" />
     <None Include="readme.md" />
     <None Include="setup.bat" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib" />
+    <None Include="bin\data\firmware.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -159,13 +159,13 @@ void ofApp::DrawGUI() {
 		ImGui::EndMenu();
 	}
 
-	//Draw core timing
+	// Draw core timing
 	//ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	//if (coreFps > frameTarget) textColor = ImVec4(1.0f, 0.0f, 0.0f, 1.0f); //Set red if over max frame time
 	//else if (coreFps > frameTarget / 2.0f) textColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f); //Set yellow if halfway to max frame time
 	//ImGui::SameLine(ImGui::GetWindowWidth() - 160); ImGui::TextColored(textColor, "core: %.1f ms", coreFps);
 
-
+	// Draw capture FPS (not actual camera FPS, just frequency of the core polling the capture)
 	//ImGui::SameLine(ImGui::GetWindowWidth() - 500); ImGui::Text("Cameras: %4.0f %4.0f", core->framebuffer["LEFT"].fps, core->framebuffer["RIGHT"].fps);
 
 

@@ -1,3 +1,4 @@
+// source code from https://github.com/inspirit/PS3EYEDriver
 #include "ps3eye.h"
 
 #include <thread>
@@ -62,6 +63,11 @@
 	{
 		// Not sure how to implement this on linux/osx, so left empty...
 	}
+#endif
+
+#ifdef _MSC_VER
+#pragma warning (disable: 4996) // 'This function or variable may be unsafe': snprintf
+#define snprintf _snprintf
 #endif
 
 namespace ps3eye {
@@ -319,10 +325,10 @@ class USBMgr
 std::shared_ptr<USBMgr> USBMgr::sInstance;
 int                     USBMgr::sTotalDevices = 0;
 
-USBMgr::USBMgr() :
-	exit_signaled({ false }),
-	active_camera_count({ 0 })
+USBMgr::USBMgr() 
 {
+	exit_signaled = false;
+	active_camera_count = 0;
     libusb_init(&usb_context);
     libusb_set_debug(usb_context, 1);
 }
@@ -491,15 +497,118 @@ public:
 		else if (outputFormat == PS3EYECam::EOutputFormat::BGR ||
 				 outputFormat == PS3EYECam::EOutputFormat::RGB)
 		{
-			Debayer(frame_width, frame_height, source, new_frame, outputFormat == PS3EYECam::EOutputFormat::BGR);
+			DebayerRGB(frame_width, frame_height, source, new_frame, outputFormat == PS3EYECam::EOutputFormat::BGR);
 		}		
-
+		else if (outputFormat == PS3EYECam::EOutputFormat::Gray)
+		{
+			DebayerGray(frame_width, frame_height, source, new_frame);
+		}
 		// Update tail and available count
 		tail = (tail + 1) % num_frames;
 		available--;
 	}
+	
+	void DebayerGray(int frame_width, int frame_height, const uint8_t* inBayer, uint8_t* outBuffer)
+	{
+		// PSMove output is in the following Bayer format (GRBG):
+		//
+		// G R G R G R
+		// B G B G B G
+		// G R G R G R
+		// B G B G B G
+		//
+		// This is the normal Bayer pattern shifted left one place.
+		
+		int				source_stride	= frame_width;
+		const uint8_t*	source_row		= inBayer;						// Start at first bayer pixel
+		int				dest_stride		= frame_width;
+		uint8_t*		dest_row		= outBuffer + dest_stride + 1; 	// We start outputting at the second pixel of the second row's G component
+		uint32_t R,G,B;
+		
+		// Fill rows 1 to height-1 of the destination buffer. First and last row are filled separately (they are copied from the second row and second-to-last rows respectively)
+		for (int y = 0; y < frame_height-1; source_row += source_stride, dest_row += dest_stride, ++y)
+		{
+			const uint8_t* source		= source_row;
+			const uint8_t* source_end	= source + (source_stride-2);								// -2 to deal with the fact that we're starting at the second pixel of the row and should end at the second-to-last pixel of the row (first and last are filled separately)
+			uint8_t* dest				= dest_row;
+			
+			// Row starting with Green
+			if (y % 2 == 0)
+			{
+				// Fill first pixel (green)
+				B = (source[source_stride] + source[source_stride + 2] + 1) >> 1;
+				G = source[source_stride + 1];
+				R = (source[1] + source[source_stride * 2 + 1] + 1) >> 1;
+				*dest = (uint8_t)((R*77 + G*151 + B*28)>>8);
+				
+				source++;
+				dest++;
+				
+				// Fill remaining pixel
+				for (; source <= source_end - 2; source += 2, dest += 2)
+				{
+					// Blue pixel
+					B = source[source_stride + 1];
+					G = (source[1] + source[source_stride] + source[source_stride + 2] + source[source_stride * 2 + 1] + 2) >> 2;
+					R = (source[0] + source[2] + source[source_stride * 2] + source[source_stride * 2 + 2] + 2) >> 2;
+					dest[0] = (uint8_t)((R*77 + G*151 + B*28)>>8);
 
-	void Debayer(int frame_width, int frame_height, const uint8_t* inBayer, uint8_t* outBuffer, bool inBGR)
+					//  Green pixel
+					B = (source[source_stride + 1] + source[source_stride + 3] + 1) >> 1;
+					G = source[source_stride + 2];
+					R = (source[2] + source[source_stride * 2 + 2] + 1) >> 1;
+					dest[1] = (uint8_t)((R*77 + G*151 + B*28)>>8);
+
+				}
+			}
+			else
+			{
+				for (; source <= source_end - 2; source += 2, dest += 2)
+				{
+					// Red pixel
+					B = (source[0] + source[2] + source[source_stride * 2] + source[source_stride * 2 + 2] + 2) >> 2;;
+					G = (source[1] + source[source_stride] + source[source_stride + 2] + source[source_stride * 2 + 1] + 2) >> 2;;
+					R = source[source_stride + 1];
+					dest[0] = (uint8_t)((R*77 + G*151 + B*28)>>8);
+
+					// Green pixel
+					B = (source[2] + source[source_stride * 2 + 2] + 1) >> 1;
+					G = source[source_stride + 2];
+					R = (source[source_stride + 1] + source[source_stride + 3] + 1) >> 1;
+					dest[1] = (uint8_t)((R*77 + G*151 + B*28)>>8);
+				}
+			}
+			
+			if (source < source_end)
+			{
+				B = source[source_stride + 1];
+				G = (source[1] + source[source_stride] + source[source_stride + 2] + source[source_stride * 2 + 1] + 2) >> 2;
+				R = (source[0] + source[2] + source[source_stride * 2] + source[source_stride * 2 + 2] + 2) >> 2;;
+				dest[0] = (uint8_t)((R*77 + G*151 + B*28)>>8);
+
+				source++;
+				dest++;
+			}
+			
+			// Fill first pixel of row (copy second pixel)
+			uint8_t* first_pixel	= dest_row-1;
+			first_pixel[0]			= dest_row[0];
+			
+			// Fill last pixel of row (copy second-to-last pixel). Note: dest row starts at the *second* pixel of the row, so dest_row + (width-2) * num_output_channels puts us at the last pixel of the row
+			uint8_t* last_pixel				= dest_row + (frame_width - 2);
+			uint8_t* second_to_last_pixel	= last_pixel - 1;
+			last_pixel[0]					= second_to_last_pixel[0];
+		}
+		
+		// Fill first & last row
+		for (int i = 0; i < dest_stride; i++)
+		{
+			outBuffer[i]									= outBuffer[i + dest_stride];
+			outBuffer[i + (frame_height - 1)*dest_stride]	= outBuffer[i + (frame_height - 2)*dest_stride];
+		}
+	}
+
+	void DebayerRGB(int frame_width, int frame_height, const uint8_t* inBayer, uint8_t* outBuffer, bool inBGR)
 	{
 		// PSMove output is in the following Bayer format (GRBG):
 		//
@@ -930,7 +1039,7 @@ void PS3EYECam::release()
 	if(usb_buf) free(usb_buf);
 }
 
-bool PS3EYECam::init(uint32_t width, uint32_t height, uint8_t desiredFrameRate, EOutputFormat outputFormat)
+bool PS3EYECam::init(uint32_t width, uint32_t height, uint16_t desiredFrameRate, EOutputFormat outputFormat)
 {
 	uint16_t sensor_id;
 
@@ -1047,6 +1156,51 @@ void PS3EYECam::stop()
     is_streaming = false;
 }
 
+#define MAX_USB_DEVICE_PORT_PATH 7
+
+bool PS3EYECam::getUSBPortPath(char *out_identifier, size_t max_identifier_length) const
+{
+    bool success = false;
+
+    if (isInitialized())
+    {
+        uint8_t port_numbers[MAX_USB_DEVICE_PORT_PATH];
+
+        memset(out_identifier, 0, max_identifier_length);
+
+        memset(port_numbers, 0, sizeof(port_numbers));
+        int port_count = libusb_get_port_numbers(device_, port_numbers, MAX_USB_DEVICE_PORT_PATH);
+        int bus_id = libusb_get_bus_number(device_);
+
+        snprintf(out_identifier, max_identifier_length, "b%d", bus_id);
+        if (port_count > 0)
+        {
+            success = true;
+
+            for (int port_index = 0; port_index < port_count; ++port_index)
+            {
+                uint8_t port_number = port_numbers[port_index];
+                char port_string[8];
+
+                snprintf(port_string, sizeof(port_string), (port_index == 0) ? "_p%d" : ".%d", port_number);
+                port_string[sizeof(port_string) - 1] = '0';
+                
+                if (strlen(out_identifier)+strlen(port_string)+1 <= max_identifier_length)
+                {
+                    std::strcat(out_identifier, port_string);
+                }
+                else
+                {
+                    success = false;
+                    break;
+                }
+            }
+        }
+    }
+
+    return success;
+}
+
 uint32_t PS3EYECam::getOutputBytesPerPixel() const
 {
 	if (frame_output_format == EOutputFormat::Bayer)
@@ -1055,7 +1209,8 @@ uint32_t PS3EYECam::getOutputBytesPerPixel() const
 		return 3;
 	else if (frame_output_format == EOutputFormat::RGB)
 		return 3;
-	
+	else if (frame_output_format == EOutputFormat::Gray)
+		return 1;
 	return 0;
 }
 
@@ -1123,40 +1278,55 @@ void PS3EYECam::ov534_set_led(int status)
 }
 
 /* validate frame rate and (if not dry run) set it */
-uint8_t PS3EYECam::ov534_set_frame_rate(uint8_t frame_rate, bool dry_run)
+uint16_t PS3EYECam::ov534_set_frame_rate(uint16_t frame_rate, bool dry_run)
 {
      int i;
      struct rate_s {
-             uint8_t fps;
+             uint16_t fps;
              uint8_t r11;
              uint8_t r0d;
              uint8_t re5;
      };
      const struct rate_s *r;
      static const struct rate_s rate_0[] = { /* 640x480 */
-			 {75, 0x01, 0x81, 0x02},
+             {83, 0x01, 0xc1, 0x02}, /* 83 FPS: video is partly corrupt */
+             {75, 0x01, 0x81, 0x02}, /* 75 FPS or below: video is valid */
              {60, 0x00, 0x41, 0x04},
              {50, 0x01, 0x41, 0x02},
              {40, 0x02, 0xc1, 0x04},
              {30, 0x04, 0x81, 0x02},
-			 {20, 0x04, 0x41, 0x02},
+             {25, 0x00, 0x01, 0x02},
+             {20, 0x04, 0x41, 0x02},
              {15, 0x09, 0x81, 0x02},
+             {10, 0x09, 0x41, 0x02},
+             {8, 0x02, 0x01, 0x02},
+             {5, 0x04, 0x01, 0x02},
+             {3, 0x06, 0x01, 0x02},
+             {2, 0x09, 0x01, 0x02},
      };
      static const struct rate_s rate_1[] = { /* 320x240 */
-             {205, 0x01, 0xc1, 0x02}, /* 205 FPS: video is partly corrupt */
+             {290, 0x00, 0xc1, 0x04},
+             {205, 0x01, 0xc1, 0x02}, /* 205 FPS or above: video is partly corrupt */
              {187, 0x01, 0x81, 0x02}, /* 187 FPS or below: video is valid */
              {150, 0x00, 0x41, 0x04},
-			 {137, 0x02, 0xc1, 0x02},
+             {137, 0x02, 0xc1, 0x02},
              {125, 0x01, 0x41, 0x02},
              {100, 0x02, 0xc1, 0x04},
-			 {90, 0x03, 0x81, 0x02},
+             {90, 0x03, 0x81, 0x02},
              {75, 0x04, 0x81, 0x02},
              {60, 0x04, 0xc1, 0x04},
              {50, 0x04, 0x41, 0x02},
              {40, 0x06, 0x81, 0x03},
+             {37, 0x00, 0x01, 0x04},
              {30, 0x04, 0x41, 0x04},
-			 {20, 0x18, 0xc1, 0x02},
-			 {15, 0x18, 0x81, 0x02},
+             {17, 0x18, 0xc1, 0x02},
+             {15, 0x18, 0x81, 0x02},
+             {12, 0x02, 0x01, 0x04},
+             {10, 0x18, 0x41, 0x02},
+             {7, 0x04, 0x01, 0x04},
+             {5, 0x06, 0x01, 0x04},
+             {3, 0x09, 0x01, 0x04},
+             {2, 0x18, 0x01, 0x02},
      };
 
      if (frame_width == 640) {

@@ -29,13 +29,16 @@ void KinoCore::Setup() {
 		string cameraType = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_MODE", "").asString();
 		int cameraIndex = ConfigHandler::GetValue("DEMO_SETTINGS.CAMERA_INDEX", 0).asInt();
 
-		Kino::app_log.AddLog("Demo Mode active (mode: %s)\n", cameraType.c_str());
+		Kino::app_log.AddLog("Demo Mode active (mode: %s, device #%i)\n", cameraType.c_str(), cameraIndex);
 
 		if (cameraType == "SYSTEM") {
 			capture1->StartCapturing(cameraIndex, CameraCapture::CAPTURE_TYPE::GENERIC, true);
 		}
 		else if (cameraType == "PS3EYE") {
-			capture1->StartCapturing(0, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
+			capture1->StartCapturing(cameraIndex, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
+		}
+		else if (cameraType == "PS4EYE") {
+			capture1->StartCapturing(cameraIndex, CameraCapture::CAPTURE_TYPE::PS4EYE, true);
 		}
 		else if (cameraType == "FAKE") {
 			string fakeVideoPath = ConfigHandler::GetValue("DEMO_SETTINGS.FAKE_VIDEO_PATH", "").asString();

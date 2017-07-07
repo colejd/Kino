@@ -1,3 +1,4 @@
+// source code from https://github.com/inspirit/PS3EYEDriver
 #ifndef PS3EYECAM_H
 #define PS3EYECAM_H
 
@@ -8,7 +9,18 @@
 
 #include <memory>
 
+// Get rid of annoying zero length structure warnings from libusb.h in MSVC
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4200)
+#endif
+
 #include <libusb/include/libusb.h>
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #ifndef __STDC_CONSTANT_MACROS
 #  define __STDC_CONSTANT_MACROS
@@ -32,7 +44,8 @@ public:
 	{
 		Bayer,					// Output in Bayer. Destination buffer must be width * height bytes
 		BGR,					// Output in BGR. Destination buffer must be width * height * 3 bytes
-		RGB						// Output in RGB. Destination buffer must be width * height * 3 bytes
+		RGB	,					// Output in RGB. Destination buffer must be width * height * 3 bytes
+		Gray					// Output in Grayscale. Destination buffer must be width * height bytes
 	};
 
 	typedef std::shared_ptr<PS3EYECam> PS3EYERef;
@@ -43,7 +56,7 @@ public:
 	PS3EYECam(libusb_device *device);
 	~PS3EYECam();
 
-	bool init(uint32_t width = 0, uint32_t height = 0, uint8_t desiredFrameRate = 30, EOutputFormat outputFormat = EOutputFormat::BGR);
+	bool init(uint32_t width = 0, uint32_t height = 0, uint16_t desiredFrameRate = 30, EOutputFormat outputFormat = EOutputFormat::BGR);
 	void start();
 	void stop();
 
@@ -150,6 +163,9 @@ public:
     
 
     bool isStreaming() const { return is_streaming; }
+    bool isInitialized() const { return device_ != NULL && handle_ != NULL && usb_buf != NULL; }
+
+	bool getUSBPortPath(char *out_identifier, size_t max_identifier_length) const;
 	
 	// Get a frame from the camera. Notes:
 	// - If there is no frame available, this function will block until one is
@@ -158,7 +174,12 @@ public:
 
 	uint32_t getWidth() const { return frame_width; }
 	uint32_t getHeight() const { return frame_height; }
-	uint8_t getFrameRate() const { return frame_rate; }
+	uint16_t getFrameRate() const { return frame_rate; }
+	bool setFrameRate(uint8_t val) {
+		if (is_streaming) return false;
+		frame_rate = ov534_set_frame_rate(val, true);
+		return true;
+	}
 	uint32_t getRowBytes() const { return frame_width * getOutputBytesPerPixel(); }
 	uint32_t getOutputBytesPerPixel() const;
 
@@ -172,7 +193,7 @@ private:
 	void release();
 
 	// usb ops
-	uint8_t ov534_set_frame_rate(uint8_t frame_rate, bool dry_run = false);
+	uint16_t ov534_set_frame_rate(uint16_t frame_rate, bool dry_run = false);
 	void ov534_set_led(int status);
 	void ov534_reg_write(uint16_t reg, uint8_t val);
 	uint8_t ov534_reg_read(uint16_t reg);
@@ -206,7 +227,7 @@ private:
 
 	uint32_t frame_width;
 	uint32_t frame_height;
-	uint8_t frame_rate;
+	uint16_t frame_rate;
 	EOutputFormat frame_output_format;
 
 	//usb stuff

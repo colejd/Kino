@@ -11,6 +11,7 @@
 #include "CaptureBase.hpp";
 #include "system/SystemCameraCapture.hpp";
 #include "ps3eye/PS3EyeCapture.hpp";
+#include "ps4eye/PS4EyeCapture.hpp";
 #include "fake/FakeCapture.hpp";
 
 class CameraCapture {
@@ -29,7 +30,9 @@ public:
 		/** OS-recognized camera */
 		GENERIC,
 		/** Uses PS3EyeDriver */
-		PS3EYE
+		PS3EYE,
+		/** Uses PS4EyeDriver */
+		PS4EYE
 	};
 
 	/**

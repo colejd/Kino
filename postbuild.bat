@@ -5,9 +5,6 @@ echo "---- Kino Postbuild Script START ----"
 
 set roboArgs=/njs /njh /np /fp
 
-:: Libusb
-robocopy "frameworks/libusb/dll/" "bin/" "libusb-1.0.dll" %roboArgs%
-
 :: OpenCV
 robocopy "frameworks/opencv/dll/" "bin/" %roboArgs%
 

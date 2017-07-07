@@ -121,6 +121,12 @@
     <ClCompile Include="src\modules\depth_mapper\StereoDepthModule.cpp">
       <Filter>src\modules\depth_mapper</Filter>
     </ClCompile>
+    <ClCompile Include="src\camera\ps4eye\driver\ps4eye.cpp">
+      <Filter>src\camera\ps4eye\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\ps4eye\PS4EyeCapture.cpp">
+      <Filter>src\camera\ps4eye</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -266,6 +272,12 @@
     </Filter>
     <Filter Include="src\modules\depth_mapper">
       <UniqueIdentifier>{c0c241fb-3d7c-48a6-8c0c-9585c2031c71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\camera\ps4eye">
+      <UniqueIdentifier>{615eb4ee-cac3-4942-85ba-08305a1b43f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\camera\ps4eye\driver">
+      <UniqueIdentifier>{1d4310bd-5d5f-46f7-9656-ba03368a3895}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -599,6 +611,15 @@
     <ClInclude Include="src\modules\depth_mapper\StereoDepthModule.hpp">
       <Filter>src\modules\depth_mapper</Filter>
     </ClInclude>
+    <ClInclude Include="src\camera\ps4eye\driver\ps4eye_regs.h">
+      <Filter>src\camera\ps4eye\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\ps4eye\driver\ps4eye.h">
+      <Filter>src\camera\ps4eye\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\ps4eye\PS4EyeCapture.hpp">
+      <Filter>src\camera\ps4eye</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc">
@@ -611,18 +632,8 @@
     <None Include=".gitignore" />
     <None Include="readme.md" />
     <None Include="license.md" />
-    <None Include="frameworks\libusb\dll\libusb-1.0.dll">
-      <Filter>frameworks\libusb</Filter>
-    </None>
-    <None Include="frameworks\libusb\lib\x64\libusb-1.0.pdb">
-      <Filter>frameworks\libusb</Filter>
-    </None>
     <None Include="bin\data\config\config.json" />
     <None Include="overview.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib">
-      <Filter>frameworks\libusb</Filter>
-    </Library>
+    <None Include="bin\data\firmware.bin" />
   </ItemGroup>
 </Project>

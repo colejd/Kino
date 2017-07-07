@@ -42,6 +42,9 @@ bool CameraCapture::StartCapturing(int index, CAPTURE_TYPE type, bool threaded)
 	else if (type == CAPTURE_TYPE::PS3EYE) {
 		captureMethod = new PS3EyeCapture();
 	}
+	else if (type == CAPTURE_TYPE::PS4EYE) {
+		captureMethod = new PS4EyeCapture();
+	}
 	else {
 		return false;
 	}
