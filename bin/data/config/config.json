@@ -13,7 +13,7 @@
     "START_Y": 40, // Starts from the top left corner of the rendering surface, not the whole window
     "START_FULLSCREEN": false,
     "GUI_SCALE": 1.5, // 1.0 is default scale. Note that this will make text a bit fuzzy
-    "NEAREST_NEIGHBOR_SCALING":  false
+    "NEAREST_NEIGHBOR_SCALING":  true
   },
 
   // Camera settings
@@ -26,14 +26,14 @@
 
   // OpenCV settings
   "OPENCV": {
-    "USE_OPENCL": false
+    "USE_OPENCL": true
   },
 
   "DEMO_SETTINGS": {
-	"ACTIVE": false, // If true, system will use the following info to create and display a capture in fullscreen
-	"CAMERA_MODE": "PS3EYE", // SYSTEM, PS3EYE, FAKE
-	"CAMERA_INDEX": 0,
-	"FAKE_VIDEO_PATH": "video/luna1.MOV" // Only needed in FAKE mode
+	  "ACTIVE": false, // If true, system will use the following info to create and display a capture in fullscreen
+	  "CAMERA_MODE": "SYSTEM", // SYSTEM, PS3EYE, PS4EYE, FAKE
+	  "CAMERA_INDEX": 0,
+	  "FAKE_VIDEO_PATH": "video/luna1.MOV" // Only needed in FAKE mode
   },
 
   // Configuration for the YOLO object detector (ofxDarknet)
