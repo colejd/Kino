@@ -289,12 +289,17 @@ if errorlevel 1 exit 0 else exit %errorlevel%
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="bin\data\config\config.json" />
+    <None Include="frameworks\libusb\lib\x64\libusb-1.0d.pdb" />
     <None Include="license.md" />
     <None Include="overview.md" />
     <None Include="postbuild.bat" />
     <None Include="readme.md" />
     <None Include="setup.bat" />
     <None Include="bin\data\firmware.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib" />
+    <Library Include="frameworks\libusb\lib\x64\libusb-1.0d.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

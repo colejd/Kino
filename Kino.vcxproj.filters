@@ -279,6 +279,9 @@
     <Filter Include="src\camera\ps4eye\driver">
       <UniqueIdentifier>{1d4310bd-5d5f-46f7-9656-ba03368a3895}</UniqueIdentifier>
     </Filter>
+    <Filter Include="frameworks\libusb\lib">
+      <UniqueIdentifier>{9d35699d-c3c2-41a8-8a00-5b15ad02bfb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="addons\ofxDarknet\src\ofxDarknet.h">
@@ -635,5 +638,16 @@
     <None Include="bin\data\config\config.json" />
     <None Include="overview.md" />
     <None Include="bin\data\firmware.bin" />
+    <None Include="frameworks\libusb\lib\x64\libusb-1.0d.pdb">
+      <Filter>frameworks\libusb\lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib">
+      <Filter>frameworks\libusb\lib</Filter>
+    </Library>
+    <Library Include="frameworks\libusb\lib\x64\libusb-1.0d.lib">
+      <Filter>frameworks\libusb\lib</Filter>
+    </Library>
   </ItemGroup>
 </Project>
