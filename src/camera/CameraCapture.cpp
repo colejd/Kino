@@ -74,12 +74,23 @@ bool CameraCapture::StopCapturing()
 	return true;
 }
 
-//Update latestFrame with the newest data from the capture.
+// Update latestFrame with the newest data from the capture.
+// May be called from a thread, so code should be thread-safe.
 void CameraCapture::UpdateCapture()
 {
 	//std::cout << "Update (threaded: " << threaded << ")\n";
-	captureMethod->Update();
-	captureMethod->GetFrame().copyTo(latestFrame);
+	
+	// Update only if the last frame hasn't been consumed yet
+	if (!frameIsReady) {
+		captureMethod->Update();
+		
+		if (captureMethod->FrameIsReady()) {
+			captureMethod->GetFrame().copyTo(latestFrame);
+			captureMethod->ConsumeCapture();
+			frameIsReady = true;
+		}
+		
+	}
 }
 
 //Return the latest frame.
@@ -89,12 +100,14 @@ cv::Mat CameraCapture::RetrieveCapture()
 	return latestFrame;
 }
 
+void CameraCapture::ConsumeCapture() {
+	// Set frameIsReady to false
+	frameIsReady = false;
+}
+
 bool CameraCapture::FrameIsReady()
 {
-	//return captureMethod->FrameIsReady();
-	//Leave as just true for now; it's faster and turning it on
-	//more or less does nothing anyway
-	return true;
+	return frameIsReady;
 }
 
 const bool CameraCapture::IsThreaded()

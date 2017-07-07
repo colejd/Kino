@@ -15,7 +15,6 @@ public:
 	~SystemCameraCapture() override;
 	bool Init(const int deviceIndex) override;
 	void Update() override;
-	const bool FrameIsReady() override;
 	cv::Mat GetFrame() override;
 	const std::string GetDeviceName() override;
 
@@ -24,6 +23,5 @@ private:
 	cv::Mat frame;
 
 	bool waitIfEmpty = true;
-	std::atomic<bool> frameIsReady = false;
 
 };

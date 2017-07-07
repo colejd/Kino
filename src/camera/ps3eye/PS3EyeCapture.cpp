@@ -39,9 +39,8 @@ bool PS3EyeCapture::Init(const int deviceIndex)
 
 void PS3EyeCapture::Update()
 {
-	frameIsReady = false;
-	if (eye) {
-		eye->getFrame(convertedData);
+	if (eye && !frameIsReady) {
+		eye->getFrame(convertedData); // Blocks until new frame is ready from device
 
 		//cv::Mat tempFrame = cv::Mat(height, width, CV_8UC1, convertedData);
 		//cvtColor(tempFrame, frame, COLOR_BayerGB2BGR);
@@ -50,11 +49,6 @@ void PS3EyeCapture::Update()
 
 		frameIsReady = true;
 	}
-}
-
-const bool PS3EyeCapture::FrameIsReady()
-{
-	return frameIsReady;
 }
 
 cv::Mat PS3EyeCapture::GetFrame()

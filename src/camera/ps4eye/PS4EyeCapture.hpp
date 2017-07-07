@@ -21,7 +21,6 @@ public:
 	~PS4EyeCapture() override;
 	bool Init(const int deviceIndex) override;
 	void Update() override;
-	const bool FrameIsReady() override;
 	cv::Mat GetFrame() override;
 	const std::string GetDeviceName() override;
 
@@ -30,7 +29,6 @@ private:
 	cv::Mat rightFrame;
 
 	bool waitIfEmpty = true;
-	std::atomic<bool> frameIsReady = false;
 
 	PS4EYECam::PS4EYERef eye;
 

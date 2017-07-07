@@ -166,7 +166,7 @@ void ofApp::DrawGUI() {
 	//ImGui::SameLine(ImGui::GetWindowWidth() - 160); ImGui::TextColored(textColor, "core: %.1f ms", coreFps);
 
 	// Draw capture FPS (not actual camera FPS, just frequency of the core polling the capture)
-	//ImGui::SameLine(ImGui::GetWindowWidth() - 500); ImGui::Text("Cameras: %4.0f %4.0f", core->framebuffer["LEFT"].fps, core->framebuffer["RIGHT"].fps);
+	//ImGui::SameLine(ImGui::GetWindowWidth() - 500); ImGui::Text("Cameras: %4.0f %4.0f", core->framebuffer[LEFT_ID].avgFPS, core->framebuffer[RIGHT_ID].avgFPS);
 
 
 #ifdef _DEBUG

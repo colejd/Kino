@@ -7,7 +7,9 @@ PS4EyeCapture::PS4EyeCapture()
 
 PS4EyeCapture::~PS4EyeCapture()
 {
-	if (eye) eye->stop();
+	if (eye) {
+		eye->shutdown();
+	}
 	if (frame_rgb_left != nullptr) free(frame_rgb_left);
 	if (frame_rgb_right != nullptr) free(frame_rgb_right);
 	std::cout << "[PS4EyeCapture] Destructor called.\n";
@@ -51,30 +53,26 @@ bool PS4EyeCapture::Init(const int deviceIndex)
 
 void PS4EyeCapture::Update()
 {
-	frameIsReady = false;
 	eyeframe *eyeFrame;
 
-	if (eye) {
+	if (eye && !frameIsReady) {
 
 		bool isNewFrame = eye->isNewFrame();
 		if (isNewFrame) {
 			eye->check_ff71();
 			eyeFrame = eye->getLastVideoFramePointer();
+			
+			// Create YUYV mats from camera data
+			cv::Mat leftYUYV(height, width, CV_8UC2, eyeFrame->videoLeftFrame);
+			cv::Mat rightYUYV(height, width, CV_8UC2, eyeFrame->videoRightFrame);
 
-			if (eye->rightflag) {
-				leftFrame = cv::Mat(height, width, CV_8UC3, eyeFrame->videoLeftFrame);
-				rightFrame = cv::Mat(height, width, CV_8UC3, eyeFrame->videoRightFrame);
+			// Convert to BGR
+			cvtColor(leftYUYV, leftFrame, COLOR_YUV2BGR_YUY2);
+			cvtColor(rightYUYV, rightFrame, COLOR_YUV2BGR_YUY2);
 
-				frameIsReady = true;
-			}
-
+			frameIsReady = true;
 		}
 	}
-}
-
-const bool PS4EyeCapture::FrameIsReady()
-{
-	return frameIsReady;
 }
 
 cv::Mat PS4EyeCapture::GetFrame()

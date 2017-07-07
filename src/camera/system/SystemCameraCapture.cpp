@@ -29,8 +29,7 @@ bool SystemCameraCapture::Init(const int deviceIndex)
 
 void SystemCameraCapture::Update()
 {
-	frameIsReady = false;
-	if (cap->isOpened()) {
+	if (cap->isOpened() && !frameIsReady) {
 		if (waitIfEmpty && frame.empty() && false) { //&&false does some stuff here 
 			//std::cout << "It's empty\n";
 			//Wait until the frame gets filled by actual camera data.
@@ -52,11 +51,6 @@ void SystemCameraCapture::Update()
 		}
 	}
 
-}
-
-const bool SystemCameraCapture::FrameIsReady()
-{
-	return frameIsReady;
 }
 
 cv::Mat SystemCameraCapture::GetFrame()

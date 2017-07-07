@@ -67,23 +67,31 @@ private:
 
 class Frame {
 public:
+	cv::UMat data;
+
+	// Timing info
+	float fps = 0;
+	float avgFPS = 0;
+	int numFrames = 0;
+
 	Frame() {};
 	~Frame() {};
 
 	void MarkReady() {
 		ready = true;
 
+		numFrames += 1;
+
 		float time = ofGetElapsedTimef();
 		float delta = time - lastReadyTime;
 		fps = 1.0 / delta;
+
+		avgFPS += (fps - avgFPS) / numFrames;
 
 		lastReadyTime = time;
 	};
 	void MarkUsed() { ready = false; };
 	bool IsReady() { return ready; };
-
-	cv::UMat data;
-	float fps;
 
 private:
 	bool ready = false;

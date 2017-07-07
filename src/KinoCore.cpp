@@ -144,6 +144,8 @@ void KinoCore::ConsumeFrames() {
 	// Mark the frames as consumed
 	left->MarkUsed();
 	right->MarkUsed();
+	capture1->ConsumeCapture();
+	capture2->ConsumeCapture();
 }
 
 

@@ -52,6 +52,7 @@ public:
 
 	void UpdateCapture();
 	cv::Mat RetrieveCapture();
+	void ConsumeCapture();
 
 	bool FrameIsReady();
 
@@ -79,5 +80,8 @@ private:
 	//"if you have to pass a mat image between threads you have to use a mutex and call .CopyTo() to force a copy instead of a reference."
 	std::mutex frameMutex;
 	cv::Mat latestFrame;
+
+	// If true, updates will be blocked
+	std::atomic<bool> frameIsReady = false;
 
 };

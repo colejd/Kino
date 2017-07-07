@@ -29,8 +29,7 @@ bool FakeCapture::Init(const int deviceIndex)
 
 void FakeCapture::Update()
 {
-	frameIsReady = false;
-	if (cap->isOpened()) {
+	if (cap->isOpened() && !frameIsReady) {
 
 		if (!playAsFastAsPossible) {
 			// Wait until enough time has elapsed to constitute a frame in the video.
@@ -56,11 +55,6 @@ void FakeCapture::Update()
 		}
 	}
 
-}
-
-const bool FakeCapture::FrameIsReady()
-{
-	return frameIsReady;
 }
 
 cv::Mat FakeCapture::GetFrame()
