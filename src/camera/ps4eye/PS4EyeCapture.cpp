@@ -26,34 +26,73 @@ bool PS4EyeCapture::Init(const int deviceIndex)
 	{
 		eye = devices.at(deviceIndex);
 
-		eye->firmware_path = ofToDataPath("firmware.bin").c_str();
+		eye->firmware_path = ofToDataPath("firmware.bin", true).c_str();
+		Kino::app_log.LogDebug("Loading at %s\n", eye->firmware_path.c_str());
 		eye->firmware_upload();
 
 		//mode 0: 60,30,15,8 fps 1280x800
 		//mode 1: 120,60,30,15,8 fps 640x400
 		//mode 2: 240,120,60,30 fps 320x192
 
-		bool res = eye->init(0, 60);
+		bool res = eye->init(1, 120);
 		if (!res) {
 			Kino::app_log.LogError("PS4EyeCapture failed to init device #%i.\n", deviceIndex);
+			return false;
 		}
 
 		width = eye->getWidth();
 		height = eye->getHeight();
 		eye->start();
 
+		frame_rgb_left = new uint8_t[width * height * 3];
+		frame_rgb_right = new uint8_t[width * height * 3];
 		memset(frame_rgb_left, 0, width * height * 3);
 		memset(frame_rgb_right, 0, width * height * 3);
 
 		return res;
 	}
 	return false;
+
+	
+	//this->deviceIndex = deviceIndex;
+
+	//// list out the devices
+	//std::vector<PS4EYECam::PS4EYERef> devices(PS4EYECam::getDevices());
+
+	//if (deviceIndex >= 0 && deviceIndex < (int)devices.size()) {
+	//	eye = devices[deviceIndex];
+	//}
+	//else {
+	//	Kino::app_log.LogError("PS4EyeCapture failed to init device #%i (index out of bounds; only %i devices are attached).\n", deviceIndex, (int)devices.size());
+	//	return false;
+	//}
+
+	//eye->firmware_path = ofToDataPath("firmware.bin", true).c_str();
+	//Kino::app_log.LogDebug("Loading at %s\n", eye->firmware_path.c_str());
+	//eye->firmware_upload();
+
+	//bool res = eye->init(1, 60);
+
+	//if (!res) {
+	//	Kino::app_log.LogError("PS4EyeCapture failed to init device #%i.\n", deviceIndex);
+	//	return false;
+	//}
+
+	//eye->start();
+
+	//width = eye->getWidth();
+	//height = eye->getHeight();
+	//memset(frame_rgb_left, 0, width * height * 3);
+	//memset(frame_rgb_right, 0, width * height * 3);
+
+	//return true;
 }
 
 
 void PS4EyeCapture::Update()
 {
 	eyeframe *eyeFrame;
+	bool res = ps4eye::PS4EYECam::updateDevices();
 
 	if (eye && !frameIsReady) {
 

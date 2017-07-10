@@ -60,6 +60,8 @@
 
 #define CHUNK_SIZE 512
 
+#define LIBUSB_DEBUG_LEVEL 3 // Default 3
+
 using namespace std;
 
 namespace ps4eye {
@@ -281,7 +283,7 @@ namespace ps4eye {
     USBMgr::USBMgr()
     {
         libusb_init(&usb_context);
-        libusb_set_debug(usb_context, 3);
+        libusb_set_debug(usb_context, LIBUSB_DEBUG_LEVEL);
     }
 
     USBMgr::~USBMgr()
@@ -1670,6 +1672,7 @@ namespace ps4eye {
         {
             if( !open_usb() )
             {
+				//debug("open_usb() failed\n");
                 return false;
             }
         }
@@ -2633,7 +2636,7 @@ namespace ps4eye {
             debug("wDelay: %d\n", ctrl.wDelay);
             debug("dwMaxVideoFrameSize: %u\n", ctrl.dwMaxVideoFrameSize);
             debug("dwMaxPayloadTransferSize: %u\n", ctrl.dwMaxPayloadTransferSize);
-            debug("bInterfaceNumber: %d\n", ctrl.bInterfaceNumber);
+            //debug("bInterfaceNumber: %d\n", ctrl.bInterfaceNumber);
             
 
             return 0;
@@ -2651,7 +2654,7 @@ namespace ps4eye {
         // open
         int res = libusb_open(device_, &handle_);
         if(res != 0) {
-            debug("device open error: %d\n", res);
+            debug("device open error: %s\n", libusb_error_name(res));
             return false;
         }
 
@@ -2665,7 +2668,7 @@ namespace ps4eye {
 
             if (res != 0)
             {
-                debug("Error detaching kernel driver: %d\n", res);
+                debug("Error detaching kernel driver: %s\n", libusb_error_name(res));
                 return false;
             }
 

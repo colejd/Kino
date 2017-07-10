@@ -62,7 +62,7 @@ namespace std {
 
 #include <stdint.h>
 
-#if defined(DEBUG)
+#if defined(_DEBUG)
 #define debug(...) fprintf(stdout,__VA_ARGS__)
 #else
 #define debug(...)
