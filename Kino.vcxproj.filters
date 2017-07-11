@@ -282,6 +282,9 @@
     <Filter Include="frameworks\libusb\lib">
       <UniqueIdentifier>{9d35699d-c3c2-41a8-8a00-5b15ad02bfb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="documents">
+      <UniqueIdentifier>{8da05234-ba18-45ac-bbb8-69e1922861b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="addons\ofxDarknet\src\ofxDarknet.h">
@@ -641,6 +644,9 @@
     <None Include="frameworks\libusb\lib\x64\libusb-1.0d.pdb">
       <Filter>frameworks\libusb\lib</Filter>
     </None>
+    <None Include="documents\KinoLogo.ai">
+      <Filter>documents</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib">
@@ -649,5 +655,13 @@
     <Library Include="frameworks\libusb\lib\x64\libusb-1.0d.lib">
       <Filter>frameworks\libusb\lib</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="documents\kinologo.ico">
+      <Filter>documents</Filter>
+    </Image>
+    <Image Include="documents\KinoLogo_256.png">
+      <Filter>documents</Filter>
+    </Image>
   </ItemGroup>
 </Project>

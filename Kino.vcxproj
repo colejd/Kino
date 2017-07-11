@@ -289,6 +289,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="bin\data\config\config.json" />
+    <None Include="documents\KinoLogo.ai" />
     <None Include="frameworks\libusb\lib\x64\libusb-1.0d.pdb" />
     <None Include="license.md" />
     <None Include="overview.md" />
@@ -300,6 +301,10 @@ if errorlevel 1 exit 0 else exit %errorlevel%
   <ItemGroup>
     <Library Include="frameworks\libusb\lib\x64\libusb-1.0.lib" />
     <Library Include="frameworks\libusb\lib\x64\libusb-1.0d.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="documents\kinologo.ico" />
+    <Image Include="documents\KinoLogo_256.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
