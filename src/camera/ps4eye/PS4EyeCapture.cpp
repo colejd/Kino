@@ -8,6 +8,7 @@ PS4EyeCapture::PS4EyeCapture()
 PS4EyeCapture::~PS4EyeCapture()
 {
 	if (eye) {
+		eye->set_led_off();
 		eye->shutdown();
 	}
 	if (frame_rgb_left != nullptr) free(frame_rgb_left);
@@ -34,15 +35,16 @@ bool PS4EyeCapture::Init(const int deviceIndex)
 		//mode 1: 120,60,30,15,8 fps 640x400
 		//mode 2: 240,120,60,30 fps 320x192
 
-		bool res = eye->init(1, 120);
+		bool res = eye->init(0, 60);
 		if (!res) {
 			Kino::app_log.LogError("PS4EyeCapture failed to init device #%i.\n", deviceIndex);
 			return false;
 		}
 
+		eye->start();
+
 		width = eye->getWidth();
 		height = eye->getHeight();
-		eye->start();
 
 		frame_rgb_left = new uint8_t[width * height * 3];
 		frame_rgb_right = new uint8_t[width * height * 3];
@@ -91,15 +93,14 @@ bool PS4EyeCapture::Init(const int deviceIndex)
 
 void PS4EyeCapture::Update()
 {
-	eyeframe *eyeFrame;
-	bool res = ps4eye::PS4EYECam::updateDevices();
 
 	if (eye && !frameIsReady) {
+		bool res = ps4eye::PS4EYECam::updateDevices();
 
 		bool isNewFrame = eye->isNewFrame();
 		if (isNewFrame) {
 			eye->check_ff71();
-			eyeFrame = eye->getLastVideoFramePointer();
+			eyeframe *eyeFrame = eye->getLastVideoFramePointer();
 			
 			// Create YUYV mats from camera data
 			cv::Mat leftYUYV(height, width, CV_8UC2, eyeFrame->videoLeftFrame);
@@ -112,6 +113,7 @@ void PS4EyeCapture::Update()
 			frameIsReady = true;
 		}
 	}
+	
 }
 
 cv::Mat PS4EyeCapture::GetFrame()
