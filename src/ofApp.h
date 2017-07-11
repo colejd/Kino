@@ -65,5 +65,7 @@ private:
 
 	void TakeScreenshot();
 
+	ImTextureID iconTextureID;
+
 
 };

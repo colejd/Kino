@@ -47,6 +47,10 @@ void ofApp::setup() {
 	ToggleTimingWindow(); //Turn off the timing window for now
 
 	demoMode = ConfigHandler::GetValue("DEMO_SETTINGS.ACTIVE", false).asBool();
+
+	// Load the image used in the help screen
+	iconTextureID = (ImTextureID) gui.loadImage(ofToDataPath("KinoLogo_256.png"));
+
 }
 
 void ofApp::update() {
@@ -216,21 +220,33 @@ void ofApp::DrawGUI() {
 		Kino::app_log.Draw("Log", &showLog);
 	}
 
-	if (showHelp) ImGui::OpenPopup("Help");
-	//ui::ScopedWindow window( "Help", ImGuiWindowFlags_AlwaysAutoResize );
-	if (ImGui::BeginPopupModal("Help", &showHelp)) {
-		ImGui::TextColored(ImVec4(0.92f, 0.18f, 0.29f, 1.00f), "Kino 0.1.0");
+	if (showHelp) {
+		ImGui::SetNextWindowPosCenter();
+		ImGui::OpenPopup("Help");
+	}
+	if (ImGui::BeginPopupModal("Help", &showHelp, ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Columns(2, "HelpColumns", false);
+		ImGui::SetColumnOffset(1, 140);
+
+		ImGui::Image(iconTextureID, ImVec2(112, 112));
+		ImGui::NextColumn();
+
+		ImGui::TextColored(ImVec4(0.92f, 0.18f, 0.29f, 1.00f), "Kino 1.0.0-alpha");
 		ImGui::Text("Jonathan Cole");
-		ImGui::Text("Virtual Environment and Multimodal Interaction Laboratory");
-		//ImGui::Text("github.com/seieibob/kino");
-		//ImGui::SameLine();
+		ImGui::Text("Virtual Environment and Multimodal Interaction Laboratory   "); // Window autosizing is broken so add extra spaces here
 		if (ImGui::Button("github.com/seieibob/kino")) {
 			ShellExecute(0, 0, L"https://www.github.com/seieibob/kino", 0, 0, SW_SHOW);
 		}
-		ImGui::Separator();
-		//ImGui::Spacing();
+
+		// Draw separator
+		ImDrawList* draw_list = ImGui::GetWindowDrawList();
+		ImVec2 p = ImGui::GetCursorScreenPos();
+		draw_list->AddLine(ImVec2(p.x - 9999, p.y), ImVec2(p.x + 9999, p.y), ImGui::GetColorU32(ImGuiCol_Border));
+
+		ImGui::Spacing();
 		ImGui::Text("Mouse over any"); ShowHelpMarker("We did it!"); ImGui::SameLine(); ImGui::Text("to show help.");
 		ImGui::Text("Ctrl+Click any slider to set its value manually.");
+
 		ImGui::EndPopup();
 	}
 
