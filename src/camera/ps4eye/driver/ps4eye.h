@@ -62,7 +62,7 @@ namespace std {
 
 #include <stdint.h>
 
-//#define DEBUG_VERBOSE
+#define DEBUG_VERBOSE
 
 #if defined(_DEBUG)
 	#define debug(...) fprintf(stdout,__VA_ARGS__)
@@ -161,6 +161,7 @@ namespace ps4eye {
 		int uvc_set_gain(uint16_t gain);
 		int uvc_get_power_line_frequency(uint8_t* power_line_frequency, uint8_t req_code);
 		int uvc_set_power_line_frequency(uint8_t power_line_frequency);
+		int uvc_set_ae_mode(uint8_t mode);
 
 
 

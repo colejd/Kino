@@ -1550,11 +1550,11 @@ namespace ps4eye {
 			frame_height = 800;
 			frame_rate = desiredFrameRate;
 			mode = initmode;
-			myframe.unknown1 = (uint8_t *)malloc(32 * 800);
-			myframe.unknown2 = (uint8_t *)malloc(64 * 800);
+			myframe.unknown1 = (uint8_t *)malloc(32 * 800); // Header?
+			myframe.unknown2 = (uint8_t *)malloc(64 * 800); // Audio?
 			myframe.videoLeftFrame = (uint8_t *)malloc(1280 * 800 * 2);
 			myframe.videoRightFrame = (uint8_t *)malloc(1280 * 800 * 2);
-			myframe.unknown3 = (uint8_t *)malloc(840 * 800 * 2);
+			myframe.unknown3 = (uint8_t *)malloc(840 * 800 * 2); // I think this is depth
 			myframe.mode = 0;
 			frame_stride = 3448 * 2;
 			linesize = 3448;
@@ -1623,13 +1623,14 @@ namespace ps4eye {
 		}
 
 		frame_stride = frame_width * 2;
-		if(!check_sensors())
-		{
-			debug("Sanity check from sensors failed\n");
-			//set_led_off();
-			//reset_sensors();
-			//return false;
-		}
+		
+		//if(!check_sensors())
+		//{
+		//	debug("Sanity check from sensors failed\n");
+		//	//set_led_off();
+		//	//reset_sensors();
+		//	return false;
+		//}
 
 		if (!init_registers())
 		{
@@ -2361,6 +2362,28 @@ namespace ps4eye {
 		else
 			return ret;
 	}
+
+	int PS4EYECam::uvc_set_ae_mode(uint8_t mode) {
+		uint8_t data[1];
+		int ret;
+
+		data[0] = mode;
+
+		ret = libusb_control_transfer(
+			handle_,
+			REQ_TYPE_SET, UVC_SET_CUR,
+			UVC_CT_AE_MODE_CONTROL << 8,
+			1 << 8,
+			data,
+			sizeof(data),
+			0);
+
+		if (ret == sizeof(data))
+			return 0;
+		else
+			return ret;
+	}
+
 	int PS4EYECam::uvc_set_video_mode(uint8_t mode, uint8_t fps)
 	{
 		uvc_stream_ctrl_t ctrl;
@@ -2648,6 +2671,8 @@ namespace ps4eye {
 		}
 		debug("claim interface 1\n");
 
+		//uvc_set_ae_mode(2);
+
 		//set all setting 0 to interface 1
 		//res = libusb_set_interface_alt_setting(handle_, 1, 0);
 
@@ -2662,6 +2687,7 @@ namespace ps4eye {
 		uvc_show_video_mode();
 		uvc_set_video_mode(mode, frame_rate);
 		uvc_show_video_mode();
+
 		/*  uint16_t brightness;
 		int sal;
 		sal=uvc_get_sharpness(&brightness, UVC_GET_CUR);
