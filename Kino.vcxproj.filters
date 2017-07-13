@@ -127,6 +127,9 @@
     <ClCompile Include="src\camera\ps4eye\PS4EyeCapture.cpp">
       <Filter>src\camera\ps4eye</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\image_classifier\TrackedObjectManager.cpp">
+      <Filter>src\modules\image_classifier</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -625,6 +628,9 @@
     </ClInclude>
     <ClInclude Include="src\camera\ps4eye\PS4EyeCapture.hpp">
       <Filter>src\camera\ps4eye</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\image_classifier\TrackedObjectManager.hpp">
+      <Filter>src\modules\image_classifier</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

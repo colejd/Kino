@@ -2,7 +2,6 @@
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/tracking.hpp>
 
 #include "modules/ModuleCommon.hpp"
 #include "gui/UsesGUI.hpp"
@@ -14,6 +13,8 @@
 #include "ofxTimeMeasurements.h"
 
 #include <helpers/Paths.hpp>
+
+#include "TrackedObjectManager.hpp"
 
 using namespace std;
 using namespace cv;
@@ -27,6 +28,9 @@ public:
 	void DrawGUI() override;
 
 	void InitFromConfig();
+
+	// Classification will run every `n` frames (set to 0 to disable)
+	int frameskip = 30;
 
 private:
 	ofxDarknet darknet;
@@ -44,13 +48,16 @@ private:
 	string weights_file;
 	string names_list;
 
-	// These are smart pointers, no need to manually allocate.
-	Ptr<Tracker> trackerLeft;
-	Ptr<Tracker> trackerRight;
-
 	bool doDownsampling = false;
 	float downSampleRatio = 0.5f;
 
+	TrackedObjectManager leftTracker;
+	TrackedObjectManager rightTracker;
+
+	// Counts the frames used for frameskipping
+	int frameCounter = 0;
+
+	vector<detected_object> Classify(InputArray in);
 	void DrawDetections(InputOutputArray mat, std::vector< detected_object > detections);
 
 };

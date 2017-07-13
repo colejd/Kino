@@ -14,8 +14,8 @@ ClassifierLens::ClassifierLens() {
 		initialized = true;
 	}
 
-	trackerLeft = TrackerKCF::create();
-	trackerRight = TrackerKCF::create();
+	leftTracker = TrackedObjectManager();
+	rightTracker = TrackedObjectManager();
 
 }
 
@@ -68,28 +68,33 @@ void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, Output
 		lastSizeLeft = analysisMatLeft.size();
 		lastSizeRight = analysisMatRight.size();
 
-		// Step 1: Acquire targets
+		if (frameCounter == 0) {
 
-		// TODO: Not sure these two steps are needed since customizing ofxDarknet to accept mats natively
-		cv::cvtColor(analysisMatLeft, analysisMatLeft, CV_BGR2RGB);
-		cv::cvtColor(analysisMatRight, analysisMatRight, CV_BGR2RGB);
+			// Step 1: Acquire targets
+			TS_START_NIF("YOLO");
+			detectionsLeft = Classify(analysisMatLeft);
+			detectionsRight = Classify(analysisMatRight);
+			TS_STOP_NIF("YOLO");
 
-		TS_START_NIF("YOLO");
-		detectionsLeft = darknet.yolo(analysisMatLeft, threshold);
-		detectionsRight = darknet.yolo(analysisMatRight, threshold);
-		TS_STOP_NIF("YOLO");
+			// Step 2: Track targets
+			leftTracker.IngestDetections(detectionsLeft);
+			rightTracker.IngestDetections(detectionsRight);
 
-		TS_START_NIF("Draw Detections");
+		}
+		frameCounter += 1;
+		if (frameCounter >= frameskip) frameCounter = 0;
+
+		/*TS_START_NIF("Draw Detections");
 		DrawDetections(drawMatLeft, detectionsLeft);
 		DrawDetections(drawMatRight, detectionsRight);
-		TS_STOP_NIF("Draw Detections");
+		TS_STOP_NIF("Draw Detections");*/
+
+		leftTracker.UpdateTracking(analysisMatLeft);
+		rightTracker.UpdateTracking(analysisMatRight);
 
 
-		// Step 2: Track targets
-		// Need some kind of tracker dispatcher that creates trackers for each detected object,
-		// but doesn't create new ones for objects that are already tracked (similar ROIs)
-
-
+		leftTracker.DrawBoundingBoxes(drawMatLeft);
+		rightTracker.DrawBoundingBoxes(drawMatRight);
 
 		drawMatLeft.copyTo(outLeft);
 		drawMatRight.copyTo(outRight);
@@ -99,6 +104,16 @@ void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, Output
 		detectionsLeft.clear();
 		detectionsRight.clear();
 	}
+}
+
+vector<detected_object> ClassifierLens::Classify(InputArray in) {
+	Mat analysisMat;
+	in.copyTo(analysisMat);
+
+	// TODO: Not sure this step is needed since customizing ofxDarknet to accept mats natively
+	cv::cvtColor(analysisMat, analysisMat, CV_BGR2RGB);
+
+	return darknet.yolo(analysisMat, threshold);
 }
 
 void ClassifierLens::DrawDetections(InputOutputArray mat, std::vector< detected_object > detections) {
@@ -228,6 +243,9 @@ void ClassifierLens::DrawGUI() {
 
 			ImGui::PopStyleVar(2);
 			ImGui::EndChild();
+
+			leftTracker.DrawGUIPanel("Left");
+			rightTracker.DrawGUIPanel("Right");
 
 		}
 
