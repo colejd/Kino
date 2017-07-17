@@ -20,6 +20,7 @@ ClassifierLens::ClassifierLens() {
 }
 
 ClassifierLens::~ClassifierLens() {
+
 }
 
 /**
@@ -76,25 +77,35 @@ void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, Output
 			detectionsRight = Classify(analysisMatRight);
 			TS_STOP_NIF("YOLO");
 
-			// Step 2: Track targets
-			leftTracker.IngestDetections(detectionsLeft);
-			rightTracker.IngestDetections(detectionsRight);
+			if (useTracking) {
+				// Step 2: Track targets
+				leftTracker.IngestDetections(detectionsLeft);
+				rightTracker.IngestDetections(detectionsRight);
+			}
 
 		}
-		frameCounter += 1;
-		if (frameCounter >= frameskip) frameCounter = 0;
+		if (useTracking) {
+			// Use frameskipping only when trackers are used
+			frameCounter += 1;
+			if (frameCounter >= frameskip) frameCounter = 0;
+		}
 
-		/*TS_START_NIF("Draw Detections");
-		DrawDetections(drawMatLeft, detectionsLeft);
-		DrawDetections(drawMatRight, detectionsRight);
-		TS_STOP_NIF("Draw Detections");*/
+		if (useTracking) {
 
-		leftTracker.UpdateTracking(analysisMatLeft);
-		rightTracker.UpdateTracking(analysisMatRight);
+			leftTracker.UpdateTracking(analysisMatLeft);
+			rightTracker.UpdateTracking(analysisMatRight);
 
+			leftTracker.DrawBoundingBoxes(drawMatLeft);
+			rightTracker.DrawBoundingBoxes(drawMatRight);
 
-		leftTracker.DrawBoundingBoxes(drawMatLeft);
-		rightTracker.DrawBoundingBoxes(drawMatRight);
+		}
+
+		else {
+			TS_START_NIF("Draw Detections");
+			DrawDetections(drawMatLeft, detectionsLeft);
+			DrawDetections(drawMatRight, detectionsRight);
+			TS_STOP_NIF("Draw Detections");
+		}
 
 		drawMatLeft.copyTo(outLeft);
 		drawMatRight.copyTo(outRight);
@@ -120,7 +131,7 @@ void ClassifierLens::DrawDetections(InputOutputArray mat, std::vector< detected_
 	for (detected_object d : detections)
 	{
 
-		int lineThickness = 4;
+		int lineThickness = 2;
 
 		Scalar color = CV_RGB(0, 255, 0);
 
@@ -128,6 +139,9 @@ void ClassifierLens::DrawDetections(InputOutputArray mat, std::vector< detected_
 		if (doDownsampling) { // Rescale the rect to match original size if downsampling was performed
 			rect = cv::Rect(d.rect.x / downSampleRatio, d.rect.y / downSampleRatio, d.rect.width / downSampleRatio, d.rect.height / downSampleRatio);
 		}
+
+		// Do the highlighting step before drawing anything else
+		HighlightObjectInROI(mat, rect);
 
 		cv::Point origin(rect.x, rect.y);
 		cv::Point opposite(rect.x + rect.width, rect.y + rect.height);
@@ -173,7 +187,7 @@ void ClassifierLens::DrawGUI() {
 			//ShowHelpMarker("Test help");
 
 			ImGui::Checkbox("Downsample", &doDownsampling);
-			if (!doDownsampling) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
+			if (!doDownsampling) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); // Push disabled style
 			ImGui::SliderFloat("Downsample Ratio", &downSampleRatio, 0.01f, 1.0f, "%.2f");
 			ShowHelpMarker("Multiplier for decreasing the resolution of the processed image.");
 			if (!doDownsampling) ImGui::PopStyleVar(); //Pop disabled style
@@ -197,62 +211,138 @@ void ClassifierLens::DrawGUI() {
 				ImGui::TreePop();
 			}
 
-			ImGui::Spacing();
-			ImGui::Spacing();
+			ImGui::Checkbox("Tracking", &useTracking);
+			// Do tracker type dropdown
+			int mode = (int)leftTracker.newTrackerType;
+			ImGui::Combo("Mode", &mode, "KCF\0MIL\0TLD\0\0");
 
-			// Output Box
-
-			int maxLines = 10; // Number of lines in the scroll box
-			int maxCharsInLabel = 15; // Number of characters in the label
-
-			float glyph_width = ImGui::CalcTextSize("F").x;
-
-			// Draw header
-			ImGui::TextColored(ImColor(255, 255, 0), " %*s ", -maxCharsInLabel, "Label"); // spacing is deliberate
-			ImGui::SameLine();
-			ImGui::Text(" %s", "Confidence");
-
-			// Draw scroll box
-			ImGui::BeginChild("##scrolling", ImVec2(0, ImGui::GetTextLineHeightWithSpacing() * maxLines), true, 0);
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 5));
-
-			bool drawLine = true;
-			// Fill scroll box with items if enabled
-			if (enabled) {
-
-				ImGuiListClipper clipper(detectionsLeft.size(), ImGui::GetTextLineHeightWithSpacing());
-				for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
-
-					detected_object d = detectionsLeft[i];
-					ImGui::Text("%*s ", -maxCharsInLabel, d.label.c_str()); // Left pad the line with maxCharsInLine length
-
-					if (drawLine) { // Draw the line only once
-						ImGui::SameLine();
-						ImVec2 screen_pos = ImGui::GetCursorScreenPos();
-						ImGui::GetWindowDrawList()->AddLine(ImVec2(screen_pos.x - glyph_width, screen_pos.y - 9999), ImVec2(screen_pos.x - glyph_width, screen_pos.y + 9999), ImColor(ImGui::GetStyle().Colors[ImGuiCol_Border]));
-						drawLine = false;
-					}
-
-					ImGui::SameLine();
-					ImGui::Text(" %.2f%", d.probability * 100);
-
-				}
-				clipper.End();
+			// If updated, set the tracker types for the left/right trackers
+			if (mode != (int)rightTracker.newTrackerType) {
+				leftTracker.SetTrackerType((TrackerType)mode);
+				rightTracker.SetTrackerType((TrackerType)mode);
 			}
 
-			ImGui::PopStyleVar(2);
-			ImGui::EndChild();
+			ImGui::Spacing();
+			ImGui::Spacing();
 
-			leftTracker.DrawGUIPanel("Left");
-			rightTracker.DrawGUIPanel("Right");
+			// Draw the GUI panels for either the trackers or the raw detections panel
+			if (useTracking) {
+				leftTracker.DrawGUIPanel("Left");
+				rightTracker.DrawGUIPanel("Right");
+			}
+			else {
+				DrawDetectionsGUIPanel();
+			}
 
 		}
 
 		// End GUI stuff
-		if (!enabled) ImGui::PopStyleVar(); //Pop disabled style
+		if (!enabled) ImGui::PopStyleVar(); // Pop disabled style
 
 		ImGui::End();
 	}
 
 }
+
+void ClassifierLens::DrawDetectionsGUIPanel() {
+	// Output Box
+
+	int maxLines = 10; // Number of lines in the scroll box
+	int maxCharsInLabel = 15; // Number of characters in the label
+
+	float glyph_width = ImGui::CalcTextSize("F").x;
+
+	// Draw header
+	ImGui::TextColored(ImColor(255, 255, 0), " %*s ", -maxCharsInLabel, "Label"); // spacing is deliberate
+	ImGui::SameLine();
+	ImGui::Text(" %s", "Confidence");
+
+	// Draw scroll box
+	ImGui::BeginChild("##scrolling", ImVec2(0, ImGui::GetTextLineHeightWithSpacing() * maxLines), true, 0);
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 5));
+
+	bool drawLine = true;
+	// Fill scroll box with items if enabled
+	if (enabled) {
+
+		ImGuiListClipper clipper(detectionsLeft.size(), ImGui::GetTextLineHeightWithSpacing());
+		for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++) {
+
+			detected_object d = detectionsLeft[i];
+			ImGui::Text("%*s ", -maxCharsInLabel, d.label.c_str()); // Left pad the line with maxCharsInLine length
+
+			if (drawLine) { // Draw the line only once
+				ImGui::SameLine();
+				ImVec2 screen_pos = ImGui::GetCursorScreenPos();
+				ImGui::GetWindowDrawList()->AddLine(ImVec2(screen_pos.x - glyph_width, screen_pos.y - 9999), ImVec2(screen_pos.x - glyph_width, screen_pos.y + 9999), ImColor(ImGui::GetStyle().Colors[ImGuiCol_Border]));
+				drawLine = false;
+			}
+
+			ImGui::SameLine();
+			ImGui::Text(" %.2f%", d.probability * 100);
+
+		}
+		clipper.End();
+	}
+	ImGui::PopStyleVar(2);
+	ImGui::EndChild();
+}
+
+/**
+Highlighting step
+http://creativemorphometrics.co.vu/blog/2014/08/05/automated-outlines-with-opencv-in-python/
+
+*/
+void ClassifierLens::HighlightObjectInROI(InputOutputArray mat, Rect2d roi) {
+	TS_SCOPE("Highlight");
+
+	Mat gray, prefiltered, canny;
+
+	// Backward
+	/*Mat srcRaw = mat.getMat();
+	Mat src;
+	srcRaw.copyTo(src(roi));*/
+
+	// Copy in just the part of `mat` inside the ROI
+	Mat srcRaw = mat.getMat();
+	Mat src = srcRaw(roi);
+
+	cvtColor(src, gray, COLOR_BGR2GRAY);
+
+	// Preprocess
+	//blur(gray, gray, cv::Size(7, 7));
+
+
+	cv::threshold(gray, gray, 0, 255, THRESH_BINARY | THRESH_OTSU);
+
+	Mat kernel = getStructuringElement(cv::MorphShapes::MORPH_RECT, cv::Size(5, 5));
+	erode(gray, prefiltered, kernel, cv::Point(-1, -1), 1);
+
+	int iterations = 1;
+	morphologyEx(prefiltered, prefiltered, MORPH_OPEN, kernel, cv::Point(-1, -1), iterations);
+	morphologyEx(prefiltered, prefiltered, MORPH_CLOSE, kernel, cv::Point(-1, -1), iterations);
+
+	Canny(prefiltered, prefiltered, 30, 50);
+
+	vector<vector<cv::Point>> contourData;
+	vector<Vec4i> contourHierarchy;
+	findContours(prefiltered, contourData, contourHierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+	drawContours(prefiltered, contourData, -1, Scalar(255, 255, 255), 4);
+
+	// Set the area the canny lines cover in the original image to the given color
+	srcRaw(roi).setTo(Scalar(255, 0, 0), prefiltered);
+
+	// Old drawing code (overlay, not masked outline)
+	//Mat outColor;
+	//cvtColor(prefiltered, outColor, COLOR_GRAY2BGR);
+	//outColor.setTo(Scalar(255, 0, 0), prefiltered);
+	//// Copy to original image in ROI
+	//outColor.copyTo(srcRaw(roi));
+
+}
+
+
+
+
+

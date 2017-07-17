@@ -59,5 +59,10 @@ private:
 
 	vector<detected_object> Classify(InputArray in);
 	void DrawDetections(InputOutputArray mat, std::vector< detected_object > detections);
+	void DrawDetectionsGUIPanel();
+
+	void HighlightObjectInROI(InputOutputArray mat, Rect2d roi);
+
+	bool useTracking = false;
 
 };

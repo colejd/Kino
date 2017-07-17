@@ -16,7 +16,7 @@ void TrackedObjectManager::IngestDetections(vector<detected_object>& detections)
 	TS_SCOPE("Tracking Ingest");
 	for (detected_object d : detections) {
 		if (!AlreadyTrackingObject(d)) {
-			trackers.push_back(TrackerInstance(d));
+			trackers.push_back(TrackerInstance(d, newTrackerType));
 
 		}
 	}
@@ -110,8 +110,7 @@ void TrackedObjectManager::DrawGUIPanel(string id) {
 
 	int maxLines = 10; // Number of lines in the scroll box
 
-
-					   // Draw header
+	// Draw header
 	ImGui::TextColored(ImColor(255, 255, 0), " %-10s ", id.c_str()); // spacing is deliberate
 	ImGui::SameLine();
 	ImGui::Text(" Tracking %i objects", trackers.size());
@@ -132,4 +131,22 @@ void TrackedObjectManager::DrawGUIPanel(string id) {
 	ImGui::PopStyleVar(2);
 	ImGui::EndChild();
 
+}
+
+/**
+Changes the type of tracker used for all new tracker instances.
+Destroys all current trackers for consistency.
+*/
+void TrackedObjectManager::SetTrackerType(TrackerType type) {
+	Clear();
+	newTrackerType = type;
+}
+
+/**
+Destroys all TrackerInstances.
+*/
+void TrackedObjectManager::Clear() {
+	// Shouldn't need to do anything other than destroying the references.
+	// TrackerInstance objects should clean themselves up.
+	trackers.clear();
 }

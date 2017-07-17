@@ -13,6 +13,13 @@
 using namespace std;
 using namespace cv;
 
+
+enum class TrackerType {
+	KCF,
+	MIL,
+	TLD
+};
+
 class TrackerInstance;
 
 class TrackedObjectManager {
@@ -30,19 +37,14 @@ public:
 	void DrawBoundingBoxes(InputOutputArray mat);
 	void DrawGUIPanel(string id);
 
-
-	/**
-	Scratch:
-
-	How can I uniquely identify trackers? The most useful info is the rect
-	and label from the detection used to create it.
-
-
-	*/
+	void SetTrackerType(TrackerType type);
+	void Clear();
 
 	vector<TrackerInstance> trackers;
 
 	int rectSimilarityThreshold = 20000; // Pixels
+
+	TrackerType newTrackerType = TrackerType::KCF;
 
 
 private:
@@ -60,11 +62,27 @@ public:
 
 	bool initialized = false;
 
-	TrackerInstance(detected_object detection) {
+	TrackerInstance(detected_object detection, TrackerType type) {
 		this->detection = detection;
 
 		roi = cv::Rect(detection.rect.x, detection.rect.y, detection.rect.width, detection.rect.height);
-		tracker = TrackerKCF::create(); // Try MIL too
+
+		switch (type) {
+		default:
+		case TrackerType::KCF:
+			tracker = TrackerKCF::create();
+			break;
+		case TrackerType::MIL:
+			tracker = TrackerMIL::create();
+			break;
+		case TrackerType::TLD:
+			tracker = TrackerTLD::create();
+			break;
+
+		}
+
+		assert(tracker != nullptr);
+
 	}
 
 	bool Update(InputArray frame) {
