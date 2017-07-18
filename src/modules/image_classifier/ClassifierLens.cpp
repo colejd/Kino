@@ -314,7 +314,8 @@ void ClassifierLens::HighlightObjectInROI(InputOutputArray mat, Rect2d roi) {
 	//blur(gray, gray, cv::Size(7, 7));
 
 
-	cv::threshold(gray, gray, 0, 255, THRESH_BINARY | THRESH_OTSU);
+	//cv::adaptiveThreshold(gray, gray, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 11, 2);
+	//cv::threshold(gray, gray, 0, 255, THRESH_BINARY | THRESH_OTSU);
 
 	Mat kernel = getStructuringElement(cv::MorphShapes::MORPH_RECT, cv::Size(5, 5));
 	erode(gray, prefiltered, kernel, cv::Point(-1, -1), 1);
