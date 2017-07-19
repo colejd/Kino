@@ -69,7 +69,8 @@ void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, Output
 		lastSizeLeft = analysisMatLeft.size();
 		lastSizeRight = analysisMatRight.size();
 
-		if (frameCounter == 0) {
+
+		if (frameCounter == 0 || !useTracking) {
 
 			// Step 1: Acquire targets
 			TS_START_NIF("YOLO");
@@ -77,34 +78,32 @@ void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, Output
 			detectionsRight = Classify(analysisMatRight);
 			TS_STOP_NIF("YOLO");
 
+			// Ingest new detections into tracker
 			if (useTracking) {
-				// Step 2: Track targets
 				leftTracker.IngestDetections(detectionsLeft);
 				rightTracker.IngestDetections(detectionsRight);
 			}
 
 		}
+
 		if (useTracking) {
 			// Use frameskipping only when trackers are used
 			frameCounter += 1;
 			if (frameCounter >= frameskip) frameCounter = 0;
-		}
-
-		if (useTracking) {
 
 			leftTracker.UpdateTracking(analysisMatLeft);
 			rightTracker.UpdateTracking(analysisMatRight);
 
+			TS_SCOPE("Draw Bounding Boxes");
 			leftTracker.DrawBoundingBoxes(drawMatLeft);
 			rightTracker.DrawBoundingBoxes(drawMatRight);
 
 		}
 
 		else {
-			TS_START_NIF("Draw Detections");
+			TS_SCOPE("Draw Detections");
 			DrawDetections(drawMatLeft, detectionsLeft);
 			DrawDetections(drawMatRight, detectionsRight);
-			TS_STOP_NIF("Draw Detections");
 		}
 
 		drawMatLeft.copyTo(outLeft);
