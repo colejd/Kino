@@ -162,7 +162,7 @@ void ofApp::DrawGUI() {
 		if (!demoMode) ImGui::MenuItem("Compositor Settings", nullptr, &(compositor->showGUI));
 		ImGui::MenuItem("Log", "Alt + L", &showLog);
 		ImGui::MenuItem("FPS Graph", nullptr, &showPerformanceGraph);
-		if (ImGui::MenuItem("Performance", nullptr)) {
+		if (ImGui::MenuItem("Performance", "~")) {
 			ToggleTimingWindow();
 		}
 		ImGui::EndMenu();

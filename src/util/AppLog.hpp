@@ -122,13 +122,15 @@ public:
 
 		ImGui::Begin(title, p_opened);
 		{
-			if (ImGui::Button("Clear")) Clear();
-			ImGui::SameLine();
-			ImGui::Text("    ");
-			ImGui::SameLine();
+			// "Clear" button
+			//if (ImGui::Button("Clear")) Clear();
+			//ImGui::SameLine();
+			//ImGui::Text("    ");
+			//ImGui::SameLine();
 
+			// Filter buttons
 			ImGui::Text("Filter: ");
-			ImGui::SameLine();
+			//ImGui::SameLine();
 			if (ToggleButton("Info", filterKeepInfo, ImColor(255, 255, 255), ImColor(128, 128, 128), ImColor(0, 0, 0))) ToggleInfo();
 			ImGui::SameLine();
 			if (ToggleButton("Warning", filterKeepWarnings, LVL_WARNING.color, GetScaledColor(LVL_WARNING.color, 0.75), ImColor(0, 0, 0))) ToggleWarnings();
@@ -137,6 +139,7 @@ public:
 			ImGui::SameLine();
 			if (ToggleButton("Debug", filterKeepDebug, LVL_DEBUG.color, GetScaledColor(LVL_DEBUG.color, 0.75), ImColor(0, 0, 0))) ToggleDebug();
 
+			ImGui::Spacing();
 			ImGui::Separator();
 
 			//RefreshFilters();
