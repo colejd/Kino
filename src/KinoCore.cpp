@@ -15,11 +15,6 @@ void KinoCore::Setup() {
 
 	PrintCVDebugInfo();
 
-	// Initialize modules
-	edgeDetector = EdgeDetectorModule();
-	faceDetector = FaceDetectorModule();
-	depthModule = StereoDepthModule();
-
 	// Initialize captures
 	capture1 = make_unique<CameraCapture>();
 	capture2 = make_unique<CameraCapture>();
@@ -46,7 +41,7 @@ void KinoCore::Setup() {
 		}
 		else {
 			Kino::app_log.AddLog("ERROR: the camera type given (%s) does not match any accepted types. \
-									Please use SYSTEM, PS3EYE, or FAKE.");
+									Please use SYSTEM, PS3EYE, PS4EYE, or FAKE.");
 		}
 
 	}
@@ -56,9 +51,17 @@ void KinoCore::Setup() {
 		capture2->StartCapturing(1, CameraCapture::CAPTURE_TYPE::PS3EYE, true);
 	}
 
-	// Init framebuffer
+	// Init framebuffers
 	framebuffer[LEFT_ID] = Frame();
 	framebuffer[RIGHT_ID] = Frame();
+
+	// Initialize modules
+	cameraCalibrator = CameraCalibratorModule();
+	edgeDetector = EdgeDetectorModule();
+	faceDetector = FaceDetectorModule();
+	classifierLens = ClassifierLens();
+	deepdreamLens = DeepDreamLens();
+	depthModule = StereoDepthModule();
 
 	cameraCalibrator.RegisterCameras(capture1, capture2);
 
