@@ -48,8 +48,6 @@ public:
 
 	void ToggleTimingWindow();
 
-	void SetGUITheme();
-
 	FpsGraph fpsGraph = FpsGraph();
 	bool showPerformanceGraph = false;		//FpsGraph visibility on screen
 
