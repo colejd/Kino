@@ -9,9 +9,14 @@
 #ifndef ModuleCommon_h
 #define ModuleCommon_h
 
-class ModuleCommon {
+#include <opencv2/opencv.hpp>
+#include <gui/UsesGUI.hpp>
+
+class ModuleCommon : public UsesGUI {
 public:
 	virtual ~ModuleCommon() {}
+	virtual void ProcessFrames(cv::InputArray inLeft, cv::InputArray inRight, cv::OutputArray outLeft, cv::OutputArray outRight) = 0;
+	virtual std::string GetName() = 0;
 
 	void Enable() {
 		enabled = true;

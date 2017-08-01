@@ -79,7 +79,7 @@ void DeepDreamLens::ProcessFrame(InputArray in, OutputArray out) {
 
 void DeepDreamLens::DrawGUI() {
 	if (showGUI) {
-		ImGui::Begin("DeepDream", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(GetName().c_str(), &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::Checkbox("Enabled", &enabled);
 		ImGui::Separator();

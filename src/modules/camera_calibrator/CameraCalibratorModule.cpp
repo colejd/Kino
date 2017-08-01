@@ -124,7 +124,7 @@ void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight
 
 void CameraCalibratorModule::DrawGUI() {
 	if (showGUI) {
-		ImGui::Begin("Camera Calibrator", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(GetName().c_str(), &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::Checkbox("Enabled", &enabled);
 

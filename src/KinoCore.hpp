@@ -7,6 +7,7 @@
 
 #include "gui/UsesGUI.hpp"
 
+#include <modules/Pipeline.hpp>
 #include <modules/edge_detector/EdgeDetectorModule.hpp>
 #include <modules/face_detector/FaceDetectorModule.hpp>
 #include <modules/image_classifier/ClassifierLens.hpp>
@@ -40,6 +41,7 @@ public:
 	void DrawGUI();
 	void DrawAllGUIs();
 
+	Pipeline pipeline;
 	CameraCalibratorModule cameraCalibrator;
 	EdgeDetectorModule edgeDetector;
 	FaceDetectorModule faceDetector;

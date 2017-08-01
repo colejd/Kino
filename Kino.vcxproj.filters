@@ -130,6 +130,9 @@
     <ClCompile Include="src\modules\image_classifier\TrackedObjectManager.cpp">
       <Filter>src\modules\image_classifier</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\Pipeline.cpp">
+      <Filter>src\modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -631,6 +634,9 @@
     </ClInclude>
     <ClInclude Include="src\modules\image_classifier\TrackedObjectManager.hpp">
       <Filter>src\modules\image_classifier</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\Pipeline.hpp">
+      <Filter>src\modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

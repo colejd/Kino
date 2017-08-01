@@ -8,7 +8,6 @@
 #include <ofxTimeMeasurements.h>
 
 #include <modules/ModuleCommon.hpp>
-#include <gui/UsesGUI.hpp>
 #include <KinoGlobals.hpp>
 
 #include <gl/GL.h>
@@ -18,13 +17,17 @@ using namespace std;
 using namespace cv;
 using namespace cv::ximgproc;
 
-class StereoDepthModule : public ModuleCommon, public UsesGUI {
+class StereoDepthModule : public ModuleCommon {
 public:
 	StereoDepthModule();
 	~StereoDepthModule();
 
+	std::string GetName() override {
+		return "Stereo Depth";
+	}
+
 	// Runs calibration or undistortion on `in` and writes the result to `out`. ID is expected to be "LEFT" or "RIGHT".
-	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) override;
 	void DrawGUI() override;
 
 	Ptr<StereoBM> leftBM;

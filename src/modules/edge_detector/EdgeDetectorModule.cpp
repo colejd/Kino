@@ -230,7 +230,7 @@ void EdgeDetectorModule::BlurImage(cv::InputArray in, cv::OutputArray out, int b
 
 void EdgeDetectorModule::DrawGUI() {
 	if (showGUI) {
-		ImGui::Begin("Edge Detector", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(GetName().c_str(), &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::Checkbox("Enabled", &enabled);
 		ImGui::Separator();

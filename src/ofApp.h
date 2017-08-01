@@ -13,6 +13,8 @@
 
 #include <opencv2/opencv.hpp>
 
+#include <modules/ModuleCommon.hpp>
+
 class ofApp : public ofBaseApp, public UsesGUI {
 public:
 	ofApp();

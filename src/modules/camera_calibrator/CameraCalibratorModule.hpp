@@ -12,7 +12,6 @@
 #include <opencv2/features2d/features2d.hpp>
 
 #include <modules/ModuleCommon.hpp>
-#include <gui/UsesGUI.hpp>
 #include <KinoGlobals.hpp>
 #include <ofxTimeMeasurements.h>
 #include "config/ConfigHandler.hpp"
@@ -30,16 +29,20 @@ and then undistorting the images.
 
 Where `id` is used, either "LEFT" or "RIGHT" is expected.
 */
-class CameraCalibratorModule : public ModuleCommon, public UsesGUI {
+class CameraCalibratorModule : public ModuleCommon {
 public:
 	CameraCalibratorModule();
 	~CameraCalibratorModule();
+
+	std::string GetName() override {
+		return "Camera Calibrator";
+	}
 
 	// Constructs the mapping of cameras to `CalibrationState` objects. Call this before doing anything else with this class!
 	void RegisterCameras(unique_ptr<CameraCapture> const& leftCapture, unique_ptr<CameraCapture> const & rightCapture);
 
 	// Runs calibration or undistortion on `in` and writes the result to `out`. ID is expected to be "LEFT" or "RIGHT".
-	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) override;
 
 	void StartCalibrating(string id);
 	void StopCalibrating(string id);

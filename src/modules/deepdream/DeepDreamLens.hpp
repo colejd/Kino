@@ -4,7 +4,6 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include "modules/ModuleCommon.hpp"
-#include "gui/UsesGUI.hpp"
 #include "config/ConfigHandler.hpp"
 
 #include "ofMain.h"
@@ -18,13 +17,17 @@
 using namespace std;
 using namespace cv;
 
-class DeepDreamLens : public ModuleCommon, public UsesGUI {
+class DeepDreamLens : public ModuleCommon {
 public:
 	DeepDreamLens();
 	~DeepDreamLens();
 
+	std::string GetName() override {
+		return "DeepDream";
+	}
+
 	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
-	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) override;
 	void DrawGUI() override;
 
 	void Initialize();

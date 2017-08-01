@@ -89,7 +89,7 @@ void FaceDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
 
 void FaceDetectorModule::DrawGUI() {
 	if (showGUI) {
-		ImGui::Begin("Face Detector", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(GetName().c_str(), &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::Checkbox("Enabled", &enabled);
 		ImGui::Separator();

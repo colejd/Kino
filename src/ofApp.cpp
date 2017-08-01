@@ -133,12 +133,17 @@ void ofApp::DrawGUI() {
 	}
 
 	if (ImGui::BeginMenu("Modules")) {
-		ImGui::MenuItem("Camera Calibrator", "Alt + 1", &(core->cameraCalibrator.showGUI));
-		ImGui::MenuItem("Edge Detection",	 "Alt + 2", &(core->edgeDetector.showGUI));
-		ImGui::MenuItem("Image Classifier",	 "Alt + 3", &(core->classifierLens.showGUI));
-		ImGui::MenuItem("Stereo Depth",		 "Alt + 4", &(core->depthModule.showGUI));
-		ImGui::MenuItem("Face Detection",	 nullptr,	&(core->faceDetector.showGUI));
-		ImGui::MenuItem("DeepDream",		 nullptr,	&(core->deepdreamLens.showGUI));
+		// Draw an option for each module, starting with preprocessing modules
+		ImGui::TextColored(ImColor(255, 255, 0), "Preprocess");
+		for (ModuleCommon* module : core->pipeline.preProcessorModules) {
+			ImGui::MenuItem(module->GetName().c_str(), nullptr, &(module->showGUI));
+		}
+
+		ImGui::Separator();
+		ImGui::TextColored(ImColor(255, 255, 0), "Postprocess");
+		for (ModuleCommon* module : core->pipeline.postProcessorModules) {
+			ImGui::MenuItem(module->GetName().c_str(), nullptr, &(module->showGUI));
+		}
 
 		ImGui::EndMenu();
 	}
@@ -381,20 +386,6 @@ void ofApp::keyPressed(int key) {
 		}
 		else if (key == 'p' || key == 'P') {
 			core->pauseCaptureUpdates = !core->pauseCaptureUpdates;
-		}
-
-		// Modules
-		else if (key == '1') {
-			core->cameraCalibrator.ToggleGUIEnabled();
-		}
-		else if (key == '2') {
-			core->edgeDetector.ToggleGUIEnabled();
-		}
-		else if (key == '3') {
-			core->classifierLens.ToggleGUIEnabled();
-		}
-		else if (key == '4') {
-			core->depthModule.ToggleGUIEnabled();
 		}
 	}
 }

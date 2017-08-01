@@ -156,6 +156,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClCompile Include="src\modules\face_detector\FaceDetectorModule.cpp" />
     <ClCompile Include="src\modules\image_classifier\ClassifierLens.cpp" />
     <ClCompile Include="src\modules\image_classifier\TrackedObjectManager.cpp" />
+    <ClCompile Include="src\modules\Pipeline.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\KinoCore.cpp" />
     <ClCompile Include="src\KinoGlobals.cpp" />
@@ -270,6 +271,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
     <ClInclude Include="src\modules\image_classifier\ClassifierLens.hpp" />
     <ClInclude Include="src\modules\image_classifier\TrackedObjectManager.hpp" />
     <ClInclude Include="src\modules\ModuleCommon.hpp" />
+    <ClInclude Include="src\modules\Pipeline.hpp" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\KinoCore.hpp" />
     <ClInclude Include="src\KinoGlobals.hpp" />

@@ -145,7 +145,7 @@ void StereoDepthModule::ProcessFrames(InputArray inLeft, InputArray inRight, Out
 void StereoDepthModule::DrawGUI() {
 	if (showGUI) {
 
-		ImGui::Begin("Stereo Depth Module", &showGUI);
+		ImGui::Begin(GetName().c_str(), &showGUI);
 
 		if (!moduleCanRun) {
 			ImGui::TextColored(ImColor(255, 0, 0), "Cannot run without two camera captures enabled!");

@@ -172,7 +172,7 @@ void ClassifierLens::DrawDetections(InputOutputArray mat, std::vector< detected_
 
 void ClassifierLens::DrawGUI() {
 	if (showGUI) {
-		ImGui::Begin("Classifier", &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(GetName().c_str(), &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::Checkbox("Enabled", &enabled);
 		ImGui::Separator();

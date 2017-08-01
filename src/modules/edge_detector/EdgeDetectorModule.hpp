@@ -8,7 +8,6 @@
 
 #include "modules/ModuleCommon.hpp"
 
-#include "gui/UsesGUI.hpp"
 #include "gui/thirdparty/ImGuiColorPicker.hpp"
 #include "config/ConfigHandler.hpp"
 #include "ParallelContourDetector.hpp"
@@ -22,15 +21,19 @@
 using namespace std;
 using namespace cv;
 
-class EdgeDetectorModule : public ModuleCommon, public UsesGUI {
+class EdgeDetectorModule : public ModuleCommon {
 public:
 	EdgeDetectorModule();
 	~EdgeDetectorModule();
 
+	std::string GetName() override {
+		return "Edge Detector";
+	}
+
 	void DrawGUI() override;
 
 	void ProcessFrame(cv::InputArray in, cv::OutputArray out);
-	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) override;
 
 	enum ChannelType {
 		GRAYSCALE, //!< Use Greyscale conversion with Canny

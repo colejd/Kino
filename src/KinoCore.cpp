@@ -62,6 +62,13 @@ void KinoCore::Setup() {
 
 	cameraCalibrator.RegisterCameras(capture1, capture2);
 
+	// Register all modules to the pipeline (for processing, GUI, etc)
+	pipeline.RegisterModule(&cameraCalibrator, true); // Preprocess
+	pipeline.RegisterModule(&edgeDetector);
+	pipeline.RegisterModule(&faceDetector);
+	pipeline.RegisterModule(&classifierLens);
+	pipeline.RegisterModule(&deepdreamLens);
+	pipeline.RegisterModule(&depthModule);
 }
 
 void KinoCore::Update() {
@@ -127,12 +134,7 @@ void KinoCore::ConsumeFrames() {
 
 	// Process the data through each module
 	TS_START_NIF("Frame Process");
-	cameraCalibrator.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
-	edgeDetector.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
-	faceDetector.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
-	classifierLens.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
-	deepdreamLens.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
-	depthModule.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
+	pipeline.ProcessFrames(leftTemp, rightTemp, leftTemp, rightTemp);
 	TS_STOP_NIF("Frame Process");
 
 	// Copy the final results to the mats the compositor will read from
@@ -224,12 +226,7 @@ Draw the imgui windows and controls for this class and all the modules it manage
 void KinoCore::DrawAllGUIs() {
 	DrawGUI();
 
-	cameraCalibrator.DrawGUI();
-	faceDetector.DrawGUI();
-	edgeDetector.DrawGUI();
-	classifierLens.DrawGUI();
-	deepdreamLens.DrawGUI();
-	depthModule.DrawGUI();
+	pipeline.DrawModuleGUIs();
 }
 
 void KinoCore::DrawGUI() {

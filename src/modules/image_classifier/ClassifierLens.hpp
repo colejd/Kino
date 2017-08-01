@@ -4,7 +4,6 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include "modules/ModuleCommon.hpp"
-#include "gui/UsesGUI.hpp"
 #include "config/ConfigHandler.hpp"
 
 #include "ofxDarknet.h"
@@ -19,12 +18,16 @@
 using namespace std;
 using namespace cv;
 
-class ClassifierLens : public ModuleCommon, public UsesGUI {
+class ClassifierLens : public ModuleCommon {
 public:
 	ClassifierLens();
 	~ClassifierLens();
 
-	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight);
+	std::string GetName() override {
+		return "Classifier";
+	}
+
+	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) override;
 	void DrawGUI() override;
 
 	void InitFromConfig();
