@@ -52,152 +52,130 @@ void CameraCalibratorModule::ProcessFrames(InputArray inLeft, InputArray inRight
 	// Switch to individual if we're on stereo and we don't have two cameras
 	if (!moduleCanRunStereo) currentMode = Mode::INDIVIDUAL;
 
-	if (IsEnabled()) {
-		TS_SCOPE("Camera Calibrator");
+	inLeft.copyTo(lastLeftMat);
+	inRight.copyTo(lastRightMat);
 
-		inLeft.copyTo(lastLeftMat);
-		inRight.copyTo(lastRightMat);
+	if (currentMode == Mode::INDIVIDUAL) {
 
-		if (currentMode == Mode::INDIVIDUAL) {
-
-			if (!inLeft.empty()) {
-				CalibrationState* leftCalib = &(calibrations[LEFT_ID]);
-				// If the model is fully formed, do the distortion.
-				if (leftCalib->complete) {
-					TS_SCOPE("Undistort");
-					leftCalib->UndistortImage(inLeft, outLeft);
-				}
-				// Otherwise, run calibration.
-				else {
-					// Only run calibration if the ID given matches the desired ID
-					if (currentlyCalibratingID == LEFT_ID) {
-						TS_SCOPE("Process Calibration Image");
-						leftCalib->IngestImageForCalibration(inLeft, outLeft);
-						if (leftCalib->complete) {
-							StopCalibrating(LEFT_ID); // Quit the calibration
-						}
-					}
-				}
+		if (!inLeft.empty()) {
+			CalibrationState* leftCalib = &(calibrations[LEFT_ID]);
+			// If the model is fully formed, do the distortion.
+			if (leftCalib->complete) {
+				TS_SCOPE("Undistort");
+				leftCalib->UndistortImage(inLeft, outLeft);
 			}
-
-			if (!inRight.empty()) {
-				CalibrationState* rightCalib = &(calibrations[RIGHT_ID]);
-				// If the model is fully formed, do the distortion.
-				if (rightCalib->complete) {
-					TS_SCOPE("Undistort");
-					rightCalib->UndistortImage(inRight, outRight);
-				}
-				// Otherwise, run calibration.
-				else {
-					// Only run calibration if the ID given matches the desired ID
-					if (currentlyCalibratingID == RIGHT_ID) {
-						TS_SCOPE("Process Calibration Image");
-						rightCalib->IngestImageForCalibration(inRight, outRight);
-						if (rightCalib->complete) {
-							StopCalibrating(RIGHT_ID); // Quit the calibration
-						}
+			// Otherwise, run calibration.
+			else {
+				// Only run calibration if the ID given matches the desired ID
+				if (currentlyCalibratingID == LEFT_ID) {
+					TS_SCOPE("Process Calibration Image");
+					leftCalib->IngestImageForCalibration(inLeft, outLeft);
+					if (leftCalib->complete) {
+						StopCalibrating(LEFT_ID); // Quit the calibration
 					}
 				}
 			}
 		}
 
-		else if (currentMode == Mode::STEREO) {
-			if (captureMode) {
-				DrawCheckerboardPreview(inLeft, outLeft);
-				DrawCheckerboardPreview(inRight, outRight);
+		if (!inRight.empty()) {
+			CalibrationState* rightCalib = &(calibrations[RIGHT_ID]);
+			// If the model is fully formed, do the distortion.
+			if (rightCalib->complete) {
+				TS_SCOPE("Undistort");
+				rightCalib->UndistortImage(inRight, outRight);
 			}
-			else if (stereoCalibration.complete) {
-				// Rectify
-				TS_SCOPE("Undistort Stereo");
-				stereoCalibration.UndistortImage(inLeft, inRight, outLeft, outRight);
-
-				if (drawEpipolarLines) {
-					VisualizeEpipolarLines(outLeft, outRight, outLeft, outRight);
+			// Otherwise, run calibration.
+			else {
+				// Only run calibration if the ID given matches the desired ID
+				if (currentlyCalibratingID == RIGHT_ID) {
+					TS_SCOPE("Process Calibration Image");
+					rightCalib->IngestImageForCalibration(inRight, outRight);
+					if (rightCalib->complete) {
+						StopCalibrating(RIGHT_ID); // Quit the calibration
+					}
 				}
-
 			}
 		}
-
-
 	}
+
+	else if (currentMode == Mode::STEREO) {
+		if (captureMode) {
+			DrawCheckerboardPreview(inLeft, outLeft);
+			DrawCheckerboardPreview(inRight, outRight);
+		}
+		else if (stereoCalibration.complete) {
+			// Rectify
+			TS_SCOPE("Undistort Stereo");
+			stereoCalibration.UndistortImage(inLeft, inRight, outLeft, outRight);
+
+			if (drawEpipolarLines) {
+				VisualizeEpipolarLines(outLeft, outRight, outLeft, outRight);
+			}
+
+		}
+	}
+
 }
 
 void CameraCalibratorModule::DrawGUI() {
-	if (showGUI) {
-		ImGui::Begin(GetName().c_str(), &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
-		ImGui::Checkbox("Enabled", &enabled);
+	// Do mode dropdown
+	int mode = (int)currentMode;
+	char* items = "Individual\0\0";
+	if (moduleCanRunStereo) items = "Individual\0Stereo\0\0"; // Show Stereo option only if it's possible to use it
+	ImGui::Combo("Mode", &mode, items);
 
-		ImGui::Separator();
-		if (!enabled) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
-		//Begin main content
-		{
-
-			// Do mode dropdown
-			int mode = (int)currentMode;
-			char* items = "Individual\0\0";
-			if (moduleCanRunStereo) items = "Individual\0Stereo\0\0"; // Show Stereo option only if it's possible to use it
-			ImGui::Combo("Mode", &mode, items);
-
-			if (mode == (int)Mode::INDIVIDUAL) {
-				currentMode = Mode::INDIVIDUAL;
-			}
-			else {
-				currentMode = Mode::STEREO;
-			}
-
-			// Draw GUI for INDIVIDUAL
-			if (currentMode == Mode::INDIVIDUAL) {
-				// Draw info about left calibration
-				bool leftHasCapture = calibrations[LEFT_ID].hasCapture;
-				if (leftHasCapture) {
-					ImGui::Spacing();
-					DrawCalibrationStatePanel(LEFT_ID);
-				}
-
-				// Draw info about right calibration
-				bool rightHasCapture = calibrations[RIGHT_ID].hasCapture;
-				if (rightHasCapture) {
-					ImGui::Spacing();
-					DrawCalibrationStatePanel(RIGHT_ID);
-				}
-			}
-
-			// Draw GUI for STEREO
-			if (currentMode == Mode::STEREO) {
-				ImGui::Spacing();
-				DrawStereoCalibrationPanel();
-
-				ImGui::Checkbox("Capture Mode", &captureMode);
-				if (captureMode && ImGui::Button("Save Capture Pairs")) {
-					string basePath = ofToDataPath("calibration/images/" + stereoCalibration.unique_id + "/");
-
-					// Left image
-					string basePathLeft = basePath + "LEFT/";
-					ofDirectory::createDirectory(basePathLeft, false, true);
-					imwrite(basePathLeft + "Capture" + std::to_string(capCount) + ".png", lastLeftMat);
-
-					// Right image
-					string basePathRight = basePath + "RIGHT/";
-					ofDirectory::createDirectory(basePathRight, false, true);
-					imwrite(basePathRight + "Capture" + std::to_string(capCount) + ".png", lastRightMat);
-
-					capCount += 1;
-					Kino::app_log.AddLog("Stereo image pair written to LEFT and RIGHT in data/calibration/images/");
-				}
-
-			}
-			
-
-			ImGui::Checkbox("Draw Feature Matches", &drawEpipolarLines);
-			
-
-		}
-		//End main content
-		if (!enabled) ImGui::PopStyleVar(); //Pop disabled style
-
-		ImGui::End();
+	if (mode == (int)Mode::INDIVIDUAL) {
+		currentMode = Mode::INDIVIDUAL;
 	}
+	else {
+		currentMode = Mode::STEREO;
+	}
+
+	// Draw GUI for INDIVIDUAL
+	if (currentMode == Mode::INDIVIDUAL) {
+		// Draw info about left calibration
+		bool leftHasCapture = calibrations[LEFT_ID].hasCapture;
+		if (leftHasCapture) {
+			ImGui::Spacing();
+			DrawCalibrationStatePanel(LEFT_ID);
+		}
+
+		// Draw info about right calibration
+		bool rightHasCapture = calibrations[RIGHT_ID].hasCapture;
+		if (rightHasCapture) {
+			ImGui::Spacing();
+			DrawCalibrationStatePanel(RIGHT_ID);
+		}
+	}
+
+	// Draw GUI for STEREO
+	if (currentMode == Mode::STEREO) {
+		ImGui::Spacing();
+		DrawStereoCalibrationPanel();
+
+		ImGui::Checkbox("Capture Mode", &captureMode);
+		if (captureMode && ImGui::Button("Save Capture Pairs")) {
+			string basePath = ofToDataPath("calibration/images/" + stereoCalibration.unique_id + "/");
+
+			// Left image
+			string basePathLeft = basePath + "LEFT/";
+			ofDirectory::createDirectory(basePathLeft, false, true);
+			imwrite(basePathLeft + "Capture" + std::to_string(capCount) + ".png", lastLeftMat);
+
+			// Right image
+			string basePathRight = basePath + "RIGHT/";
+			ofDirectory::createDirectory(basePathRight, false, true);
+			imwrite(basePathRight + "Capture" + std::to_string(capCount) + ".png", lastRightMat);
+
+			capCount += 1;
+			Kino::app_log.AddLog("Stereo image pair written to LEFT and RIGHT in data/calibration/images/");
+		}
+
+	}
+			
+
+	ImGui::Checkbox("Draw Feature Matches", &drawEpipolarLines);
 }
 
 void CameraCalibratorModule::DrawCalibrationStatePanel(string id) {

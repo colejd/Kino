@@ -563,9 +563,6 @@
     <ClInclude Include="src\helpers\Vectors.h">
       <Filter>src\helpers</Filter>
     </ClInclude>
-    <ClInclude Include="src\modules\ModuleCommon.hpp">
-      <Filter>src\modules</Filter>
-    </ClInclude>
     <ClInclude Include="src\modules\camera_calibrator\CameraCalibratorModule.hpp">
       <Filter>src\modules\camera_calibrator</Filter>
     </ClInclude>
@@ -636,6 +633,9 @@
       <Filter>src\modules\image_classifier</Filter>
     </ClInclude>
     <ClInclude Include="src\modules\Pipeline.hpp">
+      <Filter>src\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\ModuleCommon.hpp">
       <Filter>src\modules</Filter>
     </ClInclude>
   </ItemGroup>

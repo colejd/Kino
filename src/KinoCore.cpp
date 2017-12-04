@@ -106,8 +106,8 @@ void KinoCore::ProcessCapture(std::unique_ptr<CameraCapture> const& cap, string 
 			TS_SCOPE("Frame Grab");
 			//rawFrame = cap->RetrieveCapture().clone();
 			cap->RetrieveCapture().copyTo(framebuffer[id].data);
-			framebuffer[id].MarkReady();
 		}
+		framebuffer[id].MarkReady();
 
 	}
 

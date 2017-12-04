@@ -18,12 +18,22 @@ void Pipeline::RegisterModule(ModuleCommon *module, bool preprocess) {
 }
 
 void Pipeline::DrawModuleGUIs() {
+	// Draw each GUI if marked to show
+
 	for (ModuleCommon* module : preProcessorModules) {
-		module->DrawGUI();
+		if (module->showGUI) {
+			module->PreGUI();
+			module->DrawGUI();
+			module->PostGUI();
+		}
 	}
 
 	for (ModuleCommon* module : postProcessorModules) {
-		module->DrawGUI();
+		if (module->showGUI) {
+			module->PreGUI();
+			module->DrawGUI();
+			module->PostGUI();
+		}
 	}
 }
 
@@ -31,11 +41,21 @@ void Pipeline::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray 
 	Mat left = inLeft.getMat();
 	Mat right = inRight.getMat();
 
+	// Process all enabled utility modules 
 	for (ModuleCommon* module : preProcessorModules) {
-		module->ProcessFrames(left, right, left, right);
+		if (module->enabled) {
+			module->PreModule();
+			module->ProcessFrames(left, right, left, right);
+			module->PostModule();
+		}
 	}
 
+	// Process all enabled user modules
 	for (ModuleCommon* module : postProcessorModules) {
-		module->ProcessFrames(left, right, left, right);
+		if (module->enabled) {
+			module->PreModule();
+			module->ProcessFrames(left, right, left, right);
+			module->PostModule();
+		}
 	}
 }

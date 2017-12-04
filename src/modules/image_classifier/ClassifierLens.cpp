@@ -41,79 +41,82 @@ void ClassifierLens::InitFromConfig() {
 		names_list == "" ? "" : ofToDataPath(basePath + names_list));
 }
 
-void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
-	if (IsEnabled() && !inLeft.empty() && !inRight.empty()) {
-		TS_SCOPE("Classifier Lens");
+void ClassifierLens::PreModule() {
+	ModuleCommon::PreModule();
 
-		// Init Darknet on demand if not already loaded
-		if (!initialized) {
-			InitFromConfig();
-			initialized = true;
-		}
-
-		Mat drawMatLeft, drawMatRight;
-		inLeft.copyTo(drawMatLeft);
-		inRight.copyTo(drawMatRight);
-
-		Mat analysisMatLeft, analysisMatRight;
-		// Downsample analysisMat if requested
-		if (doDownsampling) {
-			cv::resize(inLeft, analysisMatLeft, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
-			cv::resize(inRight, analysisMatRight, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
-		}
-		else {
-			inLeft.copyTo(analysisMatLeft);
-			inRight.copyTo(analysisMatRight);
-		}
-
-		lastSizeLeft = analysisMatLeft.size();
-		lastSizeRight = analysisMatRight.size();
-
-
-		if (frameCounter == 0 || !useTracking) {
-
-			// Step 1: Acquire targets
-			TS_START_NIF("YOLO");
-			detectionsLeft = Classify(analysisMatLeft);
-			detectionsRight = Classify(analysisMatRight);
-			TS_STOP_NIF("YOLO");
-
-			// Ingest new detections into tracker
-			if (useTracking) {
-				leftTracker.IngestDetections(detectionsLeft);
-				rightTracker.IngestDetections(detectionsRight);
-			}
-
-		}
-
-		if (useTracking) {
-			// Use frameskipping only when trackers are used
-			frameCounter += 1;
-			if (frameCounter >= frameskip) frameCounter = 0;
-
-			leftTracker.UpdateTracking(analysisMatLeft);
-			rightTracker.UpdateTracking(analysisMatRight);
-
-			TS_SCOPE("Draw Bounding Boxes");
-			leftTracker.DrawBoundingBoxes(drawMatLeft);
-			rightTracker.DrawBoundingBoxes(drawMatRight);
-
-		}
-
-		else {
-			TS_SCOPE("Draw Detections");
-			DrawDetections(drawMatLeft, detectionsLeft);
-			DrawDetections(drawMatRight, detectionsRight);
-		}
-
-		drawMatLeft.copyTo(outLeft);
-		drawMatRight.copyTo(outRight);
-
-	}
-	else {
+	// Clear the list of detections if the module is disabled
+	if (!enabled) {
 		detectionsLeft.clear();
 		detectionsRight.clear();
 	}
+}
+
+void ClassifierLens::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+
+	// Init Darknet on demand if not already loaded
+	if (!initialized) {
+		InitFromConfig();
+		initialized = true;
+	}
+
+	Mat drawMatLeft, drawMatRight;
+	inLeft.copyTo(drawMatLeft);
+	inRight.copyTo(drawMatRight);
+
+	Mat analysisMatLeft, analysisMatRight;
+	// Downsample analysisMat if requested
+	if (doDownsampling) {
+		cv::resize(inLeft, analysisMatLeft, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+		cv::resize(inRight, analysisMatRight, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+	}
+	else {
+		inLeft.copyTo(analysisMatLeft);
+		inRight.copyTo(analysisMatRight);
+	}
+
+	lastSizeLeft = analysisMatLeft.size();
+	lastSizeRight = analysisMatRight.size();
+
+
+	if (frameCounter == 0 || !useTracking) {
+
+		// Step 1: Acquire targets
+		TS_START_NIF("YOLO");
+		detectionsLeft = Classify(analysisMatLeft);
+		detectionsRight = Classify(analysisMatRight);
+		TS_STOP_NIF("YOLO");
+
+		// Ingest new detections into tracker
+		if (useTracking) {
+			leftTracker.IngestDetections(detectionsLeft);
+			rightTracker.IngestDetections(detectionsRight);
+		}
+
+	}
+
+	if (useTracking) {
+		// Use frameskipping only when trackers are used
+		frameCounter += 1;
+		if (frameCounter >= frameskip) frameCounter = 0;
+
+		leftTracker.UpdateTracking(analysisMatLeft);
+		rightTracker.UpdateTracking(analysisMatRight);
+
+		TS_SCOPE("Draw Bounding Boxes");
+		leftTracker.DrawBoundingBoxes(drawMatLeft);
+		rightTracker.DrawBoundingBoxes(drawMatRight);
+
+	}
+
+	else {
+		TS_SCOPE("Draw Detections");
+		DrawDetections(drawMatLeft, detectionsLeft);
+		DrawDetections(drawMatRight, detectionsRight);
+	}
+
+	drawMatLeft.copyTo(outLeft);
+	drawMatRight.copyTo(outRight);
+
 }
 
 vector<detected_object> ClassifierLens::Classify(InputArray in) {
@@ -171,74 +174,57 @@ void ClassifierLens::DrawDetections(InputOutputArray mat, std::vector< detected_
 }
 
 void ClassifierLens::DrawGUI() {
-	if (showGUI) {
-		ImGui::Begin(GetName().c_str(), &showGUI, ImGuiWindowFlags_AlwaysAutoResize);
 
-		ImGui::Checkbox("Enabled", &enabled);
-		ImGui::Separator();
-		if (!enabled) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
+	// Controls
+	ImGui::SliderFloat("Threshold", &threshold, 0.01, 1.0, "%.2f%");
+	//ShowHelpMarker("Test help");
 
-		// GUI stuff goes here
-		{
-			// Controls
+	ImGui::Checkbox("Downsample", &doDownsampling);
+	if (!doDownsampling) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); // Push disabled style
+	ImGui::SliderFloat("Downsample Ratio", &downSampleRatio, 0.01f, 1.0f, "%.2f");
+	ShowHelpMarker("Multiplier for decreasing the resolution of the processed image.");
+	if (!doDownsampling) ImGui::PopStyleVar(); //Pop disabled style
+	ImGui::Text("Dimensions - Left: (%i, %i), Right: (%i, %i)", lastSizeLeft.width, lastSizeLeft.height, lastSizeRight.width, lastSizeRight.height);
 
-			ImGui::SliderFloat("Threshold", &threshold, 0.01, 1.0, "%.2f%");
-			//ShowHelpMarker("Test help");
+	// Info
 
-			ImGui::Checkbox("Downsample", &doDownsampling);
-			if (!doDownsampling) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); // Push disabled style
-			ImGui::SliderFloat("Downsample Ratio", &downSampleRatio, 0.01f, 1.0f, "%.2f");
-			ShowHelpMarker("Multiplier for decreasing the resolution of the processed image.");
-			if (!doDownsampling) ImGui::PopStyleVar(); //Pop disabled style
-			ImGui::Text("Dimensions - Left: (%i, %i), Right: (%i, %i)", lastSizeLeft.width, lastSizeLeft.height, lastSizeRight.width, lastSizeRight.height);
+	if (ImGui::TreeNode("Darknet Info")) {
+		if (initialized) {
+			ImGui::Text("%-10s %s", "Preset: ", ConfigHandler::GetValue("YOLO.USED_CONFIG", "").asString().c_str());
+			ImGui::Text("%-10s %s", "Config:", Paths::GetFileNameFromPath(cfg_file).c_str());
+			ImGui::Text("%-10s %s", "Weights:", Paths::GetFileNameFromPath(weights_file).c_str());
 
-			// Info
-
-			if (ImGui::TreeNode("Darknet Info")) {
-				if (initialized) {
-					ImGui::Text("%-10s %s", "Preset: ", ConfigHandler::GetValue("YOLO.USED_CONFIG", "").asString().c_str());
-					ImGui::Text("%-10s %s", "Config:", Paths::GetFileNameFromPath(cfg_file).c_str());
-					ImGui::Text("%-10s %s", "Weights:", Paths::GetFileNameFromPath(weights_file).c_str());
-
-					string namesList = Paths::GetFileNameFromPath(names_list);
-					ImGui::Text("%-10s %s", "Names:", namesList == "" ? "None" : namesList.c_str());
-				}
-				else {
-					ImGui::TextColored(ImColor(255, 255, 0), "No configuration loaded.");
-				}
-
-				ImGui::TreePop();
-			}
-
-			ImGui::Checkbox("Tracking", &useTracking);
-			// Do tracker type dropdown
-			int mode = (int)leftTracker.newTrackerType;
-			ImGui::Combo("Mode", &mode, "KCF\0MIL\0TLD\0\0");
-
-			// If updated, set the tracker types for the left/right trackers
-			if (mode != (int)rightTracker.newTrackerType) {
-				leftTracker.SetTrackerType((TrackerType)mode);
-				rightTracker.SetTrackerType((TrackerType)mode);
-			}
-
-			ImGui::Spacing();
-			ImGui::Spacing();
-
-			// Draw the GUI panels for either the trackers or the raw detections panel
-			if (useTracking) {
-				leftTracker.DrawGUIPanel("Left");
-				rightTracker.DrawGUIPanel("Right");
-			}
-			else {
-				DrawDetectionsGUIPanel();
-			}
-
+			string namesList = Paths::GetFileNameFromPath(names_list);
+			ImGui::Text("%-10s %s", "Names:", namesList == "" ? "None" : namesList.c_str());
+		}
+		else {
+			ImGui::TextColored(ImColor(255, 255, 0), "No configuration loaded.");
 		}
 
-		// End GUI stuff
-		if (!enabled) ImGui::PopStyleVar(); // Pop disabled style
+		ImGui::TreePop();
+	}
 
-		ImGui::End();
+	ImGui::Checkbox("Tracking", &useTracking);
+	// Do tracker type dropdown
+	int mode = (int)leftTracker.newTrackerType;
+	ImGui::Combo("Mode", &mode, "KCF\0MIL\0TLD\0\0");
+
+	// If updated, set the tracker types for the left/right trackers
+	if (mode != (int)rightTracker.newTrackerType) {
+		leftTracker.SetTrackerType((TrackerType)mode);
+		rightTracker.SetTrackerType((TrackerType)mode);
+	}
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	// Draw the GUI panels for either the trackers or the raw detections panel
+	if (useTracking) {
+		leftTracker.DrawGUIPanel("Left");
+		rightTracker.DrawGUIPanel("Right");
+	}
+	else {
+		DrawDetectionsGUIPanel();
 	}
 
 }

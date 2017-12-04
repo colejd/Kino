@@ -29,6 +29,7 @@ public:
 
 	void ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) override;
 	void DrawGUI() override;
+	void PreModule() override;
 
 	void InitFromConfig();
 

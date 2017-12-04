@@ -54,141 +54,124 @@ StereoDepthModule::~StereoDepthModule() {
 
 void StereoDepthModule::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
 	moduleCanRun = !inLeft.empty() && !inRight.empty();
-	if (IsEnabled() && moduleCanRun) {
-		TS_SCOPE("Stereo Depth Module");
-		
-		Mat imgDisparity16S_Left, imgDisparity16S_Right;// = Mat(inLeft.size(), CV_16S);
-
-		UMat leftGrayRaw, rightGrayRaw;
-		cvtColor(inLeft, leftGrayRaw, COLOR_BGR2GRAY);
-		cvtColor(inRight, rightGrayRaw, COLOR_BGR2GRAY);
-
-		int originalWidth = leftGrayRaw.cols;
-		int originalHeight = rightGrayRaw.rows;
-
-		UMat leftGray, rightGray;
-		int max_disp = numDisparities;
-		int wsize = blockSize;
-		// Downsample analysisMat if requested
-		if (doDownsampling) {
-			TS_SCOPE("Downsample");
-			max_disp /= 2;
-			if (max_disp % 16 != 0)
-				max_disp += 16 - (max_disp % 16);
-
-			wsize = 7;
-
-			cv::resize(leftGrayRaw, leftGray, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
-			cv::resize(rightGrayRaw, rightGray, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
-		}
-		else {
-			leftGrayRaw.copyTo(leftGray);
-			rightGrayRaw.copyTo(rightGray);
-		}
-
-		leftBM->setNumDisparities(max_disp);
-		leftBM->setBlockSize(wsize);
-		rightBM->setNumDisparities(max_disp);
-		rightBM->setBlockSize(wsize);
-
-
-		//blur(leftGray, leftGray, cv::Size(7, 7));
-		//blur(rightGray, rightGray, cv::Size(7, 7));
-
-		TS_START_NIF("BM Left");
-		leftBM->compute(leftGray, rightGray, imgDisparity16S_Left);
-		TS_STOP_NIF("BM Left");
-
-		// Compress and normalize to CV_8U
-		// https://stackoverflow.com/questions/28959440/how-to-access-the-disparity-value-in-opencv
-		//normalize(imgDisparity16S, imgDisparity8U, 0, 255, NORM_MINMAX, CV_8U);
-
-		//imshow("Disparity", imgDisparity16S);
-
-		cv::Mat disparity16S;
-
-		if (filter) {
-			TS_START_NIF("BM Right");
-			rightBM->compute(rightGray, leftGray, imgDisparity16S_Right);
-			TS_STOP_NIF("BM Right");
-
-			TS_START_NIF("Filter");
-			wls_filter->setLambda(wls_lambda);
-			wls_filter->setSigmaColor(wls_sigma);
-			wls_filter->filter(imgDisparity16S_Left, inLeft, disparity16S, imgDisparity16S_Right);
-			TS_STOP_NIF("Filter");
-		}
-		else {
-			disparity16S = imgDisparity16S_Left;
-		}
-
-		getDisparityVis(disparity16S, disparity);
-
-		// Optional normalization step
-		TS_START_NIF("Normalize");
-		normalize(disparity, disparity, 0, 255, NORM_MINMAX, CV_8U);
-		TS_STOP_NIF("Normalize");
-
-		// Convert and upscale
-		cv::cvtColor(disparity, disparity, COLOR_GRAY2BGR);
-
-		// No need to actually upsample yet
-		/*if (doDownsampling) {
-			TS_SCOPE("Upsample");
-			Mat copy = disparity;
-			cv::resize(copy, disparity, cv::Size(originalWidth, originalHeight), INTER_NEAREST);
-		}*/
-
+	if (!moduleCanRun) {
+		return;
 	}
+		
+	Mat imgDisparity16S_Left, imgDisparity16S_Right;// = Mat(inLeft.size(), CV_16S);
+
+	UMat leftGrayRaw, rightGrayRaw;
+	cvtColor(inLeft, leftGrayRaw, COLOR_BGR2GRAY);
+	cvtColor(inRight, rightGrayRaw, COLOR_BGR2GRAY);
+
+	int originalWidth = leftGrayRaw.cols;
+	int originalHeight = rightGrayRaw.rows;
+
+	UMat leftGray, rightGray;
+	int max_disp = numDisparities;
+	int wsize = blockSize;
+	// Downsample analysisMat if requested
+	if (doDownsampling) {
+		TS_SCOPE("Downsample");
+		max_disp /= 2;
+		if (max_disp % 16 != 0)
+			max_disp += 16 - (max_disp % 16);
+
+		wsize = 7;
+
+		cv::resize(leftGrayRaw, leftGray, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+		cv::resize(rightGrayRaw, rightGray, cv::Size(), downSampleRatio, downSampleRatio, INTER_NEAREST);
+	}
+	else {
+		leftGrayRaw.copyTo(leftGray);
+		rightGrayRaw.copyTo(rightGray);
+	}
+
+	leftBM->setNumDisparities(max_disp);
+	leftBM->setBlockSize(wsize);
+	rightBM->setNumDisparities(max_disp);
+	rightBM->setBlockSize(wsize);
+
+
+	//blur(leftGray, leftGray, cv::Size(7, 7));
+	//blur(rightGray, rightGray, cv::Size(7, 7));
+
+	TS_START_NIF("BM Left");
+	leftBM->compute(leftGray, rightGray, imgDisparity16S_Left);
+	TS_STOP_NIF("BM Left");
+
+	// Compress and normalize to CV_8U
+	// https://stackoverflow.com/questions/28959440/how-to-access-the-disparity-value-in-opencv
+	//normalize(imgDisparity16S, imgDisparity8U, 0, 255, NORM_MINMAX, CV_8U);
+
+	//imshow("Disparity", imgDisparity16S);
+
+	cv::Mat disparity16S;
+
+	if (filter) {
+		TS_START_NIF("BM Right");
+		rightBM->compute(rightGray, leftGray, imgDisparity16S_Right);
+		TS_STOP_NIF("BM Right");
+
+		TS_START_NIF("Filter");
+		wls_filter->setLambda(wls_lambda);
+		wls_filter->setSigmaColor(wls_sigma);
+		wls_filter->filter(imgDisparity16S_Left, inLeft, disparity16S, imgDisparity16S_Right);
+		TS_STOP_NIF("Filter");
+	}
+	else {
+		disparity16S = imgDisparity16S_Left;
+	}
+
+	getDisparityVis(disparity16S, disparity);
+
+	// Optional normalization step
+	TS_START_NIF("Normalize");
+	normalize(disparity, disparity, 0, 255, NORM_MINMAX, CV_8U);
+	TS_STOP_NIF("Normalize");
+
+	// Convert and upscale
+	cv::cvtColor(disparity, disparity, COLOR_GRAY2BGR);
+
+	// No need to actually upsample yet
+	/*if (doDownsampling) {
+		TS_SCOPE("Upsample");
+		Mat copy = disparity;
+		cv::resize(copy, disparity, cv::Size(originalWidth, originalHeight), INTER_NEAREST);
+	}*/
+
 }
 
 void StereoDepthModule::DrawGUI() {
-	if (showGUI) {
 
-		ImGui::Begin(GetName().c_str(), &showGUI);
-
-		if (!moduleCanRun) {
-			ImGui::TextColored(ImColor(255, 0, 0), "Cannot run without two camera captures enabled!");
-			ImGui::End();
-			return;
-		}
-
-		ImGui::Checkbox("Enabled", &enabled);
-		ImGui::Separator();
-		ImGui::Spacing();
-		if (!enabled) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
-		//Begin main content
-		{
-			ImGui::DragInt("Disparities", &numDisparities, 16, 16, 256);
-			leftBM->setNumDisparities(numDisparities);
-			rightBM->setNumDisparities(numDisparities);
-
-			ImGui::DragInt("Block Size", &blockSize, 2, 5, 21);
-			leftBM->setBlockSize(blockSize);
-			rightBM->setBlockSize(blockSize);
-
-			ImGui::Checkbox("Filter", &filter);
-
-			ImGui::Checkbox("Downsample", &doDownsampling);
-			if (!doDownsampling) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
-			ImGui::SliderFloat("Downsample Ratio", &downSampleRatio, 0.01f, 1.0f, "%.2f");
-			ShowHelpMarker("Multiplier for decreasing the resolution of the processed image.");
-			if (!doDownsampling) ImGui::PopStyleVar(); //Pop disabled style
-
-			// Draw a preview of the window if it exists
-			ImGui::Spacing();
-			ImGui::Separator();
-			ImGui::Spacing();
-
-			DrawImguiMat(disparity, "Disparity");
-
-
-		}
-		//End main content
-		if (!enabled) ImGui::PopStyleVar(); //Pop disabled style
-
-		ImGui::End();
+	if (!moduleCanRun) {
+		ImGui::TextColored(ImColor(255, 0, 0), "Cannot run without two camera captures enabled!");
+		return;
 	}
+
+	ImGui::DragInt("Disparities", &numDisparities, 16, 16, 256);
+	leftBM->setNumDisparities(numDisparities);
+	rightBM->setNumDisparities(numDisparities);
+
+	ImGui::DragInt("Block Size", &blockSize, 2, 5, 21);
+	leftBM->setBlockSize(blockSize);
+	rightBM->setBlockSize(blockSize);
+
+	ImGui::Checkbox("Filter", &filter);
+
+	ImGui::Checkbox("Downsample", &doDownsampling);
+	if (!doDownsampling) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.2); //Push disabled style
+	ImGui::SliderFloat("Downsample Ratio", &downSampleRatio, 0.01f, 1.0f, "%.2f");
+	ShowHelpMarker("Multiplier for decreasing the resolution of the processed image.");
+	if (!doDownsampling) ImGui::PopStyleVar(); //Pop disabled style
+
+	// Draw a preview of the window if it exists
+	ImGui::Spacing();
+	ImGui::Separator();
+	ImGui::Spacing();
+
+	DrawImguiMat(disparity, "Disparity");
+
 }
 
 void StereoDepthModule::DrawImguiMat(InputArray in, string id) {
