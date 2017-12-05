@@ -65,8 +65,8 @@ public:
 
 	bool mirror = false;
 
-	int convergenceMin = 0;
-	int convergenceMax = 80;
+	int convergenceMin = -100;
+	int convergenceMax = 100;
 	void IncrementConvergence(int inc);
 
 	//void InitOpenVR();

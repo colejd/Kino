@@ -15,10 +15,10 @@ Centralized collection for objects deriving from ModuleCommon. Gives you single
 commands for drawing module GUIs and processing frames through them.
 
 */
-class Pipeline {
+class ModulePipeline {
 public:
-	Pipeline();
-	~Pipeline();
+	ModulePipeline();
+	~ModulePipeline();
 
 	void RegisterModule(ModuleCommon *module, bool preprocess = false);
 	void DrawModuleGUIs();

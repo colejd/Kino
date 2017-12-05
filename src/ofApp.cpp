@@ -135,13 +135,13 @@ void ofApp::DrawGUI() {
 	if (ImGui::BeginMenu("Modules")) {
 		// Draw an option for each module, starting with preprocessing modules
 		ImGui::TextColored(ImColor(255, 255, 0), "Preprocess");
-		for (ModuleCommon* module : core->pipeline.preProcessorModules) {
+		for (ModuleCommon* module : core->modulePipeline.preProcessorModules) {
 			ImGui::MenuItem(module->GetName().c_str(), nullptr, &(module->showGUI));
 		}
 
 		ImGui::Separator();
 		ImGui::TextColored(ImColor(255, 255, 0), "Postprocess");
-		for (ModuleCommon* module : core->pipeline.postProcessorModules) {
+		for (ModuleCommon* module : core->modulePipeline.postProcessorModules) {
 			ImGui::MenuItem(module->GetName().c_str(), nullptr, &(module->showGUI));
 		}
 

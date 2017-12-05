@@ -100,4 +100,6 @@ private:
 	float downSampleRatio = 0.5f;
 
 	bool useSmartLineColors = false;
+
+	bool doScreenshot = false;
 };

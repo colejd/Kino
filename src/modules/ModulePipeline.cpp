@@ -1,14 +1,14 @@
-#include "Pipeline.hpp"
+#include "ModulePipeline.hpp"
 
-Pipeline::Pipeline() {
-
-}
-
-Pipeline::~Pipeline() {
+ModulePipeline::ModulePipeline() {
 
 }
 
-void Pipeline::RegisterModule(ModuleCommon *module, bool preprocess) {
+ModulePipeline::~ModulePipeline() {
+
+}
+
+void ModulePipeline::RegisterModule(ModuleCommon *module, bool preprocess) {
 	if (preprocess) {
 		preProcessorModules.push_back(module);
 	}
@@ -17,7 +17,7 @@ void Pipeline::RegisterModule(ModuleCommon *module, bool preprocess) {
 	}
 }
 
-void Pipeline::DrawModuleGUIs() {
+void ModulePipeline::DrawModuleGUIs() {
 	// Draw each GUI if marked to show
 
 	for (ModuleCommon* module : preProcessorModules) {
@@ -37,7 +37,7 @@ void Pipeline::DrawModuleGUIs() {
 	}
 }
 
-void Pipeline::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
+void ModulePipeline::ProcessFrames(InputArray inLeft, InputArray inRight, OutputArray outLeft, OutputArray outRight) {
 	Mat left = inLeft.getMat();
 	Mat right = inRight.getMat();
 

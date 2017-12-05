@@ -33,6 +33,10 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
 	int originalWidth = src.cols;
 	int originalHeight = src.rows;
 
+	if (doScreenshot) {
+		cv::imwrite("Edge Detection 1.png", src);
+	}
+
 	//Downsample
 	if (doDownsampling) {
 		TS_START_NIF("Downsample");
@@ -121,7 +125,7 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
 	}
 
 	//Output step-------------------------------------
-	TS_START_NIF("Copy Output");
+	TS_START_NIF("Create Output");
 	if (showEdgesOnly) {
 		cvtColor(gray, finalFrame, COLOR_GRAY2BGR);
 	}
@@ -157,13 +161,28 @@ void EdgeDetectorModule::ProcessFrame(cv::InputArray in, cv::OutputArray out) {
 	}
 	finalFrame.setTo(finalColor, gray);
 
+	if (doScreenshot) {
+		Mat justLines(finalFrame.rows, finalFrame.cols, CV_8UC3, Scalar(0, 0, 0));
+		Mat justLinesAlpha(finalFrame.rows, finalFrame.cols, CV_8UC4, Scalar(0, 0, 0, 0));
+		justLines.setTo(finalColor, gray);
+		justLinesAlpha.setTo(Scalar(finalColor[0], finalColor[1], finalColor[2], 1.0), gray);
+		cv::imwrite("Edge Detection 2.png", justLines);
+		cv::imwrite("Edge Detection 2 alpha.png", justLinesAlpha);
+	}
+
+	if (doScreenshot) {
+		cv::imwrite("Edge Detection 3.png", finalFrame);
+	}
+
 	//Copy the result of all operations to the output frame.
 	finalFrame.copyTo(out);
-	TS_STOP_NIF("Copy Output");
+	TS_STOP_NIF("Create Output");
 
 	gray.release();
 	latestStep.release();
 	finalFrame.release();
+
+	if (doScreenshot) doScreenshot = false;
 
 }
 
@@ -272,5 +291,10 @@ void EdgeDetectorModule::DrawGUI() {
 	ImGui::SliderFloat("Downsample Ratio", &downSampleRatio, 0.01f, 1.0f, "%.2f");
 	ShowHelpMarker("Multiplier for decreasing the resolution of the processed image.");
 	if (!doDownsampling) ImGui::PopStyleVar(); //Pop disabled style
+
+	ImGui::Spacing();
+	if (ImGui::Button("Screenshot")) {
+		doScreenshot = true;
+	}
 
 }
