@@ -292,6 +292,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="assets\hdk_v1_3_front-cover.ipt" />
     <None Include="bin\data\config\config.json" />
     <None Include="documents\KinoLogo.ai" />
     <None Include="frameworks\libusb\lib\x64\libusb-1.0d.pdb" />

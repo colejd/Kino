@@ -291,6 +291,9 @@
     <Filter Include="documents">
       <UniqueIdentifier>{8da05234-ba18-45ac-bbb8-69e1922861b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{6868e1bd-9bd9-401c-8e82-f8ad20f03ea0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="addons\ofxDarknet\src\ofxDarknet.h">
@@ -658,6 +661,9 @@
     </None>
     <None Include="documents\KinoLogo.ai">
       <Filter>documents</Filter>
+    </None>
+    <None Include="assets\hdk_v1_3_front-cover.ipt">
+      <Filter>assets</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
