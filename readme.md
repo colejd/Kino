@@ -1,38 +1,42 @@
 # Kino
-> An AR platform for enhancing navigational awareness
+> A research platform for wearable augmented reality devices
 
-Kino is a software platform for real-time AR on a custom-built headset. As of now, Kino 
-is being used at the VEMILab as a platform for exploring the efficacy of various
-AR techniques for aiding human spatial navigation.
-
-*Please note that this is a work in progress!*
+Kino is a software and hardware platform that greatly eases the process of developing
+projects for wearable augmented reality devices (WARDs), particularly for research purposes.
+The code in this repository compiles into a runtime which drives a custom reference WARD, which was
+designed to be useful for research and comparatively inexpensive to build. As of now, Kino is 
+being used at the VEMILab as a platform for exploring the efficacy of various AR techniques 
+in aiding human spatial navigation.
 
 
 ## Features
-### Lenses
-Each lens modifies an image using various processing techniques to improve
-navigational awareness.
+### Modules
+Modules are black boxes that accept two images, modify them, and send them out to the next step in the pipeline. 
+These inherit from a [common interface](src/modules/ModuleCommon.hpp). If you are a researcher looking to
+create a new module, all you need to do is create a new deriving class and implement its methods, then
+instantiate it in the Core and register it with the Core's `modulePipeline` object. The system will handle the rest.
 
 #### Edge Detector
-Those who lose contrast sensitivity in their eyes have trouble perceiving depth.
-High performance edge detection is used to convey depth information in a way that
-they can see.
+Those who have Age-Related Macular Degeneration have trouble with visual search tasks due to
+central field loss and degradation of contrast sensitivity. This module uses high performance 
+edge detection to enhance the contours of objects, which improves the user's performance in these tasks.
 
 #### Image Classifier
-A work in progress. This is an attempt at visually augmenting important indooor
-scene features that are in the user's field of vision. Right now, these are
-light switches, doorknobs, and exit signs. These are detected through Darknet's YOLO,
-a CNN-based image classifier. I will be making various efforts to increase both
-the speed and integrity of the object detection, as these are important for comfort
-on a wearable AR device.
-
-Please note that this code is in a very early state.
+A work in progress. This is an attempt at visually augmenting objects in the user's field of view. 
+These are detected through Darknet's YOLO, a CNN-based image classifier. I will be making various 
+efforts to increase both the speed and integrity of the object detection, as these are important for comfort
+on a pass-through configuration of WARD such as our reference device.
 
 ### Camera Support
-Kino is designed to use a pair of PS3 Eye cameras connected via USB.
-However, if you want to use it with your webcam, you can do this
-by setting `DEMO_SETTINGS.ACTIVE` to `true` in the [config file](/bin/data/config/config.json), in which
-case the first registered webcam on your computer will be used.
+Kino is designed to use a pair of PS3 Eye cameras connected via USB. However, if you want to use it with 
+your webcam, you can do this by setting `DEMO_SETTINGS.ACTIVE` to `true` in the 
+[config file](/bin/data/config/config.json), in which case the first registered webcam on your 
+computer will be used.
+
+### Utilities
+Kino gives you many tools to simplify common tasks when writing code for WARDs. We provide a camera calibration module
+that allows you to correct for lens distortion with a one-time calibration process. Visual performance measurement tools 
+are also available for identifying trouble spots in code without needing to break out the debugger.
 
 
 ## Installation

@@ -14,14 +14,13 @@ Contains the Core, Compositor, and GUI.
 
 ## Core
 This is responsible for fetching images from the cameras (through `CameraCapture` objects), as
-well as processing them through each individual Lens.
+well as processing them through each individual module via its `modulePipeline`.
 
-### Lenses
-Lenses are the in-program term for self-contained image processing routines. They inherit from
+### Modules
+Modules are the in-program term for self-contained image processing routines. They inherit from
 `ModuleCommon`. Broadly, they have a `ProcessFrame` function that takes an input image, and
 writes its results to an output image. They are enabled and disabled individually so that
-you can mix and match what processing you want to do. Each one manages its own GUI (though
-the code that draws it is in the Core).
+you can mix and match what processing you want to do. Each one manages its own GUI.
 
 #### Edge Detector
 Processes the input image using Canny edge detection (and optionally, contour filtering)
@@ -30,11 +29,10 @@ to highlight the edges of objects.
 #### Image Classifier
 Processes the input image using a neural network (YOLO, part of Darknet) to perform object
 detection and tracking. The output image is the input image with alterations to make these
-objects more obvious. This constitutes my thesis project, so contact me if you have any
-questions!
+objects more obvious.
 
 ## Compositor
-The Compositor takes the images from each camera and displays them on screen. It creates a buffer
+The Compositor takes the final images for each side and displays them on the screen. It creates a buffer
 that is large enough for both images, and then aspect scales and fits it to the window. It converges
 the images toward the center of the screen depending on user settings, to accomodate for various 
 interpupillary distances.
